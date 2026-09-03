@@ -1,0 +1,28 @@
+node_modules/
+dist/
+build/
+.cache/
+.env
+.env.local
+.env.*.local
+.vite/
+vite.config.*.timestamp-*
+*.tsbuildinfo
+*-debug.log*
+logs/
+*.log
+.tmp-*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Platform
+/.plugins/
+/.opencode-skills/

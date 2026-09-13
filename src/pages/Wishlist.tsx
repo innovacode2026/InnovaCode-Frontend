@@ -1,18 +1,17 @@
 import { AppContext } from '../types'
 import { products } from '../data/mockData'
-import Header from '../components/Header'
-import Footer from '../components/Footer'
-import { HeartIcon, ChevronRightIcon, TrashIcon } from '../components/Icons'
-import { StarIcon } from '../components/Icons'
+import Encabezado from '../components/Header'
+import PieDePagina from '../components/Footer'
+import { HeartIcon, ChevronRightIcon, TrashIcon, StarIcon } from '../components/Icons'
 
-export default function Wishlist(ctx: AppContext) {
+export default function ListaDeseos(ctx: AppContext) {
   const { role, wishlist, toggleWishlist, navigate } = ctx
   const savedProducts = products.filter(p => wishlist.includes(p.id))
 
   if (role !== 'user') {
     return (
       <div className="min-h-screen flex flex-col">
-        <Header {...ctx} />
+        <Encabezado {...ctx} />
         <div className="flex-1 flex items-center justify-center p-8">
           <div className="text-center max-w-sm">
             <div className="w-16 h-16 rounded-2xl bg-primary-50 flex items-center justify-center mx-auto mb-4">
@@ -25,14 +24,14 @@ export default function Wishlist(ctx: AppContext) {
             </button>
           </div>
         </div>
-        <Footer navigate={navigate} />
+        <PieDePagina navigate={navigate} />
       </div>
     )
   }
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Header {...ctx} />
+      <Encabezado {...ctx} />
 
       <div className="flex-1 bg-background">
         <div className="bg-white border-b border-border">
@@ -121,7 +120,7 @@ export default function Wishlist(ctx: AppContext) {
 
                     <div className="flex items-center justify-between mt-3">
                       <span className="font-display font-700 text-lg text-gray-900">
-                        ${product.price.toLocaleString('es-CO', { minimumFractionDigits: 2 })}
+                        ${product.price.toLocaleString('es-CO')}
                       </span>
                       <button
                         onClick={() => navigate('product', product.id)}
@@ -138,7 +137,7 @@ export default function Wishlist(ctx: AppContext) {
         </div>
       </div>
 
-      <Footer navigate={navigate} />
+      <PieDePagina navigate={navigate} />
     </div>
   )
 }

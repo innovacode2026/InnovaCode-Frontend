@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import { AppContext } from '../../types'
-import AdminLayout from '../../components/AdminLayout'
+import LayoutAdmin from '../../components/AdminLayout'
 import { users as initialUsers } from '../../data/mockData'
 import { SearchIcon, EyeIcon, AlertIcon, CheckIcon, XIcon } from '../../components/Icons'
 
-export default function AdminUsers(ctx: AppContext) {
+export default function UsuariosAdmin(ctx: AppContext) {
   const [users, setUsers] = useState(initialUsers)
   const [search, setSearch] = useState('')
   const [filterRole, setFilterRole] = useState('')
@@ -45,7 +45,7 @@ export default function AdminUsers(ctx: AppContext) {
   }
 
   return (
-    <AdminLayout {...ctx} title="Gestión de Usuarios" subtitle="Consulta y administra los usuarios registrados">
+    <LayoutAdmin {...ctx} title="Gestión de Usuarios" subtitle="Consulta y administra los usuarios registrados">
       <div className="p-5 space-y-4">
         {/* Filters */}
         <div className="bg-white rounded-2xl border border-border p-4">
@@ -239,6 +239,6 @@ export default function AdminUsers(ctx: AppContext) {
           {toast}
         </div>
       )}
-    </AdminLayout>
+    </LayoutAdmin>
   )
 }

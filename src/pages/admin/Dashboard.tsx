@@ -1,9 +1,9 @@
 import { AppContext } from '../../types'
-import AdminLayout from '../../components/AdminLayout'
+import LayoutAdmin from '../../components/AdminLayout'
 import { products, users } from '../../data/mockData'
 import { PackageIcon, UsersIcon, StarIcon, TrendUpIcon, ChevronRightIcon, CheckIcon, AlertIcon } from '../../components/Icons'
 
-export default function AdminDashboard(ctx: AppContext) {
+export default function PanelAdmin(ctx: AppContext) {
   const { navigate } = ctx
 
   const activeProducts = products.filter(p => p.status === 'active').length
@@ -54,7 +54,7 @@ export default function AdminDashboard(ctx: AppContext) {
   const recentUsers = users.filter(u => u.role === 'user').slice(0, 5)
 
   return (
-    <AdminLayout {...ctx} title="Dashboard" subtitle="Panel de administración">
+    <LayoutAdmin {...ctx} title="Dashboard" subtitle="Panel de administración">
       <div className="p-5 space-y-5">
         {/* Stats */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -181,6 +181,6 @@ export default function AdminDashboard(ctx: AppContext) {
           </div>
         </div>
       </div>
-    </AdminLayout>
+    </LayoutAdmin>
   )
 }

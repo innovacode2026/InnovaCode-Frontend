@@ -1,12 +1,12 @@
 import { useState, useMemo } from 'react'
 import { AppContext } from '../types'
 import { products, categories } from '../data/mockData'
-import Header from '../components/Header'
-import Footer from '../components/Footer'
-import ProductCard from '../components/ProductCard'
+import Encabezado from '../components/Header'
+import PieDePagina from '../components/Footer'
+import TarjetaProducto from '../components/ProductCard'
 import { SearchIcon, FilterIcon, SortIcon, XIcon, ChevronDownIcon } from '../components/Icons'
 
-export default function Catalog(ctx: AppContext) {
+export default function Catalogo(ctx: AppContext) {
   const { navigate } = ctx
   const [search, setSearch] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('')
@@ -14,7 +14,7 @@ export default function Catalog(ctx: AppContext) {
   const [showFilters, setShowFilters] = useState(false)
   const [minRating, setMinRating] = useState(0)
   const [loading] = useState(false)
-  const [priceRange, setPriceRange] = useState([0, 5000])
+  const [priceRange, setPriceRange] = useState([0, 15000000])
 
   const filtered = useMemo(() => {
     let list = [...products]
@@ -35,7 +35,7 @@ export default function Catalog(ctx: AppContext) {
     setSearch('')
     setSelectedCategory('')
     setMinRating(0)
-    setPriceRange([0, 5000])
+    setPriceRange([0, 15000000])
     setSortBy('name')
   }
 
@@ -54,7 +54,7 @@ export default function Catalog(ctx: AppContext) {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Header {...ctx} />
+      <Encabezado {...ctx} />
 
       <div className="flex-1">
         {/* Page header */}
@@ -209,15 +209,15 @@ export default function Catalog(ctx: AppContext) {
                   <input
                     type="range"
                     min={0}
-                    max={5000}
-                    step={100}
+                    max={15000000}
+                    step={500000}
                     value={priceRange[1]}
                     onChange={e => setPriceRange([0, Number(e.target.value)])}
                     className="w-full accent-primary cursor-pointer"
                   />
                   <div className="flex justify-between text-xs text-gray-400 mt-1">
                     <span>$0</span>
-                    <span className="font-medium text-gray-700">${priceRange[1].toLocaleString()}</span>
+                    <span className="font-medium text-gray-700">${priceRange[1].toLocaleString('es-CO')}</span>
                   </div>
                 </div>
               </div>
@@ -246,7 +246,7 @@ export default function Catalog(ctx: AppContext) {
               ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
                   {filtered.map(product => (
-                    <ProductCard key={product.id} product={product} ctx={ctx} />
+                    <TarjetaProducto key={product.id} product={product} ctx={ctx} />
                   ))}
                 </div>
               )}
@@ -255,7 +255,7 @@ export default function Catalog(ctx: AppContext) {
         </div>
       </div>
 
-      <Footer navigate={navigate} />
+      <PieDePagina navigate={navigate} />
     </div>
   )
 }

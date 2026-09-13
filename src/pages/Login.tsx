@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { AppContext } from '../types'
 import { EyeIcon, EyeOffIcon, LockIcon, UserIcon, AlertIcon, CheckIcon } from '../components/Icons'
 
-export default function Login(ctx: AppContext) {
+export default function InicioSesion(ctx: AppContext) {
   const { navigate, setRole } = ctx
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -50,14 +50,12 @@ export default function Login(ctx: AppContext) {
       {/* Header minimal */}
       <div className="bg-white border-b border-border px-6 py-4">
         <button onClick={() => navigate('landing')} className="flex items-center gap-2 cursor-pointer">
-          <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
-              <path d="M12 2L2 7v10l10 5 10-5V7L12 2z" fill="white" fillOpacity="0.9" />
-              <path d="M12 2L2 7l10 5 10-5-10-5z" fill="white" />
-              <path d="M2 17l10 5V12L2 7v10z" fill="white" fillOpacity="0.7" />
-            </svg>
+          <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #8B5CF6, #06B6D4)' }}>
+            <span className="text-white font-display font-900 text-xs leading-none">e</span>
           </div>
-          <span className="font-display font-700 text-navy text-sm">InnovaCode</span>
+          <div>
+            <span className="font-display font-900 text-[15px] leading-none block" style={{ background: 'linear-gradient(135deg, #8B5CF6, #06B6D4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>EVOX</span>
+          </div>
         </button>
       </div>
 
@@ -70,7 +68,7 @@ export default function Login(ctx: AppContext) {
                 <LockIcon size={22} className="text-primary" />
               </div>
               <h1 className="font-display font-700 text-gray-900 text-xl">Iniciar sesión</h1>
-              <p className="text-gray-500 text-sm mt-1">Ingresa a tu cuenta de InnovaCode</p>
+              <p className="text-gray-500 text-sm mt-1">Ingresa a tu cuenta de EVOX</p>
             </div>
 
             {success ? (

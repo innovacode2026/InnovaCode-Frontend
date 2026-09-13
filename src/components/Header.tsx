@@ -2,12 +2,12 @@ import { useState } from 'react'
 import { AppContext } from '../types'
 import { SearchIcon, HeartIcon, UserIcon, MenuIcon, XIcon, ChevronDownIcon } from './Icons'
 
-interface HeaderProps extends AppContext {
+interface EncabezadoProps extends AppContext {
   searchQuery?: string
   onSearchChange?: (q: string) => void
 }
 
-export default function Header({ role, page, wishlist, navigate, setRole }: HeaderProps) {
+export default function Encabezado({ role, page, wishlist, navigate, setRole }: EncabezadoProps) {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [roleMenuOpen, setRoleMenuOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
@@ -22,8 +22,8 @@ export default function Header({ role, page, wishlist, navigate, setRole }: Head
   const roleColors: Record<string, string> = {
     guest: 'bg-gray-100 text-gray-600',
     user: 'bg-primary-50 text-primary',
-    admin: 'bg-blue-50 text-blue-700',
-    superadmin: 'bg-purple-50 text-purple-700',
+    admin: 'bg-violet-50 text-violet-700',
+    superadmin: 'bg-cyan-50 text-cyan-700',
   }
 
   const handleSearch = (e: React.FormEvent) => {
@@ -36,11 +36,30 @@ export default function Header({ role, page, wishlist, navigate, setRole }: Head
     { label: 'Catálogo', page: 'catalog' as const },
   ]
 
+  const LogoEVOX = () => (
+    <button
+      onClick={() => navigate('landing')}
+      className="flex items-center gap-2.5 flex-shrink-0 cursor-pointer"
+    >
+      <img src="/logo-evox.png" alt="EVOX" className="w-10 h-10 object-contain rounded-xl" />
+      <span
+        className="font-display font-900 text-[17px] leading-none"
+        style={{
+          background: 'linear-gradient(135deg, #8B5CF6, #06B6D4)',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+        }}
+      >
+        EVOX
+      </span>
+    </button>
+  )
+
   return (
-    <header className="bg-white border-b border-border sticky top-0 z-50">
+    <header className="bg-white/95 backdrop-blur-md border-b border-border sticky top-0 z-50">
       {/* Demo role switcher bar */}
-      <div className="bg-navy px-4 py-1.5 flex items-center justify-between gap-4 text-white/80 text-xs">
-        <span className="font-display font-medium text-white/60">Prototipo InnovaCode — Simulación de rol activo:</span>
+      <div className="px-4 py-1.5 flex items-center justify-between gap-4 text-xs" style={{ background: '#0B0B14' }}>
+        <span className="font-display font-medium text-white/40">Prototipo EVOX · Simulación de rol:</span>
         <div className="flex items-center gap-1.5">
           {(['guest', 'user', 'admin', 'superadmin'] as const).map(r => (
             <button
@@ -52,7 +71,7 @@ export default function Header({ role, page, wishlist, navigate, setRole }: Head
                 else navigate('landing')
               }}
               className={`px-2.5 py-0.5 rounded-full text-xs font-medium transition-all cursor-pointer ${
-                role === r ? 'bg-white text-navy font-semibold' : 'bg-white/10 hover:bg-white/20 text-white'
+                role === r ? 'bg-primary text-white font-semibold' : 'bg-white/10 hover:bg-white/20 text-white'
               }`}
             >
               {roleLabels[r]}
@@ -63,23 +82,7 @@ export default function Header({ role, page, wishlist, navigate, setRole }: Head
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 gap-4">
-          {/* Logo */}
-          <button
-            onClick={() => navigate('landing')}
-            className="flex items-center gap-2.5 flex-shrink-0 cursor-pointer"
-          >
-            <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center shadow-sm">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                <path d="M12 2L2 7v10l10 5 10-5V7L12 2z" fill="white" fillOpacity="0.9" />
-                <path d="M12 2L2 7l10 5 10-5-10-5z" fill="white" />
-                <path d="M2 17l10 5V12L2 7v10z" fill="white" fillOpacity="0.7" />
-              </svg>
-            </div>
-            <div>
-              <span className="font-display font-700 text-navy text-[15px] leading-none">InnovaCode</span>
-              <span className="block text-[9px] text-gray-400 font-medium leading-none mt-0.5 tracking-wide uppercase">Ingeniería en Sistemas</span>
-            </div>
-          </button>
+          <LogoEVOX />
 
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-1">
@@ -104,7 +107,7 @@ export default function Header({ role, page, wishlist, navigate, setRole }: Head
               <SearchIcon size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
               <input
                 type="text"
-                placeholder="Buscar productos..."
+                placeholder="Buscar celulares, laptops..."
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
                 className="w-full pl-9 pr-4 py-2 text-sm bg-gray-50 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-gray-400"
@@ -139,7 +142,8 @@ export default function Header({ role, page, wishlist, navigate, setRole }: Head
                 </button>
                 <button
                   onClick={() => navigate('register')}
-                  className="text-sm bg-primary text-white font-medium px-3 py-1.5 rounded-lg hover:bg-primary-hover transition-colors cursor-pointer"
+                  className="text-sm text-white font-medium px-3 py-1.5 rounded-lg transition-colors cursor-pointer"
+                  style={{ background: 'linear-gradient(135deg, #8B5CF6, #7C3AED)' }}
                 >
                   Registrarse
                 </button>
@@ -150,7 +154,10 @@ export default function Header({ role, page, wishlist, navigate, setRole }: Head
                   onClick={() => setRoleMenuOpen(!roleMenuOpen)}
                   className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
                 >
-                  <div className="w-7 h-7 rounded-full bg-primary flex items-center justify-center">
+                  <div
+                    className="w-7 h-7 rounded-full flex items-center justify-center"
+                    style={{ background: 'linear-gradient(135deg, #8B5CF6, #06B6D4)' }}
+                  >
                     <UserIcon size={14} className="text-white" />
                   </div>
                   <div className="hidden sm:block text-left">
@@ -184,7 +191,7 @@ export default function Header({ role, page, wishlist, navigate, setRole }: Head
               </div>
             )}
 
-            {/* Mobile menu */}
+            {/* Mobile menu toggle */}
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
               className="md:hidden p-2 rounded-lg text-gray-500 hover:bg-gray-50 transition-colors ml-1 cursor-pointer"

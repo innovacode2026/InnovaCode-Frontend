@@ -1,16 +1,23 @@
 import { useState } from 'react'
 import { AppContext } from '../types'
 import { products, comments as initialComments } from '../data/mockData'
-import Header from '../components/Header'
-import Footer from '../components/Footer'
+import Encabezado from '../components/Header'
+import PieDePagina from '../components/Footer'
 import { HeartIcon, StarIcon, ChevronLeftIcon, ChevronRightIcon, MessageIcon, EditIcon, TrashIcon, CheckIcon } from '../components/Icons'
 
-export default function ProductDetail(ctx: AppContext) {
+export default function DetalleProducto(ctx: AppContext) {
   const { selectedProductId, role, wishlist, toggleWishlist, navigate } = ctx
   const product = products.find(p => p.id === selectedProductId) || products[0]
   const isSaved = wishlist.includes(product.id)
 
-  const [activeImage, setActiveImage] = useState(0)
+  const [activeMedia, setActiveMedia] = useState(0)
+  const [selectedColor, setSelectedColor] = useState<string | null>(
+    product.colors?.[0]?.hex ?? null
+  )
+  const media = [
+    ...(product.video ? [{ type: 'video' as const, src: product.video }] : []),
+    ...product.gallery.map(src => ({ type: 'image' as const, src })),
+  ]
   const [userRating, setUserRating] = useState(0)
   const [hoverRating, setHoverRating] = useState(0)
   const [commentText, setCommentText] = useState('')
@@ -18,7 +25,6 @@ export default function ProductDetail(ctx: AppContext) {
   const [editingId, setEditingId] = useState<string | null>(null)
   const [editText, setEditText] = useState('')
   const [submitted, setSubmitted] = useState(false)
-  const [ratingSubmitted, setRatingSubmitted] = useState(false)
   const [activeTab, setActiveTab] = useState<'description' | 'features' | 'reviews'>('description')
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null)
 
@@ -52,12 +58,6 @@ export default function ProductDetail(ctx: AppContext) {
     setDeleteConfirm(null)
   }
 
-  const submitRating = () => {
-    if (!userRating) return
-    setRatingSubmitted(true)
-    setTimeout(() => setRatingSubmitted(false), 3000)
-  }
-
   const renderStars = (rating: number, interactive = false, size = 18) => {
     const active = interactive ? (hoverRating || userRating) : rating
     return Array.from({ length: 5 }, (_, i) => (
@@ -83,7 +83,7 @@ export default function ProductDetail(ctx: AppContext) {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Header {...ctx} />
+      <Encabezado {...ctx} />
 
       <div className="flex-1 bg-background">
         {/* Breadcrumb */}
@@ -101,26 +101,39 @@ export default function ProductDetail(ctx: AppContext) {
           {/* Product info */}
           <div className="bg-white rounded-2xl border border-border overflow-hidden mb-6">
             <div className="grid lg:grid-cols-2 gap-0">
-              {/* Image gallery */}
+              {/* Carrusel de medios */}
               <div className="border-r border-border">
-                <div className="relative aspect-[4/3] bg-gray-50 overflow-hidden">
-                  <img
-                    src={product.gallery[activeImage]}
-                    alt={product.name}
-                    className="w-full h-full object-cover"
-                  />
-                  {product.gallery.length > 1 && (
+                <div className="relative aspect-[6/5] bg-gray-50 overflow-hidden rounded-tl-2xl">
+                  {media[activeMedia]?.type === 'video' ? (
+                    <video
+                      key={media[activeMedia].src}
+                      src={media[activeMedia].src}
+                      className="w-full h-full object-cover"
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                    />
+                  ) : (
+                    <img
+                      src={media[activeMedia]?.src}
+                      alt={product.name}
+                      className="w-full h-full object-cover transition-transform duration-300"
+                      style={{ transform: `scale(${activeMedia === 1 ? 1.05 : 1.12})`, transformOrigin: 'center' }}
+                    />
+                  )}
+                  {media.length > 1 && (
                     <>
                       <button
-                        onClick={() => setActiveImage(i => Math.max(0, i - 1))}
-                        disabled={activeImage === 0}
+                        onClick={() => setActiveMedia(i => Math.max(0, i - 1))}
+                        disabled={activeMedia === 0}
                         className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 shadow-md flex items-center justify-center disabled:opacity-30 hover:bg-white transition-colors cursor-pointer"
                       >
                         <ChevronLeftIcon size={16} />
                       </button>
                       <button
-                        onClick={() => setActiveImage(i => Math.min(product.gallery.length - 1, i + 1))}
-                        disabled={activeImage === product.gallery.length - 1}
+                        onClick={() => setActiveMedia(i => Math.min(media.length - 1, i + 1))}
+                        disabled={activeMedia === media.length - 1}
                         className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 shadow-md flex items-center justify-center disabled:opacity-30 hover:bg-white transition-colors cursor-pointer"
                       >
                         <ChevronRightIcon size={16} />
@@ -128,17 +141,28 @@ export default function ProductDetail(ctx: AppContext) {
                     </>
                   )}
                 </div>
-                {product.gallery.length > 1 && (
-                  <div className="flex gap-2 p-4">
-                    {product.gallery.map((img, i) => (
+
+                {/* Miniaturas */}
+                {media.length > 1 && (
+                  <div className="flex gap-2 p-4 overflow-x-auto">
+                    {media.map((item, i) => (
                       <button
                         key={i}
-                        onClick={() => setActiveImage(i)}
-                        className={`w-16 h-12 rounded-lg overflow-hidden border-2 transition-all cursor-pointer flex-shrink-0 ${
-                          activeImage === i ? 'border-primary' : 'border-border hover:border-gray-300'
+                        onClick={() => setActiveMedia(i)}
+                        className={`relative w-16 h-12 rounded-lg overflow-hidden border-2 transition-all cursor-pointer flex-shrink-0 bg-gray-100 ${
+                          activeMedia === i ? 'border-primary' : 'border-border hover:border-gray-300'
                         }`}
                       >
-                        <img src={img} alt="" className="w-full h-full object-cover" />
+                        {item.type === 'video' ? (
+                          <>
+                            <video src={item.src} className="w-full h-full object-cover" muted />
+                            <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+                              <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21" /></svg>
+                            </div>
+                          </>
+                        ) : (
+                          <img src={item.src} alt="" className="w-full h-full object-cover" />
+                        )}
                       </button>
                     ))}
                   </div>
@@ -186,8 +210,40 @@ export default function ProductDetail(ctx: AppContext) {
                   <span className="text-gray-400 text-sm">{product.reviewCount} reseñas</span>
                 </div>
 
+                {product.colors && (
+                  <div className="mb-5">
+                    <p className="text-xs text-gray-400 font-medium uppercase tracking-wider mb-2">
+                      Color — <span className="text-gray-700 normal-case tracking-normal font-semibold">
+                        {product.colors.find(c => c.hex === selectedColor)?.name}
+                      </span>
+                    </p>
+                    <div className="flex items-center gap-2 flex-wrap">
+                      {product.colors.map(color => (
+                        <button
+                          key={color.hex}
+                          onClick={() => setSelectedColor(color.hex)}
+                          title={color.name}
+                          className="rounded-full cursor-pointer transition-all"
+                          style={{
+                            width: color.hex === '#A9B689' ? '2.75rem' : '2rem',
+                            height: color.hex === '#A9B689' ? '2.75rem' : '2rem',
+                            background: color.hex,
+                            border: selectedColor === color.hex
+                              ? '3px solid #2563EB'
+                              : '2px solid #E2E8F0',
+                            boxShadow: selectedColor === color.hex
+                              ? '0 0 0 2px white, 0 0 0 4px #2563EB'
+                              : 'none',
+                            outline: 'none',
+                          }}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )}
+
                 <div className="font-display font-800 text-3xl text-gray-900 mb-5">
-                  ${product.price.toLocaleString('es-CO', { minimumFractionDigits: 2 })}
+                  ${product.price.toLocaleString('es-CO')}
                 </div>
 
                 <div className="grid grid-cols-2 gap-3 text-sm mb-5 bg-gray-50 rounded-xl p-4">
@@ -398,7 +454,7 @@ export default function ProductDetail(ctx: AppContext) {
                     <img src={p.image} alt={p.name} className="w-20 h-16 object-cover rounded-lg flex-shrink-0 bg-gray-50" />
                     <div className="min-w-0">
                       <div className="font-display font-600 text-sm text-gray-800 line-clamp-2 leading-tight">{p.name}</div>
-                      <div className="font-display font-700 text-primary text-sm mt-1">${p.price.toLocaleString()}</div>
+                      <div className="font-display font-700 text-primary text-sm mt-1">${p.price.toLocaleString('es-CO')}</div>
                     </div>
                   </div>
                 ))}
@@ -422,7 +478,7 @@ export default function ProductDetail(ctx: AppContext) {
         </div>
       )}
 
-      <Footer navigate={navigate} />
+      <PieDePagina navigate={navigate} />
     </div>
   )
 }

@@ -1,11 +1,10 @@
 import { useState } from 'react'
 import { AppContext } from '../../types'
-import AdminLayout from '../../components/AdminLayout'
+import LayoutAdmin from '../../components/AdminLayout'
 import { products as initialProducts, categories } from '../../data/mockData'
-import { SearchIcon, PlusIcon, EditIcon, EyeIcon, TrashIcon, CheckIcon, AlertIcon, XIcon, UploadIcon } from '../../components/Icons'
-import { StarIcon } from '../../components/Icons'
+import { SearchIcon, PlusIcon, EditIcon, EyeIcon, TrashIcon, CheckIcon, AlertIcon, XIcon, UploadIcon, StarIcon } from '../../components/Icons'
 
-export default function AdminProducts(ctx: AppContext) {
+export default function ProductosAdmin(ctx: AppContext) {
   const [products, setProducts] = useState(initialProducts)
   const [search, setSearch] = useState('')
   const [filterCategory, setFilterCategory] = useState('')
@@ -107,7 +106,7 @@ export default function AdminProducts(ctx: AppContext) {
   )
 
   return (
-    <AdminLayout {...ctx} title="Gestión de Productos" subtitle="Crea, edita y administra el catálogo">
+    <LayoutAdmin {...ctx} title="Gestión de Productos" subtitle="Crea, edita y administra el catálogo">
       <div className="p-5 space-y-4">
         {/* Filters & actions */}
         <div className="bg-white rounded-2xl border border-border p-4">
@@ -346,6 +345,6 @@ export default function AdminProducts(ctx: AppContext) {
           {toast}
         </div>
       )}
-    </AdminLayout>
+    </LayoutAdmin>
   )
 }

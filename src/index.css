@@ -3,29 +3,32 @@
 @import 'tailwindcss';
 
 @theme {
-  --color-primary: #4F46E5;
-  --color-primary-hover: #4338CA;
-  --color-primary-dark: #3730A3;
-  --color-primary-50: #EEF2FF;
-  --color-primary-100: #E0E7FF;
-  --color-primary-200: #C7D2FE;
-  --color-primary-600: #4F46E5;
-  --color-navy: #1E1B4B;
-  --color-navy-light: #312E81;
-  --color-navy-50: #EEF2FF;
-  --color-success: #059669;
+  --color-primary: #8B5CF6;
+  --color-primary-hover: #7C3AED;
+  --color-primary-dark: #6D28D9;
+  --color-primary-50: #F5F3FF;
+  --color-primary-100: #EDE9FE;
+  --color-primary-200: #DDD6FE;
+  --color-primary-600: #8B5CF6;
+  --color-accent: #06B6D4;
+  --color-accent-hover: #0891B2;
+  --color-accent-50: #ECFEFF;
+  --color-navy: #0B0B14;
+  --color-navy-light: #161625;
+  --color-navy-50: #F5F3FF;
+  --color-success: #10B981;
   --color-success-50: #ECFDF5;
   --color-success-100: #D1FAE5;
-  --color-warning: #D97706;
+  --color-warning: #F59E0B;
   --color-warning-50: #FFFBEB;
   --color-warning-100: #FEF3C7;
-  --color-danger: #DC2626;
+  --color-danger: #EF4444;
   --color-danger-50: #FEF2F2;
   --color-danger-100: #FEE2E2;
   --color-surface: #FFFFFF;
-  --color-background: #F8F9FC;
-  --color-border: #E5E7EB;
-  --color-border-light: #F3F4F6;
+  --color-background: #F8F7FF;
+  --color-border: #E5E4F0;
+  --color-border-light: #F0EFF8;
   --font-display: 'Outfit', sans-serif;
   --font-body: 'Inter', sans-serif;
 }
@@ -126,4 +129,37 @@ h1, h2, h3, h4, h5, h6, .font-display {
 
 .heart-pop {
   animation: heartPop 0.35s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(139, 92, 246, 0.3); }
+  50% { box-shadow: 0 0 40px rgba(139, 92, 246, 0.6); }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-glow {
+  animation: glow 2s ease-in-out infinite;
+}
+
+@keyframes marqueeScroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marqueeScroll 26s linear infinite;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
 }

@@ -1,33 +1,36 @@
 import { AppContext } from '../types'
 
-export default function Footer({ navigate }: Pick<AppContext, 'navigate'>) {
+export default function PieDePagina({ navigate }: Pick<AppContext, 'navigate'>) {
   return (
-    <footer className="bg-navy text-white/80">
+    <footer style={{ background: '#0B0B14' }} className="text-white/80">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-          {/* Brand */}
+          {/* Marca */}
           <div className="md:col-span-1">
-            <div className="flex items-center gap-2.5 mb-3">
-              <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                  <path d="M12 2L2 7v10l10 5 10-5V7L12 2z" fill="white" fillOpacity="0.9" />
-                  <path d="M12 2L2 7l10 5 10-5-10-5z" fill="white" />
-                  <path d="M2 17l10 5V12L2 7v10z" fill="white" fillOpacity="0.7" />
-                </svg>
-              </div>
-              <div>
-                <div className="font-display font-700 text-white text-sm leading-none">InnovaCode</div>
-                <div className="text-[10px] text-white/50 font-medium tracking-wide uppercase mt-0.5">Ingeniería en Sistemas</div>
-              </div>
+            <div className="flex items-center gap-2.5 mb-4">
+              <img src="/logo-evox.png" alt="EVOX" className="w-10 h-10 object-contain rounded-xl" />
+              <span
+                className="font-display font-900 text-[17px] leading-none"
+                style={{
+                  background: 'linear-gradient(135deg, #8B5CF6, #06B6D4)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                }}
+              >
+                EVOX
+              </span>
             </div>
-            <p className="text-sm text-white/50 leading-relaxed">
-              Plataforma de comercio electrónico profesional. Tecnología, confianza y simplicidad en un solo lugar.
+            <p className="text-sm text-white/45 leading-relaxed mb-3">
+              Los mejores celulares y computadores con garantía oficial, soporte técnico y envío a todo el país.
+            </p>
+            <p className="text-[10px] text-white/25 font-medium tracking-wide uppercase">
+              Desarrollado por InnovaCode · Ingeniería en Sistemas
             </p>
           </div>
 
-          {/* Navigation */}
+          {/* Tienda */}
           <div>
-            <h4 className="font-display font-600 text-white text-sm mb-4">Navegación</h4>
+            <h4 className="font-display font-600 text-white text-sm mb-4">Tienda</h4>
             <ul className="space-y-2.5">
               {[
                 { label: 'Inicio', page: 'landing' as const },
@@ -36,16 +39,26 @@ export default function Footer({ navigate }: Pick<AppContext, 'navigate'>) {
                 <li key={item.page}>
                   <button
                     onClick={() => navigate(item.page)}
-                    className="text-sm text-white/55 hover:text-white transition-colors cursor-pointer"
+                    className="text-sm text-white/50 hover:text-white transition-colors cursor-pointer"
                   >
                     {item.label}
+                  </button>
+                </li>
+              ))}
+              {['Celulares', 'Computadores', 'Tablets', 'Accesorios'].map(label => (
+                <li key={label}>
+                  <button
+                    onClick={() => navigate('catalog')}
+                    className="text-sm text-white/50 hover:text-white transition-colors cursor-pointer"
+                  >
+                    {label}
                   </button>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Account */}
+          {/* Mi cuenta */}
           <div>
             <h4 className="font-display font-600 text-white text-sm mb-4">Mi cuenta</h4>
             <ul className="space-y-2.5">
@@ -57,7 +70,7 @@ export default function Footer({ navigate }: Pick<AppContext, 'navigate'>) {
                 <li key={item.page}>
                   <button
                     onClick={() => navigate(item.page)}
-                    className="text-sm text-white/55 hover:text-white transition-colors cursor-pointer"
+                    className="text-sm text-white/50 hover:text-white transition-colors cursor-pointer"
                   >
                     {item.label}
                   </button>
@@ -66,13 +79,13 @@ export default function Footer({ navigate }: Pick<AppContext, 'navigate'>) {
             </ul>
           </div>
 
-          {/* Legal */}
+          {/* Ayuda */}
           <div>
-            <h4 className="font-display font-600 text-white text-sm mb-4">Información</h4>
+            <h4 className="font-display font-600 text-white text-sm mb-4">Ayuda</h4>
             <ul className="space-y-2.5">
-              {['Términos de uso', 'Política de privacidad', 'Soporte técnico', 'Acerca de InnovaCode'].map(label => (
+              {['Soporte técnico', 'Envíos y devoluciones', 'Garantías', 'Preguntas frecuentes', 'Términos de uso', 'Política de privacidad'].map(label => (
                 <li key={label}>
-                  <span className="text-sm text-white/55 cursor-pointer hover:text-white transition-colors">{label}</span>
+                  <span className="text-sm text-white/50 cursor-pointer hover:text-white transition-colors">{label}</span>
                 </li>
               ))}
             </ul>
@@ -80,11 +93,11 @@ export default function Footer({ navigate }: Pick<AppContext, 'navigate'>) {
         </div>
 
         <div className="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-xs text-white/35">
-            © 2025 InnovaCode – Ingeniería en Sistemas. Todos los derechos reservados.
+          <p className="text-xs text-white/30">
+            © 2026 EVOX - La Tienda Digital. Desarrollado por InnovaCode. Todos los derechos reservados.
           </p>
           <div className="flex items-center gap-3">
-            <span className="text-xs text-white/35">Prototipo de alta fidelidad · Análisis y Desarrollo de Software</span>
+            <span className="text-xs text-white/25">InnovaCode · Ingeniería en Sistemas · Prototipo</span>
           </div>
         </div>
       </div>

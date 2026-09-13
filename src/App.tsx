@@ -1,23 +1,25 @@
 import { useState } from 'react'
 import { Role, Page, AppContext } from './types'
-import Landing from './pages/Landing'
-import Catalog from './pages/Catalog'
-import ProductDetail from './pages/ProductDetail'
-import Wishlist from './pages/Wishlist'
-import Login from './pages/Login'
-import Register from './pages/Register'
-import AdminDashboard from './pages/admin/Dashboard'
-import AdminUsers from './pages/admin/Users'
-import AdminProducts from './pages/admin/Products'
-import SuperDashboard from './pages/superadmin/Dashboard'
-import SuperRoles from './pages/superadmin/Roles'
-import AccessDenied from './pages/AccessDenied'
+import PaginaInicio from './pages/Landing'
+import Catalogo from './pages/Catalog'
+import DetalleProducto from './pages/ProductDetail'
+import ListaDeseos from './pages/Wishlist'
+import InicioSesion from './pages/Login'
+import Registro from './pages/Register'
+import PanelAdmin from './pages/admin/Dashboard'
+import UsuariosAdmin from './pages/admin/Users'
+import ProductosAdmin from './pages/admin/Products'
+import PanelSuperAdmin from './pages/superadmin/Dashboard'
+import RolesPermisos from './pages/superadmin/Roles'
+import AccesoDenegado from './pages/AccessDenied'
 
 export default function App() {
   const [role, setRole] = useState<Role>('guest')
   const [page, setPage] = useState<Page>('landing')
   const [selectedProductId, setSelectedProductId] = useState<string | null>(null)
   const [wishlist, setWishlist] = useState<string[]>(['prod-1', 'prod-3'])
+  const [cartCount] = useState(0)
+  const [userName] = useState('')
 
   const navigate = (newPage: Page, productId?: string) => {
     if (productId) setSelectedProductId(productId)
@@ -40,6 +42,8 @@ export default function App() {
     page,
     selectedProductId,
     wishlist,
+    cartCount,
+    userName,
     navigate,
     setRole: handleSetRole,
     toggleWishlist,
@@ -50,37 +54,37 @@ export default function App() {
   const isSuperPage = page.startsWith('super')
 
   if (isSuperPage && role !== 'superadmin') {
-    return <AccessDenied {...ctx} requiredRole="superadmin" />
+    return <AccesoDenegado {...ctx} requiredRole="superadmin" />
   }
   if (isAdminPage && role !== 'admin' && role !== 'superadmin') {
-    return <AccessDenied {...ctx} requiredRole="admin" />
+    return <AccesoDenegado {...ctx} requiredRole="admin" />
   }
 
   switch (page) {
     case 'catalog':
-      return <Catalog {...ctx} />
+      return <Catalogo {...ctx} />
     case 'product':
-      return <ProductDetail {...ctx} />
+      return <DetalleProducto {...ctx} />
     case 'wishlist':
-      return <Wishlist {...ctx} />
+      return <ListaDeseos {...ctx} />
     case 'login':
-      return <Login {...ctx} />
+      return <InicioSesion {...ctx} />
     case 'register':
-      return <Register {...ctx} />
+      return <Registro {...ctx} />
     case 'admin-dashboard':
-      return <AdminDashboard {...ctx} />
+      return <PanelAdmin {...ctx} />
     case 'admin-users':
-      return <AdminUsers {...ctx} />
+      return <UsuariosAdmin {...ctx} />
     case 'admin-products':
     case 'admin-product-form':
-      return <AdminProducts {...ctx} />
+      return <ProductosAdmin {...ctx} />
     case 'super-dashboard':
-      return <SuperDashboard {...ctx} />
+      return <PanelSuperAdmin {...ctx} />
     case 'super-roles':
-      return <SuperRoles {...ctx} />
+      return <RolesPermisos {...ctx} />
     case 'access-denied':
-      return <AccessDenied {...ctx} requiredRole="admin" />
+      return <AccesoDenegado {...ctx} requiredRole="admin" />
     default:
-      return <Landing {...ctx} />
+      return <PaginaInicio {...ctx} />
   }
 }

@@ -20,7 +20,7 @@ interface AdminLayoutProps extends AppContext {
   subtitle?: string
 }
 
-export default function AdminLayout({
+export default function LayoutAdmin({
   children,
   title,
   subtitle,
@@ -87,22 +87,20 @@ export default function AdminLayout({
           }}
           className="flex items-center gap-2.5 cursor-pointer"
         >
-          <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-              <path
-                d="M12 2L2 7v10l10 5 10-5V7L12 2z"
-                fill="white"
-                fillOpacity="0.9"
-              />
-              <path d="M12 2L2 7l10 5 10-5-10-5z" fill="white" />
-              <path d="M2 17l10 5V12L2 7v10z" fill="white" fillOpacity="0.7" />
-            </svg>
+          <div
+            className="w-8 h-8 rounded-xl flex items-center justify-center"
+            style={{ background: 'linear-gradient(135deg, #8B5CF6, #06B6D4)' }}
+          >
+            <span className="text-white font-display font-900 text-sm leading-none">e</span>
           </div>
           <div>
-            <div className="font-display font-700 text-white text-[14px] leading-none">
-              InnovaCode
+            <div
+              className="font-display font-900 text-[15px] leading-none"
+              style={{ background: 'linear-gradient(135deg, #8B5CF6, #06B6D4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
+            >
+              EVOX
             </div>
-            <div className="text-[10px] text-white/40 font-medium tracking-wider uppercase mt-0.5">
+            <div className="text-[9px] text-white/40 font-medium tracking-wider uppercase mt-0.5">
               {isSuper ? "Superadministrador" : "Administrador"}
             </div>
           </div>

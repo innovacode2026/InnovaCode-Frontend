@@ -5,7 +5,7 @@ interface AccessDeniedProps extends AppContext {
   requiredRole?: string
 }
 
-export default function AccessDenied({ navigate, role, requiredRole }: AccessDeniedProps) {
+export default function AccesoDenegado({ navigate, role, requiredRole }: AccessDeniedProps) {
   const roleLabels: Record<string, string> = {
     admin: 'Administrador',
     superadmin: 'Superadministrador',
@@ -16,14 +16,10 @@ export default function AccessDenied({ navigate, role, requiredRole }: AccessDen
       {/* Minimal header */}
       <div className="bg-white border-b border-border px-6 py-4">
         <button onClick={() => navigate('landing')} className="flex items-center gap-2 cursor-pointer">
-          <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
-              <path d="M12 2L2 7v10l10 5 10-5V7L12 2z" fill="white" fillOpacity="0.9" />
-              <path d="M12 2L2 7l10 5 10-5-10-5z" fill="white" />
-              <path d="M2 17l10 5V12L2 7v10z" fill="white" fillOpacity="0.7" />
-            </svg>
+          <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #8B5CF6, #06B6D4)' }}>
+            <span className="text-white font-display font-900 text-xs leading-none">e</span>
           </div>
-          <span className="font-display font-700 text-navy text-sm">InnovaCode</span>
+          <span className="font-display font-900 text-[15px] leading-none" style={{ background: 'linear-gradient(135deg, #8B5CF6, #06B6D4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>EVOX</span>
         </button>
       </div>
 

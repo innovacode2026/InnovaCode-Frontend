@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { AppContext } from '../types'
 import { EyeIcon, EyeOffIcon, UserIcon, LockIcon, AlertIcon, CheckIcon } from '../components/Icons'
 
-export default function Register(ctx: AppContext) {
+export default function Registro(ctx: AppContext) {
   const { navigate, setRole } = ctx
   const [form, setForm] = useState({ name: '', email: '', password: '', confirm: '', terms: false })
   const [showPass, setShowPass] = useState(false)
@@ -46,29 +46,47 @@ export default function Register(ctx: AppContext) {
   const strength = passwordStrength()
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      <div className="bg-white border-b border-border px-6 py-4">
-        <button onClick={() => navigate('landing')} className="flex items-center gap-2 cursor-pointer">
-          <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
-              <path d="M12 2L2 7v10l10 5 10-5V7L12 2z" fill="white" fillOpacity="0.9" />
-              <path d="M12 2L2 7l10 5 10-5-10-5z" fill="white" />
-              <path d="M2 17l10 5V12L2 7v10z" fill="white" fillOpacity="0.7" />
-            </svg>
-          </div>
-          <span className="font-display font-700 text-navy text-sm">InnovaCode</span>
-        </button>
+    <div className="min-h-screen flex">
+      {/* Panel izquierdo — imagen */}
+      <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden" style={{ background: '#0F172A' }}>
+        <img
+          src="https://6aa34afe9422e77b387b6929.imgix.net/camara.png"
+          alt="EVOX"
+          className="absolute inset-0 w-full h-full object-cover opacity-80"
+        />
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(37,99,235,0.55) 0%, rgba(79,70,229,0.45) 100%)' }} />
+        <div className="relative z-10 flex flex-col justify-end p-12 text-white">
+          <button onClick={() => navigate('landing')} className="flex items-center gap-2 mb-auto cursor-pointer">
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)' }}>
+              <span className="text-white font-display font-900 text-sm leading-none">e</span>
+            </div>
+            <span className="font-display font-900 text-xl text-white">EVOX</span>
+          </button>
+          <h2 className="font-display font-800 text-3xl leading-tight mb-3">La mejor tecnología,<br />al mejor precio.</h2>
+          <p className="text-white/70 text-sm leading-relaxed max-w-xs">Únete a miles de clientes que ya disfrutan de los mejores productos tecnológicos con envío rápido y garantía oficial.</p>
+        </div>
       </div>
 
-      <div className="flex-1 flex items-center justify-center p-4 py-10">
-        <div className="w-full max-w-sm">
-          <div className="bg-white rounded-2xl border border-border shadow-sm p-7">
+      {/* Panel derecho — formulario */}
+      <div className="w-full lg:w-1/2 bg-background flex flex-col">
+        <div className="lg:hidden bg-white border-b border-border px-6 py-4">
+          <button onClick={() => navigate('landing')} className="flex items-center gap-2 cursor-pointer">
+            <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #8B5CF6, #06B6D4)' }}>
+              <span className="text-white font-display font-900 text-xs leading-none">e</span>
+            </div>
+            <span className="font-display font-900 text-[15px] leading-none block" style={{ background: 'linear-gradient(135deg, #8B5CF6, #06B6D4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>EVOX</span>
+          </button>
+        </div>
+
+        <div className="flex-1 flex items-center justify-center p-4 py-10">
+          <div className="w-full max-w-sm">
+            <div className="bg-white rounded-2xl border border-border shadow-sm p-7">
             <div className="text-center mb-7">
               <div className="w-12 h-12 rounded-xl bg-primary-50 flex items-center justify-center mx-auto mb-3">
                 <UserIcon size={22} className="text-primary" />
               </div>
               <h1 className="font-display font-700 text-gray-900 text-xl">Crear cuenta</h1>
-              <p className="text-gray-500 text-sm mt-1">Regístrate en InnovaCode gratis</p>
+              <p className="text-gray-500 text-sm mt-1">Regístrate en EVOX gratis</p>
             </div>
 
             {success ? (
@@ -76,7 +94,7 @@ export default function Register(ctx: AppContext) {
                 <CheckIcon size={18} />
                 <div>
                   <div className="font-semibold text-sm">¡Cuenta creada exitosamente!</div>
-                  <div className="text-xs text-success/70">Bienvenido a InnovaCode. Redirigiendo...</div>
+                  <div className="text-xs text-success/70">Bienvenido a EVOX. Redirigiendo...</div>
                 </div>
               </div>
             ) : (
@@ -198,6 +216,7 @@ export default function Register(ctx: AppContext) {
             </div>
           </div>
         </div>
+      </div>
       </div>
     </div>
   )

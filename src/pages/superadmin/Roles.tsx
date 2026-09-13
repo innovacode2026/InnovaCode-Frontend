@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import { AppContext } from '../../types'
-import AdminLayout from '../../components/AdminLayout'
+import LayoutAdmin from '../../components/AdminLayout'
 import { permissions as initialPermissions } from '../../data/mockData'
 import { ShieldIcon, CheckIcon, XIcon, InfoIcon, AlertIcon } from '../../components/Icons'
 
-export default function SuperRoles(ctx: AppContext) {
+export default function RolesPermisos(ctx: AppContext) {
   const [perms, setPerms] = useState(initialPermissions)
   const [editModal, setEditModal] = useState<typeof perms[0] | null>(null)
   const [toast, setToast] = useState('')
@@ -43,7 +43,7 @@ export default function SuperRoles(ctx: AppContext) {
   ]
 
   return (
-    <AdminLayout {...ctx} title="Roles y Permisos" subtitle="Configura los permisos de acceso por perfil">
+    <LayoutAdmin {...ctx} title="Roles y Permisos" subtitle="Configura los permisos de acceso por perfil">
       <div className="p-5 space-y-5">
         {/* Summary cards */}
         <div className="grid grid-cols-3 gap-4">
@@ -195,6 +195,6 @@ export default function SuperRoles(ctx: AppContext) {
           {toast}
         </div>
       )}
-    </AdminLayout>
+    </LayoutAdmin>
   )
 }

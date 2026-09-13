@@ -1,9 +1,9 @@
 import { AppContext } from '../../types'
-import AdminLayout from '../../components/AdminLayout'
+import LayoutAdmin from '../../components/AdminLayout'
 import { products, users, permissions } from '../../data/mockData'
 import { PackageIcon, UsersIcon, ShieldIcon, SettingsIcon, ChevronRightIcon, CheckIcon, AlertIcon, TrendUpIcon } from '../../components/Icons'
 
-export default function SuperDashboard(ctx: AppContext) {
+export default function PanelSuperAdmin(ctx: AppContext) {
   const { navigate } = ctx
 
   const totalUsers = users.filter(u => u.role === 'user').length
@@ -35,7 +35,7 @@ export default function SuperDashboard(ctx: AppContext) {
   ]
 
   return (
-    <AdminLayout {...ctx} title="Panel Superadministrador" subtitle="Control global del sistema InnovaCode">
+    <LayoutAdmin {...ctx} title="Panel Superadministrador" subtitle="Control global del sistema InnovaCode">
       <div className="p-5 space-y-5">
         {/* Stats */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -191,6 +191,6 @@ export default function SuperDashboard(ctx: AppContext) {
           </div>
         </div>
       </div>
-    </AdminLayout>
+    </LayoutAdmin>
   )
 }

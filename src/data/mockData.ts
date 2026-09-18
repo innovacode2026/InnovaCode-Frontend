@@ -21,12 +21,12 @@ export interface Product {
 }
 
 export const categories = [
-  { id: 'celulares', name: 'Celulares', icon: 'Smartphone', count: 48 },
-  { id: 'computadores', name: 'Computadores', icon: 'Monitor', count: 32 },
-  { id: 'tablets', name: 'Tablets', icon: 'Tablet', count: 19 },
-  { id: 'audio', name: 'Audio', icon: 'Headphones', count: 24 },
-  { id: 'accesorios', name: 'Accesorios', icon: 'Wrench', count: 27 },
-  { id: 'gaming', name: 'Gaming', icon: 'Gamepad2', count: 15 },
+  { id: 'celulares', name: 'Celulares', icon: 'Smartphone'  },
+  { id: 'computadores', name: 'Computadores', icon: 'Monitor' },
+  { id: 'tablets', name: 'Tablets', icon: 'Tablet'},
+  { id: 'audio', name: 'Audio', icon: 'Headphones'},
+  { id: 'accesorios', name: 'Accesorios', icon: 'Wrench'},
+  { id: 'gaming', name: 'Gaming', icon: 'Gamepad2'},
 ]
 
 export const products: Product[] = [

@@ -1,29 +1,25 @@
 import { useState, useEffect } from 'react'
 import { AppContext } from '../types'
-import { products } from '../data/mockData'
+import { cargarProducto, esSellable, ProductoVista } from '../data/catalogo'
 import { obtenerComentarios, crearComentario } from '../api/comentarioService'
 import { getMensajeError } from '../api/client'
 import type { Comentario } from '../types/api'
 import Encabezado from '../components/Header'
 import PieDePagina from '../components/Footer'
-import { HeartIcon, StarIcon, ChevronLeftIcon, ChevronRightIcon, MessageIcon, CheckIcon } from '../components/Icons'
+import { HeartIcon, StarIcon, ChevronLeftIcon, ChevronRightIcon, MessageIcon, CheckIcon, CartIcon, MinusIcon, PlusIcon } from '../components/Icons'
 
 const iniciales = (nombre: string) =>
   nombre.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()
 
 export default function DetalleProducto(ctx: AppContext) {
-  const { selectedProductId, role, wishlist, toggleWishlist, navigate } = ctx
-  const product = products.find(p => p.id === selectedProductId) || products[0]
-  const isSaved = wishlist.includes(product.id)
+  const { selectedProductId, role, wishlist, toggleWishlist, navigate, products, addToCart } = ctx
 
+  const [product, setProduct] = useState<ProductoVista | null>(null)
   const [activeMedia, setActiveMedia] = useState(0)
-  const [selectedColor, setSelectedColor] = useState<string | null>(
-    product.colors?.[0]?.hex ?? null
-  )
-  const media = [
-    ...(product.video ? [{ type: 'video' as const, src: product.video }] : []),
-    ...product.gallery.map(src => ({ type: 'image' as const, src })),
-  ]
+  const [selectedColor, setSelectedColor] = useState<string | null>(null)
+  const [cantidad, setCantidad] = useState(1)
+  const [adding, setAdding] = useState(false)
+  const [cartFeedback, setCartFeedback] = useState<{ tipo: 'ok' | 'error'; texto: string } | null>(null)
   const [userRating, setUserRating] = useState(0)
   const [hoverRating, setHoverRating] = useState(0)
   const [commentText, setCommentText] = useState('')
@@ -35,15 +31,40 @@ export default function DetalleProducto(ctx: AppContext) {
 
   useEffect(() => {
     let active = true
+    const base = selectedProductId
+    setProduct(null)
+    setActiveTab('description')
+    const aplicar = (p: ProductoVista | null) => {
+      if (!active) return
+      setProduct(p)
+      setActiveMedia(0)
+      setCantidad(1)
+      setSelectedColor(p?.colors?.[0]?.hex ?? null)
+      setCartFeedback(null)
+    }
+    const encontrado = products.find(p => p.id === base)
+    if (encontrado) {
+      aplicar(encontrado)
+    } else if (base) {
+      cargarProducto(base).then(aplicar)
+    }
+    return () => {
+      active = false
+    }
+  }, [selectedProductId, products])
+
+  useEffect(() => {
+    if (!product) return
+    let active = true
     setComments([])
     obtenerComentarios(product.id)
       .then(list => { if (active) setComments(list) })
       .catch(() => { if (active) setComments([]) })
     return () => { active = false }
-  }, [product.id])
+  }, [product?.id])
 
   const submitComment = async () => {
-    if (!commentText.trim() || !userRating) return
+    if (!product || !commentText.trim() || !userRating) return
     setSubmitting(true)
     setCommentError('')
     try {
@@ -62,6 +83,41 @@ export default function DetalleProducto(ctx: AppContext) {
       setSubmitting(false)
     }
   }
+
+  const handleAgregar = async () => {
+    if (!product) return
+    setAdding(true)
+    setCartFeedback(null)
+    try {
+      await addToCart(product.id, cantidad)
+      setCartFeedback({ tipo: 'ok', texto: 'Producto agregado al carrito' })
+    } catch (err) {
+      setCartFeedback({ tipo: 'error', texto: getMensajeError(err) })
+    } finally {
+      setAdding(false)
+    }
+  }
+
+  if (!product) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Encabezado {...ctx} />
+        <div className="flex-1 flex items-center justify-center py-32">
+          <div className="skeleton h-5 w-40 rounded" />
+        </div>
+        <PieDePagina navigate={navigate} />
+      </div>
+    )
+  }
+
+  const isSaved = wishlist.includes(product.id)
+  const sellable = esSellable(product.id) && product.status === 'active'
+
+  const media = [
+    ...(product.video ? [{ type: 'video' as const, src: product.video }] : []),
+    ...product.gallery.map(src => ({ type: 'image' as const, src })),
+  ]
+  if (media.length === 0) media.push({ type: 'image' as const, src: product.image })
 
   const renderStars = (rating: number, interactive = false, size = 18) => {
     const active = interactive ? (hoverRating || userRating) : rating
@@ -215,7 +271,7 @@ export default function DetalleProducto(ctx: AppContext) {
                   <span className="text-gray-400 text-sm">{product.reviewCount} reseñas</span>
                 </div>
 
-                {product.colors && (
+                {product.colors && product.colors.length > 0 && (
                   <div className="mb-5">
                     <p className="text-xs text-gray-400 font-medium uppercase tracking-wider mb-2">
                       Color — <span className="text-gray-700 normal-case tracking-normal font-semibold">
@@ -251,14 +307,75 @@ export default function DetalleProducto(ctx: AppContext) {
                   ${product.price.toLocaleString('es-CO')}
                 </div>
 
+                {/* Agregar al carrito */}
+                {role === 'CLIENTE' && sellable && (
+                  <div className="mb-5">
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="flex items-center border border-border rounded-xl bg-white">
+                        <button
+                          onClick={() => setCantidad(c => Math.max(1, c - 1))}
+                          disabled={cantidad <= 1}
+                          className="w-10 h-10 flex items-center justify-center text-gray-600 hover:bg-gray-50 disabled:opacity-30 cursor-pointer"
+                        >
+                          <MinusIcon size={14} />
+                        </button>
+                        <span className="w-10 text-center font-semibold text-gray-800">{cantidad}</span>
+                        <button
+                          onClick={() => setCantidad(c => Math.min(product.stock, c + 1))}
+                          disabled={cantidad >= product.stock}
+                          className="w-10 h-10 flex items-center justify-center text-gray-600 hover:bg-gray-50 disabled:opacity-30 cursor-pointer"
+                        >
+                          <PlusIcon size={14} />
+                        </button>
+                      </div>
+                      <span className={`text-xs font-medium ${product.stock <= 5 ? 'text-danger' : 'text-gray-400'}`}>
+                        {product.stock > 0 ? `${product.stock} disponibles` : 'Sin stock'}
+                      </span>
+                    </div>
+                    <button
+                      onClick={handleAgregar}
+                      disabled={adding || product.stock <= 0}
+                      className="w-full flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl text-white font-semibold transition-all cursor-pointer disabled:opacity-50"
+                      style={{ background: 'linear-gradient(135deg, #8B5CF6, #7C3AED)' }}
+                    >
+                      <CartIcon size={18} />
+                      {adding ? 'Agregando...' : 'Agregar al carrito'}
+                    </button>
+                    {cartFeedback && (
+                      <p className={`mt-2.5 text-sm flex items-center gap-1.5 ${cartFeedback.tipo === 'ok' ? 'text-success' : 'text-danger'}`}>
+                        <CheckIcon size={14} />
+                        {cartFeedback.texto}
+                      </p>
+                    )}
+                  </div>
+                )}
+
+                {role === 'CLIENTE' && !sellable && product.stock <= 0 && (
+                  <div className="mb-5 bg-gray-50 rounded-xl p-4 text-center text-sm text-gray-500">
+                    Este producto no tiene inventario disponible.
+                  </div>
+                )}
+
+                {role !== 'CLIENTE' && (
+                  <div className="mb-5 bg-gray-50 rounded-xl p-4 text-center">
+                    <p className="text-sm text-gray-500 mb-3">Inicia sesión para agregar este producto a tu carrito.</p>
+                    <button
+                      onClick={() => navigate('login')}
+                      className="flex items-center gap-2 px-5 py-2.5 bg-primary text-white text-sm font-semibold rounded-xl hover:bg-primary-hover transition-colors cursor-pointer"
+                    >
+                      Iniciar sesión
+                    </button>
+                  </div>
+                )}
+
                 <div className="grid grid-cols-2 gap-3 text-sm mb-5 bg-gray-50 rounded-xl p-4">
                   <div>
                     <span className="text-gray-400 text-xs block mb-0.5">Marca</span>
-                    <span className="text-gray-800 font-medium">{product.brand}</span>
+                    <span className="text-gray-800 font-medium">{product.brand || '—'}</span>
                   </div>
                   <div>
                     <span className="text-gray-400 text-xs block mb-0.5">SKU</span>
-                    <span className="text-gray-800 font-medium font-mono text-xs">{product.sku}</span>
+                    <span className="text-gray-800 font-medium font-mono text-xs">{product.sku || '—'}</span>
                   </div>
                   <div>
                     <span className="text-gray-400 text-xs block mb-0.5">Categoría</span>
@@ -271,17 +388,19 @@ export default function DetalleProducto(ctx: AppContext) {
                 </div>
 
                 {/* Features quick list */}
-                <div className="flex-1">
-                  <h3 className="font-display font-600 text-gray-700 text-xs uppercase tracking-wider mb-2">Características principales</h3>
-                  <ul className="space-y-1.5">
-                    {product.features.slice(0, 4).map((f, i) => (
-                      <li key={i} className="flex items-center gap-2 text-sm text-gray-600">
-                        <CheckIcon size={13} className="text-success flex-shrink-0" />
-                        {f}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                {product.features.length > 0 && (
+                  <div className="flex-1">
+                    <h3 className="font-display font-600 text-gray-700 text-xs uppercase tracking-wider mb-2">Características principales</h3>
+                    <ul className="space-y-1.5">
+                      {product.features.slice(0, 4).map((f, i) => (
+                        <li key={i} className="flex items-center gap-2 text-sm text-gray-600">
+                          <CheckIcon size={13} className="text-success flex-shrink-0" />
+                          {f}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -312,18 +431,22 @@ export default function DetalleProducto(ctx: AppContext) {
 
             <div className="p-6">
               {activeTab === 'description' && (
-                <p className="text-gray-600 leading-relaxed">{product.description}</p>
+                <p className="text-gray-600 leading-relaxed">{product.description || 'Sin descripción disponible.'}</p>
               )}
               {activeTab === 'features' && (
                 <div className="grid sm:grid-cols-2 gap-3">
-                  {product.features.map((f, i) => (
-                    <div key={i} className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
-                      <div className="w-6 h-6 rounded-full bg-success-50 flex items-center justify-center flex-shrink-0">
-                        <CheckIcon size={12} className="text-success" />
+                  {product.features.length > 0 ? (
+                    product.features.map((f, i) => (
+                      <div key={i} className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
+                        <div className="w-6 h-6 rounded-full bg-success-50 flex items-center justify-center flex-shrink-0">
+                          <CheckIcon size={12} className="text-success" />
+                        </div>
+                        <span className="text-sm text-gray-700">{f}</span>
                       </div>
-                      <span className="text-sm text-gray-700">{f}</span>
-                    </div>
-                  ))}
+                    ))
+                  ) : (
+                    <p className="text-sm text-gray-400">Sin especificaciones disponibles.</p>
+                  )}
                 </div>
               )}
               {activeTab === 'reviews' && (

@@ -1,5 +1,5 @@
 import { AppContext } from '../types'
-import { products, categories } from '../data/mockData'
+import { categories } from '../data/mockData'
 import Encabezado from '../components/Header'
 import PieDePagina from '../components/Footer'
 import TarjetaProducto from '../components/ProductCard'
@@ -75,7 +75,7 @@ const brandLogos: Record<string, JSX.Element> = {
 }
 
 export default function PaginaInicio(ctx: AppContext) {
-  const { navigate } = ctx
+  const { navigate, products } = ctx
 
   const featured = products.filter(p => p.status === 'active').slice(0, 4)
   const recent = products.filter(p => p.status === 'active').slice(4, 8)
@@ -307,7 +307,7 @@ export default function PaginaInicio(ctx: AppContext) {
                 </div>
                 <div className="text-center">
                   <div className="font-display font-600 text-gray-800 text-sm group-hover:text-primary transition-colors">{cat.name}</div>
-                  <div className="text-xs text-gray-400 mt-0.5">{cat.count} productos</div>
+                  <div className="text-xs text-gray-400 mt-0.5">{products.filter(p => p.category === cat.id).length} productos</div>
                 </div>
               </button>
             )

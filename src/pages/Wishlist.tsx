@@ -1,11 +1,10 @@
 import { AppContext } from '../types'
-import { products } from '../data/mockData'
 import Encabezado from '../components/Header'
 import PieDePagina from '../components/Footer'
 import { HeartIcon, ChevronRightIcon, TrashIcon, StarIcon } from '../components/Icons'
 
 export default function ListaDeseos(ctx: AppContext) {
-  const { role, wishlist, toggleWishlist, navigate } = ctx
+  const { role, wishlist, toggleWishlist, navigate, products } = ctx
   const savedProducts = products.filter(p => wishlist.includes(p.id))
 
   if (role !== 'CLIENTE') {

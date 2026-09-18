@@ -1,24 +1,21 @@
 import { useState, useRef } from 'react'
-import { Product } from '../data/mockData'
+import { ProductoVista, esSellable } from '../data/catalogo'
 import { AppContext } from '../types'
-import { HeartIcon, StarIcon } from './Icons'
+import { getMensajeError } from '../api/client'
+import { HeartIcon, StarIcon, CartIcon, CheckIcon } from './Icons'
 
 interface TarjetaProductoProps {
-  product: Product
+  product: ProductoVista
   ctx: AppContext
 }
 
-const CartIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" />
-    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
-  </svg>
-)
-
 export default function TarjetaProducto({ product, ctx }: TarjetaProductoProps) {
-  const { role, wishlist, toggleWishlist, navigate } = ctx
+  const { role, wishlist, toggleWishlist, navigate, addToCart } = ctx
   const isSaved = wishlist.includes(product.id)
+  const sellable = esSellable(product.id) && product.status === 'active'
   const [popped, setPopped] = useState(false)
+  const [added, setAdded] = useState(false)
+  const [cartMsg, setCartMsg] = useState('')
   const videoRef = useRef<HTMLVideoElement>(null)
   const videoTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -42,9 +39,19 @@ export default function TarjetaProducto({ product, ctx }: TarjetaProductoProps) 
     setTimeout(() => setPopped(false), 400)
   }
 
-  const handleCart = (e: React.MouseEvent) => {
+  const handleCart = async (e: React.MouseEvent) => {
     e.stopPropagation()
-    navigate('product', product.id)
+    if (role === 'guest') { navigate('login'); return }
+    if (!sellable) return
+    setCartMsg('')
+    try {
+      await addToCart(product.id, 1)
+      setAdded(true)
+      setTimeout(() => setAdded(false), 1500)
+    } catch (err) {
+      setCartMsg(getMensajeError(err))
+      setTimeout(() => setCartMsg(''), 2500)
+    }
   }
 
   return (
@@ -144,15 +151,24 @@ export default function TarjetaProducto({ product, ctx }: TarjetaProductoProps) 
               $ {product.price.toLocaleString('es-CO')}
             </p>
           </div>
-          <button
-            onClick={handleCart}
-            className="w-10 h-10 rounded-xl flex items-center justify-center text-white flex-shrink-0 cursor-pointer transition-opacity hover:opacity-90"
-            style={{ background: '#2563EB' }}
-            onMouseEnter={e => (e.currentTarget.style.background = '#1D4ED8')}
-            onMouseLeave={e => (e.currentTarget.style.background = '#2563EB')}
-          >
-            <CartIcon />
-          </button>
+          <div className="flex flex-col items-end gap-1">
+            <button
+              onClick={handleCart}
+              title={!sellable ? 'Sin inventario disponible' : 'Agregar al carrito'}
+              disabled={!sellable}
+              className="w-10 h-10 rounded-xl flex items-center justify-center text-white flex-shrink-0 cursor-pointer transition-opacity hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed"
+              style={{ background: '#2563EB' }}
+              onMouseEnter={e => (e.currentTarget.style.background = '#1D4ED8')}
+              onMouseLeave={e => (e.currentTarget.style.background = '#2563EB')}
+            >
+              {added ? <CheckIcon size={18} /> : <CartIcon size={18} />}
+            </button>
+            {cartMsg && (
+              <span className="text-[10px] text-danger font-medium text-right max-w-[9rem] leading-tight">
+                {cartMsg}
+              </span>
+            )}
+          </div>
         </div>
       </div>
     </div>

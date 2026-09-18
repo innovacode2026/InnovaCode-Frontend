@@ -1,3 +1,6 @@
+import type { CrearPedidoResponse } from './types/api'
+import type { ProductoVista } from './data/catalogo'
+
 export type Role = 'guest' | 'CLIENTE' | 'ADMINISTRADOR'
 
 export interface UserSession {
@@ -30,7 +33,7 @@ export type Page =
   | 'access-denied'
 
 export interface CartItem {
-  productoId: number
+  productoId: string
   nombre: string
   precio: number
   cantidad: number
@@ -42,18 +45,13 @@ export interface Cart {
   total: number
 }
 
-export interface Order {
-  id: number
-  fecha: string
-  total: number
-  estado: string
-}
-
 export interface AppContext {
   role: Role
   page: Page
   selectedProductId: string | null
   wishlist: string[]
+  products: ProductoVista[]
+  carrito: Cart
   cartCount: number
   userName: string
   user: UserSession | null
@@ -67,4 +65,9 @@ export interface AppContext {
   logout: () => void
   navigate: (page: Page, productId?: string) => void
   toggleWishlist: (productId: string) => void
+  addToCart: (productoId: string, cantidad?: number) => Promise<void>
+  removeFromCart: (productoId: string) => Promise<void>
+  updateCartQty: (productoId: string, cantidad: number) => Promise<void>
+  crearPedido: (nota?: string) => Promise<CrearPedidoResponse>
+  refrescarCarrito: () => Promise<void>
 }

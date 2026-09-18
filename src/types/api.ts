@@ -57,6 +57,9 @@ export interface Producto {
   precio: number
   stock: number
   imagen: string | null
+  video?: string | null
+  videoDuration?: number | null
+  videoStartTime?: number | null
   categoria: string | null
 }
 
@@ -66,6 +69,9 @@ export interface ProductoInput {
   precio: number
   stock: number
   imagen?: string | null
+  video?: string | null
+  videoDuration?: number | null
+  videoStartTime?: number | null
   categoriaId?: string | null
 }
 

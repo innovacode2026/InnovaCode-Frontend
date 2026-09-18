@@ -1,13 +1,13 @@
 import { useState, useMemo } from 'react'
 import { AppContext } from '../types'
-import { products, categories } from '../data/mockData'
+import { categories } from '../data/mockData'
 import Encabezado from '../components/Header'
 import PieDePagina from '../components/Footer'
 import TarjetaProducto from '../components/ProductCard'
 import { SearchIcon, FilterIcon, SortIcon, XIcon, ChevronDownIcon } from '../components/Icons'
 
 export default function Catalogo(ctx: AppContext) {
-  const { navigate } = ctx
+  const { navigate, products } = ctx
   const [search, setSearch] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('')
   const [sortBy, setSortBy] = useState('name')
@@ -179,7 +179,7 @@ export default function Catalogo(ctx: AppContext) {
                           <span>{cat.icon}</span>
                           {cat.name}
                         </span>
-                        <span className="text-xs text-gray-400">{cat.count}</span>
+                        <span className="text-xs text-gray-400">{products.filter(p => p.category === cat.id).length}</span>
                       </button>
                     ))}
                   </div>

@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import { AppContext } from '../types'
-import { SearchIcon, HeartIcon, UserIcon, MenuIcon, XIcon, ChevronDownIcon } from './Icons'
+import { SearchIcon, HeartIcon, UserIcon, MenuIcon, XIcon, ChevronDownIcon, CartIcon } from './Icons'
 
 interface EncabezadoProps extends AppContext {
   searchQuery?: string
   onSearchChange?: (q: string) => void
 }
 
-export default function Encabezado({ role, page, userName, wishlist, navigate, logout }: EncabezadoProps) {
+export default function Encabezado({ role, page, userName, wishlist, cartCount, navigate, logout }: EncabezadoProps) {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [roleMenuOpen, setRoleMenuOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
@@ -99,6 +99,18 @@ export default function Encabezado({ role, page, userName, wishlist, navigate, l
 
           {/* Actions */}
           <div className="flex items-center gap-1">
+            <button
+              onClick={() => role === 'CLIENTE' ? navigate('cart') : navigate('login')}
+              className="relative p-2 rounded-lg text-gray-500 hover:text-primary hover:bg-primary-50 transition-colors cursor-pointer"
+              title="Carrito de compras"
+            >
+              <CartIcon size={20} />
+              {role === 'CLIENTE' && cartCount > 0 && (
+                <span className="absolute top-1 right-1 w-4 h-4 bg-primary text-white text-[9px] font-bold rounded-full flex items-center justify-center">
+                  {cartCount}
+                </span>
+              )}
+            </button>
             {(role === 'CLIENTE' || role === 'guest') && (
               <button
                 onClick={() => role === 'CLIENTE' ? navigate('wishlist') : navigate('login')}

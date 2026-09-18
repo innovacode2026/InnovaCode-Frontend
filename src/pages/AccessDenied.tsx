@@ -7,8 +7,8 @@ interface AccessDeniedProps extends AppContext {
 
 export default function AccesoDenegado({ navigate, role, requiredRole }: AccessDeniedProps) {
   const roleLabels: Record<string, string> = {
-    admin: 'Administrador',
-    superadmin: 'Superadministrador',
+    ADMINISTRADOR: 'Administrador',
+    CLIENTE: 'Cliente',
   }
 
   return (
@@ -41,9 +41,7 @@ export default function AccesoDenegado({ navigate, role, requiredRole }: AccessD
           {requiredRole && (
             <p className="text-sm text-gray-400 mb-6">
               Esta área requiere perfil de{' '}
-              <span className={`font-semibold px-2 py-0.5 rounded-full text-xs ${
-                requiredRole === 'superadmin' ? 'bg-purple-50 text-purple-700' : 'bg-blue-50 text-blue-700'
-              }`}>
+              <span className="font-semibold px-2 py-0.5 rounded-full text-xs bg-blue-50 text-blue-700">
                 {roleLabels[requiredRole] || requiredRole}
               </span>
             </p>

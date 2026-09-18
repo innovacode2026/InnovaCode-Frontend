@@ -7,24 +7,29 @@ interface EncabezadoProps extends AppContext {
   onSearchChange?: (q: string) => void
 }
 
-export default function Encabezado({ role, page, wishlist, navigate, setRole }: EncabezadoProps) {
+export default function Encabezado({ role, page, userName, wishlist, navigate, logout }: EncabezadoProps) {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [roleMenuOpen, setRoleMenuOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
 
   const roleLabels: Record<string, string> = {
     guest: 'Visitante',
-    user: 'Usuario',
-    admin: 'Administrador',
-    superadmin: 'Superadministrador',
+    CLIENTE: 'Usuario',
+    ADMINISTRADOR: 'Administrador',
   }
 
   const roleColors: Record<string, string> = {
     guest: 'bg-gray-100 text-gray-600',
-    user: 'bg-primary-50 text-primary',
-    admin: 'bg-violet-50 text-violet-700',
-    superadmin: 'bg-cyan-50 text-cyan-700',
+    CLIENTE: 'bg-primary-50 text-primary',
+    ADMINISTRADOR: 'bg-violet-50 text-violet-700',
   }
+
+  const initials = userName
+    .split(' ')
+    .map(n => n[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase()
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
@@ -57,29 +62,6 @@ export default function Encabezado({ role, page, wishlist, navigate, setRole }: 
 
   return (
     <header className="bg-white/95 backdrop-blur-md border-b border-border sticky top-0 z-50">
-      {/* Demo role switcher bar */}
-      <div className="px-4 py-1.5 flex items-center justify-between gap-4 text-xs" style={{ background: '#0B0B14' }}>
-        <span className="font-display font-medium text-white/40">Prototipo EVOX · Simulación de rol:</span>
-        <div className="flex items-center gap-1.5">
-          {(['guest', 'user', 'admin', 'superadmin'] as const).map(r => (
-            <button
-              key={r}
-              onClick={() => {
-                setRole(r)
-                if (r === 'admin') navigate('admin-dashboard')
-                else if (r === 'superadmin') navigate('super-dashboard')
-                else navigate('landing')
-              }}
-              className={`px-2.5 py-0.5 rounded-full text-xs font-medium transition-all cursor-pointer ${
-                role === r ? 'bg-primary text-white font-semibold' : 'bg-white/10 hover:bg-white/20 text-white'
-              }`}
-            >
-              {roleLabels[r]}
-            </button>
-          ))}
-        </div>
-      </div>
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 gap-4">
           <LogoEVOX />
@@ -117,14 +99,14 @@ export default function Encabezado({ role, page, wishlist, navigate, setRole }: 
 
           {/* Actions */}
           <div className="flex items-center gap-1">
-            {(role === 'user' || role === 'guest') && (
+            {(role === 'CLIENTE' || role === 'guest') && (
               <button
-                onClick={() => role === 'user' ? navigate('wishlist') : navigate('login')}
+                onClick={() => role === 'CLIENTE' ? navigate('wishlist') : navigate('login')}
                 className="relative p-2 rounded-lg text-gray-500 hover:text-primary hover:bg-primary-50 transition-colors cursor-pointer"
                 title="Lista de deseos"
               >
                 <HeartIcon size={20} />
-                {wishlist.length > 0 && role === 'user' && (
+                {wishlist.length > 0 && role === 'CLIENTE' && (
                   <span className="absolute top-1 right-1 w-4 h-4 bg-primary text-white text-[9px] font-bold rounded-full flex items-center justify-center">
                     {wishlist.length}
                   </span>
@@ -162,7 +144,7 @@ export default function Encabezado({ role, page, wishlist, navigate, setRole }: 
                   </div>
                   <div className="hidden sm:block text-left">
                     <div className="text-xs font-semibold text-gray-800 leading-none">
-                      {role === 'admin' ? 'Juan Pérez' : role === 'superadmin' ? 'Sofía Chen' : 'Ana García'}
+                      {userName || 'Usuario'}
                     </div>
                     <div className={`text-[10px] font-medium mt-0.5 ${roleColors[role]} rounded px-1`}>
                       {roleLabels[role]}
@@ -172,16 +154,16 @@ export default function Encabezado({ role, page, wishlist, navigate, setRole }: 
                 </button>
                 {roleMenuOpen && (
                   <div className="absolute right-0 top-full mt-1 w-48 bg-white rounded-xl shadow-lg border border-border py-1 z-50 animate-fade-in">
-                    {(role === 'admin' || role === 'superadmin') && (
+                    {role === 'ADMINISTRADOR' && (
                       <button
-                        onClick={() => { navigate(role === 'superadmin' ? 'super-dashboard' : 'admin-dashboard'); setRoleMenuOpen(false) }}
+                        onClick={() => { navigate('admin-dashboard'); setRoleMenuOpen(false) }}
                         className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 cursor-pointer"
                       >
                         Panel de control
                       </button>
                     )}
                     <button
-                      onClick={() => { setRole('guest'); navigate('landing'); setRoleMenuOpen(false) }}
+                      onClick={() => { logout(); navigate('landing'); setRoleMenuOpen(false) }}
                       className="w-full text-left px-3 py-2 text-sm text-danger hover:bg-danger-50 cursor-pointer"
                     >
                       Cerrar sesión

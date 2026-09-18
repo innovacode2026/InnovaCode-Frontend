@@ -8,7 +8,7 @@ export default function ListaDeseos(ctx: AppContext) {
   const { role, wishlist, toggleWishlist, navigate } = ctx
   const savedProducts = products.filter(p => wishlist.includes(p.id))
 
-  if (role !== 'user') {
+  if (role !== 'CLIENTE') {
     return (
       <div className="min-h-screen flex flex-col">
         <Encabezado {...ctx} />

@@ -1,4 +1,18 @@
-export type Role = 'guest' | 'user' | 'admin' | 'superadmin'
+export type Role = 'guest' | 'CLIENTE' | 'ADMINISTRADOR'
+
+export interface UserSession {
+  id: string
+  nombre: string
+  correo: string
+  rol: Exclude<Role, 'guest'>
+}
+
+export interface UsuarioRegistrado {
+  id: string
+  nombreCompleto: string
+  correo: string
+  rol: Exclude<Role, 'guest'>
+}
 
 export type Page =
   | 'landing'
@@ -13,8 +27,6 @@ export type Page =
   | 'admin-users'
   | 'admin-products'
   | 'admin-product-form'
-  | 'super-dashboard'
-  | 'super-roles'
   | 'access-denied'
 
 export interface CartItem {
@@ -44,7 +56,15 @@ export interface AppContext {
   wishlist: string[]
   cartCount: number
   userName: string
+  user: UserSession | null
+  login: (correo: string, password: string) => Promise<UserSession>
+  register: (
+    nombre: string,
+    apellido: string,
+    correo: string,
+    password: string
+  ) => Promise<UsuarioRegistrado>
+  logout: () => void
   navigate: (page: Page, productId?: string) => void
-  setRole: (role: Role) => void
   toggleWishlist: (productId: string) => void
 }

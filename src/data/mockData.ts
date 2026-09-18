@@ -35,20 +35,10 @@ export interface User {
   id: string
   name: string
   email: string
-  role: 'user' | 'admin' | 'superadmin'
+  role: 'CLIENTE' | 'ADMINISTRADOR'
   status: 'active' | 'inactive'
   joinDate: string
   lastLogin: string
-}
-
-export interface Permission {
-  id: string
-  name: string
-  description: string
-  module: string
-  userAccess: boolean
-  adminAccess: boolean
-  superAdminAccess: boolean
 }
 
 export const categories = [
@@ -1033,33 +1023,13 @@ export const comments: Comment[] = [
 ]
 
 export const users: User[] = [
-  { id: 'u1', name: 'Ana García', email: 'ana.garcia@email.com', role: 'user', status: 'active', joinDate: '2024-08-15', lastLogin: '2025-07-20' },
-  { id: 'u2', name: 'Carlos Rodríguez', email: 'carlos.rodriguez@email.com', role: 'user', status: 'active', joinDate: '2024-09-03', lastLogin: '2025-07-19' },
-  { id: 'u3', name: 'María López', email: 'maria.lopez@email.com', role: 'user', status: 'active', joinDate: '2024-10-22', lastLogin: '2025-07-18' },
-  { id: 'u4', name: 'Diego Fernández', email: 'diego.fernandez@email.com', role: 'user', status: 'inactive', joinDate: '2024-11-08', lastLogin: '2025-05-30' },
-  { id: 'u5', name: 'Valentina Torres', email: 'v.torres@email.com', role: 'user', status: 'active', joinDate: '2025-01-14', lastLogin: '2025-07-21' },
-  { id: 'u6', name: 'Sebastián Mora', email: 's.mora@email.com', role: 'user', status: 'active', joinDate: '2025-02-28', lastLogin: '2025-07-17' },
-  { id: 'u7', name: 'Juan Pérez', email: 'juan.perez@innovacode.com', role: 'admin', status: 'active', joinDate: '2024-01-10', lastLogin: '2025-07-21' },
-  { id: 'u8', name: 'Lucía Ramírez', email: 'lucia.ramirez@innovacode.com', role: 'admin', status: 'active', joinDate: '2024-03-01', lastLogin: '2025-07-20' },
-  { id: 'u9', name: 'Sofía Chen', email: 'sofia.chen@innovacode.com', role: 'superadmin', status: 'active', joinDate: '2023-11-01', lastLogin: '2025-07-21' },
-]
-
-export const permissions: Permission[] = [
-  { id: 'p1', name: 'Registrarse', description: 'Crear una cuenta nueva en la plataforma', module: 'Autenticación', userAccess: true, adminAccess: true, superAdminAccess: true },
-  { id: 'p2', name: 'Iniciar sesión', description: 'Autenticarse en el sistema', module: 'Autenticación', userAccess: true, adminAccess: true, superAdminAccess: true },
-  { id: 'p3', name: 'Ver catálogo', description: 'Consultar productos disponibles', module: 'Productos', userAccess: true, adminAccess: true, superAdminAccess: true },
-  { id: 'p4', name: 'Buscar productos', description: 'Filtrar y ordenar el catálogo', module: 'Productos', userAccess: true, adminAccess: true, superAdminAccess: true },
-  { id: 'p5', name: 'Ver detalle de producto', description: 'Acceder a la información completa', module: 'Productos', userAccess: true, adminAccess: true, superAdminAccess: true },
-  { id: 'p6', name: 'Lista de deseos', description: 'Guardar y gestionar productos favoritos', module: 'Usuario', userAccess: true, adminAccess: false, superAdminAccess: false },
-  { id: 'p7', name: 'Calificar productos', description: 'Dar puntuación a un producto', module: 'Usuario', userAccess: true, adminAccess: false, superAdminAccess: false },
-  { id: 'p8', name: 'Publicar comentarios', description: 'Escribir reseñas sobre productos', module: 'Usuario', userAccess: true, adminAccess: false, superAdminAccess: false },
-  { id: 'p9', name: 'Editar/eliminar propios comentarios', description: 'Gestionar comentarios propios', module: 'Usuario', userAccess: true, adminAccess: false, superAdminAccess: false },
-  { id: 'p10', name: 'Ver usuarios', description: 'Consultar lista de usuarios registrados', module: 'Administración', userAccess: false, adminAccess: true, superAdminAccess: true },
-  { id: 'p11', name: 'Administrar usuarios', description: 'Activar, desactivar y modificar usuarios', module: 'Administración', userAccess: false, adminAccess: true, superAdminAccess: true },
-  { id: 'p12', name: 'Crear productos', description: 'Añadir nuevos productos al catálogo', module: 'Administración', userAccess: false, adminAccess: true, superAdminAccess: true },
-  { id: 'p13', name: 'Actualizar productos', description: 'Modificar información de productos', module: 'Administración', userAccess: false, adminAccess: true, superAdminAccess: true },
-  { id: 'p14', name: 'Retirar productos', description: 'Retirar productos del catálogo activo', module: 'Administración', userAccess: false, adminAccess: true, superAdminAccess: true },
-  { id: 'p15', name: 'Gestionar roles', description: 'Asignar y modificar roles de usuario', module: 'Super Administración', userAccess: false, adminAccess: false, superAdminAccess: true },
-  { id: 'p16', name: 'Gestionar permisos', description: 'Configurar permisos del sistema', module: 'Super Administración', userAccess: false, adminAccess: false, superAdminAccess: true },
-  { id: 'p17', name: 'Configuración del sistema', description: 'Parámetros globales de la plataforma', module: 'Super Administración', userAccess: false, adminAccess: false, superAdminAccess: true },
+  { id: 'u1', name: 'Ana García', email: 'ana.garcia@email.com', role: 'CLIENTE', status: 'active', joinDate: '2024-08-15', lastLogin: '2025-07-20' },
+  { id: 'u2', name: 'Carlos Rodríguez', email: 'carlos.rodriguez@email.com', role: 'CLIENTE', status: 'active', joinDate: '2024-09-03', lastLogin: '2025-07-19' },
+  { id: 'u3', name: 'María López', email: 'maria.lopez@email.com', role: 'CLIENTE', status: 'active', joinDate: '2024-10-22', lastLogin: '2025-07-18' },
+  { id: 'u4', name: 'Diego Fernández', email: 'diego.fernandez@email.com', role: 'CLIENTE', status: 'inactive', joinDate: '2024-11-08', lastLogin: '2025-05-30' },
+  { id: 'u5', name: 'Valentina Torres', email: 'v.torres@email.com', role: 'CLIENTE', status: 'active', joinDate: '2025-01-14', lastLogin: '2025-07-21' },
+  { id: 'u6', name: 'Sebastián Mora', email: 's.mora@email.com', role: 'CLIENTE', status: 'active', joinDate: '2025-02-28', lastLogin: '2025-07-17' },
+  { id: 'u7', name: 'Juan Pérez', email: 'juan.perez@innovacode.com', role: 'ADMINISTRADOR', status: 'active', joinDate: '2024-01-10', lastLogin: '2025-07-21' },
+  { id: 'u8', name: 'Lucía Ramírez', email: 'lucia.ramirez@innovacode.com', role: 'ADMINISTRADOR', status: 'active', joinDate: '2024-03-01', lastLogin: '2025-07-20' },
+  { id: 'u9', name: 'Sofía Chen', email: 'sofia.chen@innovacode.com', role: 'ADMINISTRADOR', status: 'active', joinDate: '2023-11-01', lastLogin: '2025-07-21' },
 ]

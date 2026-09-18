@@ -8,8 +8,8 @@ export default function PanelAdmin(ctx: AppContext) {
 
   const activeProducts = products.filter(p => p.status === 'active').length
   const inactiveProducts = products.filter(p => p.status === 'inactive').length
-  const totalUsers = users.filter(u => u.role === 'user').length
-  const activeUsers = users.filter(u => u.role === 'user' && u.status === 'active').length
+  const totalUsers = users.filter(u => u.role === 'CLIENTE').length
+  const activeUsers = users.filter(u => u.role === 'CLIENTE' && u.status === 'active').length
 
   const stats = [
     {
@@ -51,7 +51,7 @@ export default function PanelAdmin(ctx: AppContext) {
   ]
 
   const recentProducts = products.slice(0, 5)
-  const recentUsers = users.filter(u => u.role === 'user').slice(0, 5)
+  const recentUsers = users.filter(u => u.role === 'CLIENTE').slice(0, 5)
 
   return (
     <LayoutAdmin {...ctx} title="Dashboard" subtitle="Panel de administración">

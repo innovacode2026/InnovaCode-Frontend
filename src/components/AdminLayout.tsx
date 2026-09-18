@@ -4,8 +4,6 @@ import {
   DashboardIcon,
   PackageIcon,
   UsersIcon,
-  ShieldIcon,
-  SettingsIcon,
   MenuIcon,
   XIcon,
   LogOutIcon,
@@ -27,17 +25,23 @@ export default function LayoutAdmin({
   role,
   page,
   navigate,
-  setRole,
+  logout,
+  userName,
 }: AdminLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
-  const isSuper = role === "superadmin"
+  const initials = userName
+    .split(" ")
+    .map(n => n[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase()
 
   const navItems = [
     {
       label: "Dashboard",
       icon: DashboardIcon,
-      page: isSuper ? "super-dashboard" : "admin-dashboard",
+      page: "admin-dashboard",
       group: "main",
     },
     {
@@ -52,28 +56,11 @@ export default function LayoutAdmin({
       page: "admin-products",
       group: "management",
     },
-    ...(isSuper
-      ? [
-          {
-            label: "Roles y Permisos",
-            icon: ShieldIcon,
-            page: "super-roles",
-            group: "super",
-          },
-          {
-            label: "Configuración",
-            icon: SettingsIcon,
-            page: "super-roles",
-            group: "super",
-          },
-        ]
-      : []),
   ] as const
 
   const groups = [
     { id: "main", label: "Principal" },
     { id: "management", label: "Gestión" },
-    ...(isSuper ? [{ id: "super", label: "Superadministración" }] : []),
   ]
 
   const SidebarContent = () => (
@@ -101,7 +88,7 @@ export default function LayoutAdmin({
               EVOX
             </div>
             <div className="text-[9px] text-white/40 font-medium tracking-wider uppercase mt-0.5">
-              {isSuper ? "Superadministrador" : "Administrador"}
+              Administrador
             </div>
           </div>
         </button>
@@ -111,18 +98,11 @@ export default function LayoutAdmin({
       <div className="px-4 py-4 border-b border-white/10">
         <div className="flex items-center gap-3 px-2 py-2 rounded-xl bg-white/5">
           <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center flex-shrink-0">
-            <span className="text-white text-sm font-bold">
-              {isSuper ? "SC" : "JP"}
-            </span>
+            <span className="text-white text-sm font-bold">{initials || "A"}</span>
           </div>
           <div className="min-w-0">
             <div className="text-white text-sm font-semibold truncate">
-              {isSuper ? "Sofía Chen" : "Juan Pérez"}
-            </div>
-            <div className="text-white/45 text-xs truncate">
-              {isSuper
-                ? "sofia.chen@innovacode.com"
-                : "juan.perez@innovacode.com"}
+              {userName || "Administrador"}
             </div>
           </div>
         </div>
@@ -189,7 +169,7 @@ export default function LayoutAdmin({
         </button>
         <button
           onClick={() => {
-            setRole("guest")
+            logout()
             navigate("landing")
           }}
           className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-white/50 hover:bg-white/8 hover:text-white transition-all cursor-pointer"
@@ -244,12 +224,12 @@ export default function LayoutAdmin({
           <div className="flex items-center gap-2">
             <div
               className={`px-2.5 py-1 rounded-full text-xs font-semibold ${
-                isSuper
-                  ? "bg-purple-50 text-purple-700"
+                role === "ADMINISTRADOR"
+                  ? "bg-violet-50 text-violet-700"
                   : "bg-primary-50 text-primary"
               }`}
             >
-              {isSuper ? "Superadministrador" : "Administrador"}
+              Administrador
             </div>
             <BarChartIcon size={16} className="text-gray-400 hidden sm:block" />
           </div>

@@ -5,6 +5,7 @@ import PieDePagina from '../components/Footer'
 import TarjetaProducto from '../components/ProductCard'
 import { ChevronRightIcon, TrendUpIcon, PackageIcon, UsersIcon, StarIcon, ShieldIcon, LockIcon } from '../components/Icons'
 import { Smartphone, Monitor, Tablet, Headphones, Wrench, Gamepad2, type LucideIcon } from 'lucide-react'
+import type { JSX } from 'react'
 
 const categoryIconMap: Record<string, LucideIcon> = {
   Smartphone,

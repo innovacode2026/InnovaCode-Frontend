@@ -182,7 +182,7 @@ export default function DetalleProducto(ctx: AppContext) {
                       {product.status === 'active' ? 'Disponible' : 'No disponible'}
                     </span>
                   </div>
-                  {role === 'user' && (
+                  {role === 'CLIENTE' && (
                     <button
                       onClick={() => toggleWishlist(product.id)}
                       className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all border cursor-pointer ${
@@ -345,7 +345,7 @@ export default function DetalleProducto(ctx: AppContext) {
                               </div>
                             </div>
                           </div>
-                          {comment.isOwn && role === 'user' && (
+                          {comment.isOwn && role === 'CLIENTE' && (
                             <div className="flex items-center gap-1">
                               <button
                                 onClick={() => { setEditingId(comment.id); setEditText(comment.text) }}
@@ -383,7 +383,7 @@ export default function DetalleProducto(ctx: AppContext) {
                   </div>
 
                   {/* Write comment (user only) */}
-                  {role === 'user' && (
+                  {role === 'CLIENTE' && (
                     <div className="border-t border-border pt-5">
                       <h3 className="font-display font-600 text-gray-900 text-sm mb-3 flex items-center gap-2">
                         <MessageIcon size={16} className="text-primary" />

@@ -36,11 +36,10 @@ export default function UsuariosAdmin(ctx: AppContext) {
 
   const roleBadge = (role: string) => {
     const map: Record<string, string> = {
-      user: 'bg-primary-50 text-primary',
-      admin: 'bg-blue-50 text-blue-700',
-      superadmin: 'bg-purple-50 text-purple-700',
+      CLIENTE: 'bg-primary-50 text-primary',
+      ADMINISTRADOR: 'bg-violet-50 text-violet-700',
     }
-    const labels: Record<string, string> = { user: 'Usuario', admin: 'Admin', superadmin: 'Superadmin' }
+    const labels: Record<string, string> = { CLIENTE: 'Cliente', ADMINISTRADOR: 'Admin' }
     return <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${map[role]}`}>{labels[role]}</span>
   }
 
@@ -66,9 +65,8 @@ export default function UsuariosAdmin(ctx: AppContext) {
               className="px-3 py-2 text-sm border border-border rounded-xl focus:outline-none focus:border-primary bg-white text-gray-700 cursor-pointer"
             >
               <option value="">Todos los roles</option>
-              <option value="user">Usuario</option>
-              <option value="admin">Administrador</option>
-              <option value="superadmin">Superadministrador</option>
+              <option value="CLIENTE">Cliente</option>
+              <option value="ADMINISTRADOR">Administrador</option>
             </select>
             <select
               value={filterStatus}

@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import { AppContext } from '../types'
+import { getMensajeError } from '../api/client'
 import { EyeIcon, EyeOffIcon, UserIcon, LockIcon, AlertIcon, CheckIcon } from '../components/Icons'
 
 export default function Registro(ctx: AppContext) {
-  const { navigate, setRole } = ctx
-  const [form, setForm] = useState({ name: '', email: '', password: '', confirm: '', terms: false })
+  const { navigate, register } = ctx
+  const [form, setForm] = useState({ nombre: '', apellido: '', email: '', password: '', confirm: '', terms: false })
   const [showPass, setShowPass] = useState(false)
   const [showConfirm, setShowConfirm] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -13,7 +14,8 @@ export default function Registro(ctx: AppContext) {
 
   const validate = () => {
     const e: Record<string, string> = {}
-    if (!form.name.trim()) e.name = 'El nombre es requerido.'
+    if (!form.nombre.trim()) e.nombre = 'El nombre es requerido.'
+    if (!form.apellido.trim()) e.apellido = 'El apellido es requerido.'
     if (!form.email.includes('@')) e.email = 'Ingresa un correo electrónico válido.'
     if (form.password.length < 8) e.password = 'La contraseña debe tener al menos 8 caracteres.'
     if (form.password !== form.confirm) e.confirm = 'Las contraseñas no coinciden.'
@@ -21,18 +23,21 @@ export default function Registro(ctx: AppContext) {
     return e
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     const errs = validate()
     setErrors(errs)
     if (Object.keys(errs).length > 0) return
     setLoading(true)
-    setTimeout(() => {
-      setLoading(false)
+    try {
+      await register(form.nombre.trim(), form.apellido.trim(), form.email, form.password)
       setSuccess(true)
-      setRole('user')
-      setTimeout(() => navigate('landing'), 1500)
-    }, 1500)
+      setTimeout(() => navigate('login'), 1500)
+    } catch (err) {
+      setErrors({ form: getMensajeError(err) })
+    } finally {
+      setLoading(false)
+    }
   }
 
   const passwordStrength = () => {
@@ -94,25 +99,48 @@ export default function Registro(ctx: AppContext) {
                 <CheckIcon size={18} />
                 <div>
                   <div className="font-semibold text-sm">¡Cuenta creada exitosamente!</div>
-                  <div className="text-xs text-success/70">Bienvenido a EVOX. Redirigiendo...</div>
+                  <div className="text-xs text-success/70">Ya puedes iniciar sesión. Redirigiendo...</div>
                 </div>
               </div>
             ) : (
               <form onSubmit={handleSubmit} noValidate className="space-y-4">
-                {/* Name */}
+                {errors.form && (
+                  <div className="bg-danger-50 border border-danger-100 rounded-xl p-3 flex items-start gap-2 text-danger text-sm">
+                    <AlertIcon size={16} className="flex-shrink-0 mt-0.5" />
+                    {errors.form}
+                  </div>
+                )}
+
+                {/* Nombres */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1.5">Nombre completo</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">Nombre</label>
                   <div className="relative">
                     <UserIcon size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                     <input
                       type="text"
-                      value={form.name}
-                      onChange={e => { setForm(f => ({ ...f, name: e.target.value })); setErrors(er => ({ ...er, name: '' })) }}
-                      placeholder="Tu nombre completo"
-                      className={`w-full pl-9 pr-4 py-2.5 text-sm border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all placeholder:text-gray-400 ${errors.name ? 'border-danger bg-danger-50' : 'border-border focus:border-primary'}`}
+                      value={form.nombre}
+                      onChange={e => { setForm(f => ({ ...f, nombre: e.target.value })); setErrors(er => ({ ...er, nombre: '', form: '' })) }}
+                      placeholder="Tu nombre"
+                      className={`w-full pl-9 pr-4 py-2.5 text-sm border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all placeholder:text-gray-400 ${errors.nombre ? 'border-danger bg-danger-50' : 'border-border focus:border-primary'}`}
                     />
                   </div>
-                  {errors.name && <p className="text-xs text-danger mt-1 flex items-center gap-1"><AlertIcon size={11} />{errors.name}</p>}
+                  {errors.nombre && <p className="text-xs text-danger mt-1 flex items-center gap-1"><AlertIcon size={11} />{errors.nombre}</p>}
+                </div>
+
+                {/* Apellido */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">Apellido</label>
+                  <div className="relative">
+                    <UserIcon size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                    <input
+                      type="text"
+                      value={form.apellido}
+                      onChange={e => { setForm(f => ({ ...f, apellido: e.target.value })); setErrors(er => ({ ...er, apellido: '', form: '' })) }}
+                      placeholder="Tu apellido"
+                      className={`w-full pl-9 pr-4 py-2.5 text-sm border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all placeholder:text-gray-400 ${errors.apellido ? 'border-danger bg-danger-50' : 'border-border focus:border-primary'}`}
+                    />
+                  </div>
+                  {errors.apellido && <p className="text-xs text-danger mt-1 flex items-center gap-1"><AlertIcon size={11} />{errors.apellido}</p>}
                 </div>
 
                 {/* Email */}
@@ -121,7 +149,7 @@ export default function Registro(ctx: AppContext) {
                   <input
                     type="email"
                     value={form.email}
-                    onChange={e => { setForm(f => ({ ...f, email: e.target.value })); setErrors(er => ({ ...er, email: '' })) }}
+                    onChange={e => { setForm(f => ({ ...f, email: e.target.value })); setErrors(er => ({ ...er, email: '', form: '' })) }}
                     placeholder="tu@correo.com"
                     className={`w-full px-4 py-2.5 text-sm border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all placeholder:text-gray-400 ${errors.email ? 'border-danger bg-danger-50' : 'border-border focus:border-primary'}`}
                   />
@@ -136,7 +164,7 @@ export default function Registro(ctx: AppContext) {
                     <input
                       type={showPass ? 'text' : 'password'}
                       value={form.password}
-                      onChange={e => { setForm(f => ({ ...f, password: e.target.value })); setErrors(er => ({ ...er, password: '' })) }}
+                      onChange={e => { setForm(f => ({ ...f, password: e.target.value })); setErrors(er => ({ ...er, password: '', form: '' })) }}
                       placeholder="Mínimo 8 caracteres"
                       className={`w-full pl-9 pr-10 py-2.5 text-sm border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all placeholder:text-gray-400 ${errors.password ? 'border-danger bg-danger-50' : 'border-border focus:border-primary'}`}
                     />
@@ -163,7 +191,7 @@ export default function Registro(ctx: AppContext) {
                     <input
                       type={showConfirm ? 'text' : 'password'}
                       value={form.confirm}
-                      onChange={e => { setForm(f => ({ ...f, confirm: e.target.value })); setErrors(er => ({ ...er, confirm: '' })) }}
+                      onChange={e => { setForm(f => ({ ...f, confirm: e.target.value })); setErrors(er => ({ ...er, confirm: '', form: '' })) }}
                       placeholder="Repite la contraseña"
                       className={`w-full pl-9 pr-10 py-2.5 text-sm border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all placeholder:text-gray-400 ${errors.confirm ? 'border-danger bg-danger-50' : form.confirm && form.confirm === form.password ? 'border-success bg-success-50' : 'border-border focus:border-primary'}`}
                     />
@@ -183,7 +211,7 @@ export default function Registro(ctx: AppContext) {
                     <input
                       type="checkbox"
                       checked={form.terms}
-                      onChange={e => { setForm(f => ({ ...f, terms: e.target.checked })); setErrors(er => ({ ...er, terms: '' })) }}
+                      onChange={e => { setForm(f => ({ ...f, terms: e.target.checked })); setErrors(er => ({ ...er, terms: '', form: '' })) }}
                       className="mt-0.5 w-4 h-4 rounded border-border accent-primary cursor-pointer"
                     />
                     <span className="text-sm text-gray-600">

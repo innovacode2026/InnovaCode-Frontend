@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { AppContext } from '../types'
+import { getMensajeError } from '../api/client'
 import { EyeIcon, EyeOffIcon, LockIcon, UserIcon, AlertIcon, CheckIcon } from '../components/Icons'
 
 export default function InicioSesion(ctx: AppContext) {
-  const { navigate, setRole } = ctx
+  const { navigate, login } = ctx
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPass, setShowPass] = useState(false)
@@ -11,13 +12,7 @@ export default function InicioSesion(ctx: AppContext) {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
 
-  const demoAccounts = [
-    { label: 'Usuario final', email: 'ana.garcia@email.com', role: 'user' as const, hint: 'Ana García' },
-    { label: 'Administrador', email: 'juan.perez@innovacode.com', role: 'admin' as const, hint: 'Juan Pérez' },
-    { label: 'Superadministrador', email: 'sofia.chen@innovacode.com', role: 'superadmin' as const, hint: 'Sofía Chen' },
-  ]
-
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
     if (!email || !password) { setError('Por favor completa todos los campos.'); return }
@@ -25,24 +20,18 @@ export default function InicioSesion(ctx: AppContext) {
     if (password.length < 6) { setError('La contraseña debe tener al menos 6 caracteres.'); return }
 
     setLoading(true)
-    setTimeout(() => {
-      setLoading(false)
-      const account = demoAccounts.find(a => a.email === email)
-      const role = account ? account.role : 'user'
+    try {
+      const sesion = await login(email, password)
       setSuccess(true)
-      setRole(role)
       setTimeout(() => {
-        if (role === 'admin') navigate('admin-dashboard')
-        else if (role === 'superadmin') navigate('super-dashboard')
+        if (sesion.rol === 'ADMINISTRADOR') navigate('admin-dashboard')
         else navigate('landing')
-      }, 1000)
-    }, 1500)
-  }
-
-  const handleDemo = (role: 'user' | 'admin' | 'superadmin', email: string) => {
-    setEmail(email)
-    setPassword('demo123')
-    setError('')
+      }, 800)
+    } catch (err) {
+      setError(getMensajeError(err))
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -148,33 +137,6 @@ export default function InicioSesion(ctx: AppContext) {
                 Regístrate
               </button>
             </div>
-          </div>
-
-          {/* Demo accounts */}
-          <div className="mt-5 bg-white rounded-2xl border border-border p-4">
-            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Accesos de demostración</p>
-            <div className="space-y-2">
-              {demoAccounts.map(account => (
-                <button
-                  key={account.role}
-                  onClick={() => handleDemo(account.role, account.email)}
-                  className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl border border-border hover:border-primary/30 hover:bg-primary-50 transition-all cursor-pointer text-left group"
-                >
-                  <div>
-                    <div className="text-sm font-medium text-gray-800 group-hover:text-primary transition-colors">{account.hint}</div>
-                    <div className="text-xs text-gray-400">{account.email}</div>
-                  </div>
-                  <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${
-                    account.role === 'superadmin' ? 'bg-purple-50 text-purple-600' :
-                    account.role === 'admin' ? 'bg-blue-50 text-blue-600' :
-                    'bg-primary-50 text-primary'
-                  }`}>
-                    {account.label}
-                  </span>
-                </button>
-              ))}
-            </div>
-            <p className="text-xs text-gray-300 mt-3 text-center">Contraseña: <span className="font-mono text-gray-400">demo123</span></p>
           </div>
         </div>
       </div>

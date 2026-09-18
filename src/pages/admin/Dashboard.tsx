@@ -1,15 +1,30 @@
+import { useEffect, useState } from 'react'
 import { AppContext } from '../../types'
 import LayoutAdmin from '../../components/AdminLayout'
-import { products, users } from '../../data/mockData'
-import { PackageIcon, UsersIcon, StarIcon, TrendUpIcon, ChevronRightIcon, CheckIcon, AlertIcon } from '../../components/Icons'
+import { products, categories } from '../../data/mockData'
+import { obtenerUsuarios } from '../../api/usuarioService'
+import { getMensajeError } from '../../api/client'
+import type { UsuarioAdmin } from '../../types/api'
+import { PackageIcon, UsersIcon, StarIcon, TrendUpIcon, ChevronRightIcon, AlertIcon } from '../../components/Icons'
 
 export default function PanelAdmin(ctx: AppContext) {
   const { navigate } = ctx
+  const [users, setUsers] = useState<UsuarioAdmin[]>([])
+
+  const cargarUsuarios = async () => {
+    try {
+      setUsers(await obtenerUsuarios())
+    } catch {
+      setUsers([])
+    }
+  }
+
+  useEffect(() => { cargarUsuarios() }, [])
 
   const activeProducts = products.filter(p => p.status === 'active').length
   const inactiveProducts = products.filter(p => p.status === 'inactive').length
-  const totalUsers = users.filter(u => u.role === 'CLIENTE').length
-  const activeUsers = users.filter(u => u.role === 'CLIENTE' && u.status === 'active').length
+  const totalUsers = users.length
+  const activeUsers = users.filter(u => u.rol === 'CLIENTE').length
 
   const stats = [
     {
@@ -19,39 +34,39 @@ export default function PanelAdmin(ctx: AppContext) {
       icon: PackageIcon,
       color: 'text-primary',
       bg: 'bg-primary-50',
-      trend: '+3 este mes',
+      trend: '—',
     },
     {
       label: 'Usuarios registrados',
       value: totalUsers,
-      sub: `${activeUsers} activos`,
+      sub: `${activeUsers} clientes`,
       icon: UsersIcon,
       color: 'text-success',
       bg: 'bg-success-50',
-      trend: '+12 este mes',
+      trend: '—',
     },
     {
       label: 'Reseñas totales',
-      value: '2.4K',
-      sub: 'Promedio 4.7★',
+      value: '—',
+      sub: 'Pendiente de métricas',
       icon: StarIcon,
       color: 'text-amber-500',
       bg: 'bg-amber-50',
-      trend: '+87 esta semana',
+      trend: '—',
     },
     {
-      label: 'Categorías activas',
-      value: 6,
-      sub: '165 productos',
+      label: 'Categorías',
+      value: categories.length,
+      sub: `${products.length} productos en catálogo`,
       icon: TrendUpIcon,
       color: 'text-purple-500',
       bg: 'bg-purple-50',
-      trend: 'Sin cambios',
+      trend: '—',
     },
   ]
 
   const recentProducts = products.slice(0, 5)
-  const recentUsers = users.filter(u => u.role === 'CLIENTE').slice(0, 5)
+  const recentUsers = users.filter(u => u.rol === 'CLIENTE').slice(0, 5)
 
   return (
     <LayoutAdmin {...ctx} title="Dashboard" subtitle="Panel de administración">
@@ -128,7 +143,7 @@ export default function PanelAdmin(ctx: AppContext) {
             </div>
           </div>
 
-          {/* Recent users */}
+          {/* Recent users from DB */}
           <div className="bg-white rounded-2xl border border-border overflow-hidden">
             <div className="flex items-center justify-between px-5 py-4 border-b border-border">
               <h3 className="font-display font-600 text-gray-900 text-sm">Usuarios recientes</h3>
@@ -137,24 +152,33 @@ export default function PanelAdmin(ctx: AppContext) {
               </button>
             </div>
             <div className="divide-y divide-border">
-              {recentUsers.map(user => (
-                <div key={user.id} className="flex items-center gap-3 px-5 py-3 hover:bg-gray-50 transition-colors">
-                  <div className="w-8 h-8 rounded-full bg-primary-50 flex items-center justify-center flex-shrink-0">
-                    <span className="text-xs font-bold text-primary">
-                      {user.name.split(' ').map(n => n[0]).join('').slice(0, 2)}
-                    </span>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="text-sm font-medium text-gray-800 truncate">{user.name}</div>
-                    <div className="text-xs text-gray-400 truncate">{user.email}</div>
-                  </div>
-                  <div className="flex-shrink-0">
-                    <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${user.status === 'active' ? 'bg-success-50 text-success' : 'bg-gray-100 text-gray-500'}`}>
-                      {user.status === 'active' ? 'Activo' : 'Inactivo'}
-                    </span>
-                  </div>
+              {recentUsers.length === 0 ? (
+                <div className="p-6 text-center">
+                  <AlertIcon size={20} className="mx-auto mb-2 text-gray-300" />
+                  <p className="text-sm text-gray-400">
+                    No se pudieron cargar usuarios. Verifica que el backend esté en línea.
+                  </p>
                 </div>
-              ))}
+              ) : (
+                recentUsers.map(user => (
+                  <div key={user.id} className="flex items-center gap-3 px-5 py-3 hover:bg-gray-50 transition-colors">
+                    <div className="w-8 h-8 rounded-full bg-primary-50 flex items-center justify-center flex-shrink-0">
+                      <span className="text-xs font-bold text-primary">
+                        {(user.nombreCompleto || '?').split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()}
+                      </span>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-sm font-medium text-gray-800 truncate">{user.nombreCompleto || '—'}</div>
+                      <div className="text-xs text-gray-400 truncate">{user.correo}</div>
+                    </div>
+                    <div className="flex-shrink-0">
+                      <span className="text-xs font-medium text-gray-400">
+                        {user.fechaRegistro ? new Date(user.fechaRegistro).toLocaleDateString('es-CO') : '—'}
+                      </span>
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
           </div>
         </div>
@@ -170,7 +194,7 @@ export default function PanelAdmin(ctx: AppContext) {
             ].map(item => (
               <div key={item.label} className={`flex items-center gap-3 p-3 rounded-xl border ${item.status === 'ok' ? 'bg-success-50 border-success-100' : 'bg-warning-50 border-warning-100'}`}>
                 <div className={`w-7 h-7 rounded-full flex items-center justify-center ${item.status === 'ok' ? 'bg-success/10' : 'bg-warning/10'}`}>
-                  {item.status === 'ok' ? <CheckIcon size={14} className="text-success" /> : <AlertIcon size={14} className="text-warning" />}
+                  <span className={`text-sm font-bold ${item.status === 'ok' ? 'text-success' : 'text-warning'}`}>✓</span>
                 </div>
                 <div>
                   <div className="text-xs font-medium text-gray-700">{item.label}</div>

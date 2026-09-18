@@ -20,27 +20,6 @@ export interface Product {
   sku: string
 }
 
-export interface Comment {
-  id: string
-  userId: string
-  userName: string
-  userInitials: string
-  rating: number
-  text: string
-  date: string
-  isOwn: boolean
-}
-
-export interface User {
-  id: string
-  name: string
-  email: string
-  role: 'CLIENTE' | 'ADMINISTRADOR'
-  status: 'active' | 'inactive'
-  joinDate: string
-  lastLogin: string
-}
-
 export const categories = [
   { id: 'celulares', name: 'Celulares', icon: 'Smartphone', count: 48 },
   { id: 'computadores', name: 'Computadores', icon: 'Monitor', count: 32 },
@@ -987,49 +966,4 @@ export const products: Product[] = [
     brand: 'Power',
     sku: 'PWR-TORRE-R7-5700G-WHT',
   },
-]
-
-export const comments: Comment[] = [
-  {
-    id: 'c1',
-    userId: 'u2',
-    userName: 'Carlos Rodríguez',
-    userInitials: 'CR',
-    rating: 5,
-    text: 'Excelente monitor. La calidad de imagen es impresionante y la configuración fue muy sencilla. Llevo 3 meses usándolo para diseño gráfico y no lo cambiaría por nada.',
-    date: '2025-06-10',
-    isOwn: false,
-  },
-  {
-    id: 'c2',
-    userId: 'u3',
-    userName: 'María López',
-    userInitials: 'ML',
-    rating: 4,
-    text: 'Muy buena relación calidad-precio. Los colores son muy precisos y el soporte es sólido. Lo único que mejoraría es el software de calibración que viene incluido.',
-    date: '2025-06-15',
-    isOwn: false,
-  },
-  {
-    id: 'c3',
-    userId: 'u1',
-    userName: 'Tú',
-    userInitials: 'TU',
-    rating: 5,
-    text: 'Increíble para desarrollo. El formato ultrawide cambia completamente el flujo de trabajo: tengo el IDE en un lado y la documentación en el otro sin perder resolución.',
-    date: '2025-07-01',
-    isOwn: true,
-  },
-]
-
-export const users: User[] = [
-  { id: 'u1', name: 'Ana García', email: 'ana.garcia@email.com', role: 'CLIENTE', status: 'active', joinDate: '2024-08-15', lastLogin: '2025-07-20' },
-  { id: 'u2', name: 'Carlos Rodríguez', email: 'carlos.rodriguez@email.com', role: 'CLIENTE', status: 'active', joinDate: '2024-09-03', lastLogin: '2025-07-19' },
-  { id: 'u3', name: 'María López', email: 'maria.lopez@email.com', role: 'CLIENTE', status: 'active', joinDate: '2024-10-22', lastLogin: '2025-07-18' },
-  { id: 'u4', name: 'Diego Fernández', email: 'diego.fernandez@email.com', role: 'CLIENTE', status: 'inactive', joinDate: '2024-11-08', lastLogin: '2025-05-30' },
-  { id: 'u5', name: 'Valentina Torres', email: 'v.torres@email.com', role: 'CLIENTE', status: 'active', joinDate: '2025-01-14', lastLogin: '2025-07-21' },
-  { id: 'u6', name: 'Sebastián Mora', email: 's.mora@email.com', role: 'CLIENTE', status: 'active', joinDate: '2025-02-28', lastLogin: '2025-07-17' },
-  { id: 'u7', name: 'Juan Pérez', email: 'juan.perez@innovacode.com', role: 'ADMINISTRADOR', status: 'active', joinDate: '2024-01-10', lastLogin: '2025-07-21' },
-  { id: 'u8', name: 'Lucía Ramírez', email: 'lucia.ramirez@innovacode.com', role: 'ADMINISTRADOR', status: 'active', joinDate: '2024-03-01', lastLogin: '2025-07-20' },
-  { id: 'u9', name: 'Sofía Chen', email: 'sofia.chen@innovacode.com', role: 'ADMINISTRADOR', status: 'active', joinDate: '2023-11-01', lastLogin: '2025-07-21' },
 ]

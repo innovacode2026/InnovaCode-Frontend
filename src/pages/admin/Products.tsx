@@ -1,8 +1,12 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { AppContext } from '../../types'
 import LayoutAdmin from '../../components/AdminLayout'
 import { products as initialProducts, categories } from '../../data/mockData'
-import { SearchIcon, PlusIcon, EditIcon, EyeIcon, TrashIcon, CheckIcon, AlertIcon, XIcon, UploadIcon, StarIcon } from '../../components/Icons'
+import { crearProducto } from '../../api/productoService'
+import { obtenerCategorias } from '../../api/categoriaService'
+import { getMensajeError } from '../../api/client'
+import type { Categoria } from '../../types/api'
+import { SearchIcon, PlusIcon, EditIcon, EyeIcon, TrashIcon, CheckIcon, AlertIcon, XIcon, StarIcon } from '../../components/Icons'
 
 export default function ProductosAdmin(ctx: AppContext) {
   const [products, setProducts] = useState(initialProducts)
@@ -12,8 +16,14 @@ export default function ProductosAdmin(ctx: AppContext) {
   const [modal, setModal] = useState<'create' | 'edit' | 'view' | 'retire' | null>(null)
   const [selected, setSelected] = useState<typeof products[0] | null>(null)
   const [toast, setToast] = useState('')
-  const [form, setForm] = useState<{ name: string; shortDescription: string; price: string; category: string; status: 'active' | 'inactive' }>({ name: '', shortDescription: '', price: '', category: '', status: 'active' })
+  const [form, setForm] = useState<{ name: string; shortDescription: string; price: string; stock: string; category: string; imagenURL: string; status: 'active' | 'inactive' }>({ name: '', shortDescription: '', price: '', stock: '1', category: '', imagenURL: '', status: 'active' })
   const [formErrors, setFormErrors] = useState<Record<string, string>>({})
+  const [apiCategories, setApiCategories] = useState<Categoria[]>([])
+  const [saving, setSaving] = useState(false)
+
+  useEffect(() => {
+    obtenerCategorias().then(setApiCategories).catch(() => setApiCategories([]))
+  }, [])
 
   const showToast = (msg: string) => { setToast(msg); setTimeout(() => setToast(''), 3000) }
 
@@ -25,14 +35,14 @@ export default function ProductosAdmin(ctx: AppContext) {
   })
 
   const openCreate = () => {
-    setForm({ name: '', shortDescription: '', price: '', category: '', status: 'active' })
+    setForm({ name: '', shortDescription: '', price: '', stock: '1', category: '', imagenURL: '', status: 'active' })
     setFormErrors({})
     setModal('create')
   }
 
   const openEdit = (p: typeof products[0]) => {
     setSelected(p)
-    setForm({ name: p.name, shortDescription: p.shortDescription, price: String(p.price), category: p.category, status: p.status })
+    setForm({ name: p.name, shortDescription: p.shortDescription, price: String(p.price), stock: '1', category: p.category, imagenURL: p.image, status: p.status })
     setFormErrors({})
     setModal('edit')
   }
@@ -42,45 +52,65 @@ export default function ProductosAdmin(ctx: AppContext) {
     if (!form.name.trim()) e.name = 'El nombre es requerido.'
     if (!form.shortDescription.trim()) e.shortDescription = 'La descripción es requerida.'
     if (!form.price || isNaN(Number(form.price)) || Number(form.price) <= 0) e.price = 'Ingresa un precio válido.'
-    if (!form.category) e.category = 'Selecciona una categoría.'
+    if (!form.stock || isNaN(Number(form.stock)) || Number(form.stock) < 0) e.stock = 'Ingresa un stock válido.'
+    if (apiCategories.length > 0 && !form.category) e.category = 'Selecciona una categoría.'
     return e
   }
 
-  const saveProduct = () => {
+  const saveProduct = async () => {
     const errs = validateForm()
     setFormErrors(errs)
     if (Object.keys(errs).length > 0) return
 
     if (modal === 'create') {
-      const newProduct = {
-        id: `prod-${Date.now()}`,
-        name: form.name,
-        shortDescription: form.shortDescription,
-        description: form.shortDescription,
-        price: Number(form.price),
-        category: form.category,
-        image: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600&h=400&fit=crop&auto=format',
-        gallery: ['https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600&h=400&fit=crop&auto=format'],
-        rating: 0,
-        reviewCount: 0,
-        features: [],
-        status: form.status,
-        createdAt: new Date().toISOString().split('T')[0],
-        brand: 'InnovaCode',
-        sku: `IC-${Date.now()}`,
+      setSaving(true)
+      try {
+        const res = await crearProducto({
+          nombre: form.name,
+          descripcion: form.shortDescription,
+          precio: Number(form.price),
+          stock: Number(form.stock),
+          imagen: form.imagenURL || null,
+          categoriaId: form.category || null,
+        })
+        const newProduct = {
+          id: `prod-${Date.now()}`,
+          name: form.name,
+          shortDescription: form.shortDescription,
+          description: form.shortDescription,
+          price: Number(form.price),
+          category: apiCategories.find(c => c.id === form.category)?.nombre ?? form.category,
+          image: form.imagenURL || 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600&h=400&fit=crop&auto=format',
+          gallery: [form.imagenURL || 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600&h=400&fit=crop&auto=format'],
+          rating: 0,
+          reviewCount: 0,
+          features: [],
+          status: form.status,
+          createdAt: new Date().toISOString().split('T')[0],
+          brand: 'InnovaCode',
+          sku: `IC-${Date.now()}`,
+        }
+        setProducts(prev => [newProduct, ...prev])
+        setModal(null)
+        setSelected(null)
+        showToast(res.mensaje || 'Producto creado en la base de datos correctamente.')
+        setSaving(false)
+        return
+      } catch (err) {
+        setSaving(false)
+        showToast(getMensajeError(err))
+        return
       }
-      setProducts(prev => [newProduct, ...prev])
-      showToast('Producto creado exitosamente.')
     } else if (modal === 'edit' && selected) {
       setProducts(prev => prev.map(p =>
         p.id === selected.id
           ? { ...p, name: form.name, shortDescription: form.shortDescription, price: Number(form.price), category: form.category, status: form.status }
           : p
       ))
-      showToast('Producto actualizado exitosamente.')
+      showToast('Producto actualizado en el catálogo local.')
+      setModal(null)
+      setSelected(null)
     }
-    setModal(null)
-    setSelected(null)
   }
 
   const retireProduct = () => {
@@ -227,29 +257,45 @@ export default function ProductosAdmin(ctx: AppContext) {
 
             <div className="space-y-4">
               <FormField label="Nombre del producto *" field="name" placeholder="Ej: Monitor UltraWide 34 pulgadas" />
-              <FormField label="Descripción corta *" field="shortDescription" placeholder="Descripción breve del producto" />
-              <FormField label="Precio (USD) *" field="price" type="number" placeholder="0.00" />
+              <FormField label="Descripción *" field="shortDescription" placeholder="Descripción breve del producto" />
+              <div className="grid grid-cols-2 gap-3">
+                <FormField label="Precio (USD) *" field="price" type="number" placeholder="0.00" />
+                <FormField label="Stock *" field="stock" type="number" placeholder="0" />
+              </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">Categoría *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">Categoría</label>
                 <select
                   value={form.category}
                   onChange={e => { setForm(f => ({ ...f, category: e.target.value })); setFormErrors(er => ({ ...er, category: '' })) }}
                   className={`w-full px-3 py-2 text-sm border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all cursor-pointer ${formErrors.category ? 'border-danger bg-danger-50' : 'border-border'}`}
                 >
-                  <option value="">Seleccionar categoría</option>
-                  {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                  <option value="">Sin categoría</option>
+                  {apiCategories.map(c => <option key={c.id} value={c.id}>{c.nombre}</option>)}
                 </select>
+                {apiCategories.length === 0 && (
+                  <p className="text-xs text-gray-400 mt-1">Categorías no disponibles (¿el backend está corriendo?). El producto se creará sin categoría.</p>
+                )}
                 {formErrors.category && <p className="text-xs text-danger mt-1 flex items-center gap-1"><AlertIcon size={11} />{formErrors.category}</p>}
               </div>
 
-              {/* Image upload placeholder */}
+              {/* Image URL */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">Imagen del producto</label>
-                <div className="border-2 border-dashed border-border rounded-xl p-6 text-center hover:border-primary/40 hover:bg-primary-50/30 transition-all cursor-pointer">
-                  <UploadIcon size={24} className="text-gray-300 mx-auto mb-2" />
-                  <p className="text-sm text-gray-400">Arrastra una imagen o <span className="text-primary font-medium">haz clic aquí</span></p>
-                  <p className="text-xs text-gray-300 mt-1">PNG, JPG, WEBP — máx. 5MB</p>
-                </div>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">URL de la imagen (opcional)</label>
+                <input
+                  type="url"
+                  value={form.imagenURL}
+                  onChange={e => setForm(f => ({ ...f, imagenURL: e.target.value }))}
+                  placeholder="https://ejemplo.com/imagen.jpg"
+                  className="w-full px-3 py-2 text-sm border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                />
+                {form.imagenURL && (
+                  <div className="mt-2 flex items-center gap-3">
+                    <img src={form.imagenURL} alt="Vista previa" className="w-16 h-12 object-cover rounded-lg bg-gray-50 border border-border" />
+                    <p className="text-xs text-success flex items-center gap-1">
+                      <CheckIcon size={12} /> Imagen cargada desde URL
+                    </p>
+                  </div>
+                )}
               </div>
 
               <div>
@@ -273,11 +319,18 @@ export default function ProductosAdmin(ctx: AppContext) {
             </div>
 
             <div className="flex gap-3 mt-6">
-              <button onClick={() => setModal(null)} className="flex-1 py-2.5 bg-gray-100 text-gray-700 text-sm font-medium rounded-xl hover:bg-gray-200 cursor-pointer">Cancelar</button>
-              <button onClick={saveProduct} className="flex-1 py-2.5 bg-primary text-white text-sm font-semibold rounded-xl hover:bg-primary-hover cursor-pointer flex items-center justify-center gap-2">
-                <CheckIcon size={15} />
-                {modal === 'create' ? 'Crear producto' : 'Guardar cambios'}
-              </button>
+              <button onClick={() => setModal(null)} disabled={saving} className="flex-1 py-2.5 bg-gray-100 text-gray-700 text-sm font-medium rounded-xl hover:bg-gray-200 cursor-pointer disabled:opacity-50">Cancelar</button>
+              <button onClick={saveProduct} disabled={saving} className="flex-1 py-2.5 bg-primary text-white text-sm font-semibold rounded-xl hover:bg-primary-hover cursor-pointer flex items-center justify-center gap-2 disabled:opacity-50">{saving ? (
+                <>
+                  <span className="w-3.5 h-3.5 rounded-full border-2 border-white border-t-transparent animate-spin" />
+                  Guardando...
+                </>
+              ) : (
+                <>
+                  <CheckIcon size={15} />
+                  {modal === 'create' ? 'Crear producto' : 'Guardar cambios'}
+                </>
+              )}</button>
             </div>
           </div>
         </div>

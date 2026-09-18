@@ -159,3 +159,19 @@ export interface Comentario {
   contenido: string
   fecha: string
 }
+
+export interface UsuarioAdmin {
+  id: UUID
+  nombreCompleto: string | null
+  correo: string
+  rol: Rol
+  fechaRegistro: string | null
+}
+
+export interface Categoria {
+  id: UUID
+  nombre: string
+  descripcion: string | null
+  orden: number
+  activo: boolean
+}

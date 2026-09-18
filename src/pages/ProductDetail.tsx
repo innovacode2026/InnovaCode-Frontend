@@ -1,9 +1,15 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { AppContext } from '../types'
-import { products, comments as initialComments } from '../data/mockData'
+import { products } from '../data/mockData'
+import { obtenerComentarios, crearComentario } from '../api/comentarioService'
+import { getMensajeError } from '../api/client'
+import type { Comentario } from '../types/api'
 import Encabezado from '../components/Header'
 import PieDePagina from '../components/Footer'
-import { HeartIcon, StarIcon, ChevronLeftIcon, ChevronRightIcon, MessageIcon, EditIcon, TrashIcon, CheckIcon } from '../components/Icons'
+import { HeartIcon, StarIcon, ChevronLeftIcon, ChevronRightIcon, MessageIcon, CheckIcon } from '../components/Icons'
+
+const iniciales = (nombre: string) =>
+  nombre.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()
 
 export default function DetalleProducto(ctx: AppContext) {
   const { selectedProductId, role, wishlist, toggleWishlist, navigate } = ctx
@@ -21,41 +27,40 @@ export default function DetalleProducto(ctx: AppContext) {
   const [userRating, setUserRating] = useState(0)
   const [hoverRating, setHoverRating] = useState(0)
   const [commentText, setCommentText] = useState('')
-  const [comments, setComments] = useState(initialComments)
-  const [editingId, setEditingId] = useState<string | null>(null)
-  const [editText, setEditText] = useState('')
+  const [comments, setComments] = useState<Comentario[]>([])
+  const [commentError, setCommentError] = useState('')
   const [submitted, setSubmitted] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
   const [activeTab, setActiveTab] = useState<'description' | 'features' | 'reviews'>('description')
-  const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null)
 
-  const submitComment = () => {
+  useEffect(() => {
+    let active = true
+    setComments([])
+    obtenerComentarios(product.id)
+      .then(list => { if (active) setComments(list) })
+      .catch(() => { if (active) setComments([]) })
+    return () => { active = false }
+  }, [product.id])
+
+  const submitComment = async () => {
     if (!commentText.trim() || !userRating) return
-    const newComment = {
-      id: `c${Date.now()}`,
-      userId: 'u1',
-      userName: 'Tú',
-      userInitials: 'TU',
-      rating: userRating,
-      text: commentText.trim(),
-      date: new Date().toISOString().split('T')[0],
-      isOwn: true,
+    setSubmitting(true)
+    setCommentError('')
+    try {
+      const nuevo = await crearComentario(product.id, {
+        puntuacion: userRating,
+        contenido: commentText.trim(),
+      })
+      setComments(prev => [nuevo, ...prev])
+      setCommentText('')
+      setUserRating(0)
+      setSubmitted(true)
+      setTimeout(() => setSubmitted(false), 3000)
+    } catch (err) {
+      setCommentError(getMensajeError(err))
+    } finally {
+      setSubmitting(false)
     }
-    setComments(prev => [...prev, newComment])
-    setCommentText('')
-    setUserRating(0)
-    setSubmitted(true)
-    setTimeout(() => setSubmitted(false), 3000)
-  }
-
-  const submitEdit = (id: string) => {
-    setComments(prev => prev.map(c => c.id === id ? { ...c, text: editText } : c))
-    setEditingId(null)
-    setEditText('')
-  }
-
-  const deleteComment = (id: string) => {
-    setComments(prev => prev.filter(c => c.id !== id))
-    setDeleteConfirm(null)
   }
 
   const renderStars = (rating: number, interactive = false, size = 18) => {
@@ -325,61 +330,33 @@ export default function DetalleProducto(ctx: AppContext) {
                 <div className="space-y-6">
                   {/* Comments list */}
                   <div className="space-y-4">
-                    {comments.map(comment => (
-                      <div key={comment.id} className={`p-4 rounded-xl border ${comment.isOwn ? 'bg-primary-50 border-primary-100' : 'bg-gray-50 border-border'}`}>
-                        <div className="flex items-start justify-between gap-3">
-                          <div className="flex items-center gap-3">
-                            <div className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold ${comment.isOwn ? 'bg-primary text-white' : 'bg-gray-200 text-gray-600'}`}>
-                              {comment.userInitials}
-                            </div>
-                            <div>
-                              <div className="font-semibold text-sm text-gray-800 flex items-center gap-2">
-                                {comment.userName}
-                                {comment.isOwn && <span className="text-xs bg-primary-100 text-primary px-1.5 py-0.5 rounded font-medium">Tu reseña</span>}
-                              </div>
-                              <div className="flex items-center gap-1 mt-0.5">
-                                {Array.from({ length: 5 }, (_, i) => (
-                                  <StarIcon key={i} size={11} filled={i < comment.rating} className={i < comment.rating ? 'text-amber-400' : 'text-gray-200'} />
-                                ))}
-                                <span className="text-xs text-gray-400 ml-1">{new Date(comment.date).toLocaleDateString('es-CO')}</span>
-                              </div>
-                            </div>
-                          </div>
-                          {comment.isOwn && role === 'CLIENTE' && (
-                            <div className="flex items-center gap-1">
-                              <button
-                                onClick={() => { setEditingId(comment.id); setEditText(comment.text) }}
-                                className="p-1.5 rounded-lg text-gray-400 hover:text-primary hover:bg-primary-50 transition-colors cursor-pointer"
-                              >
-                                <EditIcon size={13} />
-                              </button>
-                              <button
-                                onClick={() => setDeleteConfirm(comment.id)}
-                                className="p-1.5 rounded-lg text-gray-400 hover:text-danger hover:bg-danger-50 transition-colors cursor-pointer"
-                              >
-                                <TrashIcon size={13} />
-                              </button>
-                            </div>
-                          )}
-                        </div>
-                        {editingId === comment.id ? (
-                          <div className="mt-3">
-                            <textarea
-                              value={editText}
-                              onChange={e => setEditText(e.target.value)}
-                              className="w-full text-sm border border-border rounded-lg p-3 focus:outline-none focus:border-primary resize-none"
-                              rows={3}
-                            />
-                            <div className="flex gap-2 mt-2">
-                              <button onClick={() => submitEdit(comment.id)} className="px-3 py-1.5 bg-primary text-white text-xs font-medium rounded-lg cursor-pointer hover:bg-primary-hover">Guardar</button>
-                              <button onClick={() => setEditingId(null)} className="px-3 py-1.5 bg-gray-100 text-gray-600 text-xs font-medium rounded-lg cursor-pointer hover:bg-gray-200">Cancelar</button>
-                            </div>
-                          </div>
-                        ) : (
-                          <p className="mt-3 text-sm text-gray-600 leading-relaxed">{comment.text}</p>
-                        )}
+                    {comments.length === 0 ? (
+                      <div className="bg-gray-50 rounded-xl p-6 text-center text-sm text-gray-400">
+                        Aún no hay reseñas para este producto. ¡Sé el primero en opinar!
                       </div>
-                    ))}
+                    ) : (
+                      comments.map(comment => (
+                        <div key={comment.id} className="p-4 rounded-xl border bg-gray-50 border-border">
+                          <div className="flex items-start justify-between gap-3">
+                            <div className="flex items-center gap-3">
+                              <div className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold bg-gray-200 text-gray-600">
+                                {iniciales(comment.usuario)}
+                              </div>
+                              <div>
+                                <div className="font-semibold text-sm text-gray-800">{comment.usuario}</div>
+                                <div className="flex items-center gap-1 mt-0.5">
+                                  {Array.from({ length: 5 }, (_, i) => (
+                                    <StarIcon key={i} size={11} filled={i < comment.puntuacion} className={i < comment.puntuacion ? 'text-amber-400' : 'text-gray-200'} />
+                                  ))}
+                                  <span className="text-xs text-gray-400 ml-1">{new Date(comment.fecha).toLocaleDateString('es-CO')}</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <p className="mt-3 text-sm text-gray-600 leading-relaxed">{comment.contenido}</p>
+                        </div>
+                      ))
+                    )}
                   </div>
 
                   {/* Write comment (user only) */}
@@ -396,6 +373,11 @@ export default function DetalleProducto(ctx: AppContext) {
                         </div>
                       ) : (
                         <div className="space-y-3">
+                          {commentError && (
+                            <div className="bg-danger-50 text-danger border border-danger-100 rounded-xl p-3 text-sm">
+                              {commentError}
+                            </div>
+                          )}
                           <div>
                             <label className="text-xs text-gray-500 font-medium block mb-1.5">Calificación</label>
                             <div className="flex items-center gap-1">
@@ -415,10 +397,10 @@ export default function DetalleProducto(ctx: AppContext) {
                           </div>
                           <button
                             onClick={submitComment}
-                            disabled={!commentText.trim() || !userRating}
+                            disabled={!commentText.trim() || !userRating || submitting}
                             className="px-4 py-2 bg-primary text-white text-sm font-medium rounded-lg hover:bg-primary-hover transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
                           >
-                            Publicar reseña
+                            {submitting ? 'Publicando...' : 'Publicar reseña'}
                           </button>
                         </div>
                       )}
@@ -463,20 +445,6 @@ export default function DetalleProducto(ctx: AppContext) {
           )}
         </div>
       </div>
-
-      {/* Delete confirmation modal */}
-      {deleteConfirm && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl shadow-xl p-6 max-w-sm w-full animate-fade-in">
-            <h3 className="font-display font-700 text-gray-900 text-lg mb-2">¿Eliminar reseña?</h3>
-            <p className="text-sm text-gray-500 mb-5">Esta acción no se puede deshacer. Tu reseña será eliminada permanentemente.</p>
-            <div className="flex gap-3">
-              <button onClick={() => setDeleteConfirm(null)} className="flex-1 py-2 bg-gray-100 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-200 transition-colors cursor-pointer">Cancelar</button>
-              <button onClick={() => deleteComment(deleteConfirm)} className="flex-1 py-2 bg-danger text-white text-sm font-medium rounded-lg hover:opacity-90 transition-colors cursor-pointer">Eliminar</button>
-            </div>
-          </div>
-        </div>
-      )}
 
       <PieDePagina navigate={navigate} />
     </div>

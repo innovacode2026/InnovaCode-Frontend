@@ -31,16 +31,8 @@ export default function LayoutAdmin({
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   const initials = userName
-    .split(" ")
-    .map(n => n[0])
-    .join("")
-    .slice(0, 2)
-    .toUpperCase()
-
-  const displayName = userName || (isSuper ? "Superadministrador" : "Administrador")
-  const initials = userName
     ? userName.split(' ').filter(Boolean).map(n => n[0]).join('').slice(0, 2).toUpperCase()
-    : isSuper ? 'SA' : 'AD'
+    : 'AD'
 
   const navItems = [
     {
@@ -110,7 +102,7 @@ export default function LayoutAdmin({
               {userName || "Administrador"}
             </div>
             <div className="text-white/45 text-xs truncate">
-              {isSuper ? "superadmin@innovacode.com" : "admin@innovacode.com"}
+              admin@innovacode.com
             </div>
           </div>
         </div>

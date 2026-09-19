@@ -57,10 +57,14 @@ export default function TarjetaProducto({ product, ctx }: TarjetaProductoProps) 
   return (
     <div
       className="group bg-white rounded-2xl overflow-hidden cursor-pointer"
-      style={{ boxShadow: '0 2px 16px rgba(0,0,0,0.07)', transition: 'box-shadow 0.22s ease, transform 0.22s ease' }}
+      style={{
+        boxShadow: '0 2px 16px rgba(0,0,0,0.07)',
+        transition: 'box-shadow 0.3s ease, transform 0.3s cubic-bezier(0.34,1.56,0.64,1)',
+        willChange: 'transform',
+      }}
       onMouseEnter={e => {
-        e.currentTarget.style.boxShadow = '0 8px 32px rgba(139,92,246,0.15)'
-        e.currentTarget.style.transform = 'translateY(-4px)'
+        e.currentTarget.style.boxShadow = '0 24px 48px rgba(139,92,246,0.22), 0 8px 20px rgba(0,0,0,0.12)'
+        e.currentTarget.style.transform = 'translateY(-8px)'
         if (videoRef.current) {
           videoRef.current.currentTime = product.videoStartTime ?? 0
           videoRef.current.play()
@@ -83,7 +87,7 @@ export default function TarjetaProducto({ product, ctx }: TarjetaProductoProps) 
           <video
             ref={videoRef}
             src={product.video}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
             loop
             muted
             playsInline

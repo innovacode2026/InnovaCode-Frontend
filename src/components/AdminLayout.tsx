@@ -37,6 +37,11 @@ export default function LayoutAdmin({
     .slice(0, 2)
     .toUpperCase()
 
+  const displayName = userName || (isSuper ? "Superadministrador" : "Administrador")
+  const initials = userName
+    ? userName.split(' ').filter(Boolean).map(n => n[0]).join('').slice(0, 2).toUpperCase()
+    : isSuper ? 'SA' : 'AD'
+
   const navItems = [
     {
       label: "Dashboard",
@@ -82,7 +87,7 @@ export default function LayoutAdmin({
           </div>
           <div>
             <div
-              className="font-display font-900 text-[15px] leading-none"
+              className="font-display font-800 text-[18px] leading-none"
               style={{ background: 'linear-gradient(135deg, #8B5CF6, #06B6D4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
             >
               EVOX
@@ -103,6 +108,9 @@ export default function LayoutAdmin({
           <div className="min-w-0">
             <div className="text-white text-sm font-semibold truncate">
               {userName || "Administrador"}
+            </div>
+            <div className="text-white/45 text-xs truncate">
+              {isSuper ? "superadmin@innovacode.com" : "admin@innovacode.com"}
             </div>
           </div>
         </div>

@@ -19,7 +19,7 @@ export default function AccesoDenegado({ navigate, role, requiredRole }: AccessD
           <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #8B5CF6, #06B6D4)' }}>
             <span className="text-white font-display font-900 text-xs leading-none">e</span>
           </div>
-          <span className="font-display font-900 text-[15px] leading-none" style={{ background: 'linear-gradient(135deg, #8B5CF6, #06B6D4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>EVOX</span>
+          <span className="font-display font-800 text-[18px] leading-none" style={{ background: 'linear-gradient(135deg, #8B5CF6, #06B6D4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>EVOX</span>
         </button>
       </div>
 

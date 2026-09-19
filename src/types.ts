@@ -30,6 +30,7 @@ export type Page =
   | 'admin-users'
   | 'admin-products'
   | 'admin-product-form'
+  | 'about'
   | 'access-denied'
 
 export interface CartItem {

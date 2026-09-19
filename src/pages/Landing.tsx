@@ -1,3 +1,4 @@
+import { useState, useRef } from 'react'
 import { AppContext } from '../types'
 import { categories } from '../data/mockData'
 import Encabezado from '../components/Header'
@@ -6,6 +7,15 @@ import TarjetaProducto from '../components/ProductCard'
 import { ChevronRightIcon, TrendUpIcon, PackageIcon, UsersIcon, StarIcon, ShieldIcon, LockIcon } from '../components/Icons'
 import { Smartphone, Monitor, Tablet, Headphones, Wrench, Gamepad2, type LucideIcon } from 'lucide-react'
 import type { JSX } from 'react'
+
+const PARTICLES = Array.from({ length: 28 }, (_, i) => ({
+  id: i,
+  left: `${(i * 37 + 5) % 95}%`,
+  top: `${(i * 53 + 10) % 90}%`,
+  size: i % 3 === 0 ? 3 : i % 3 === 1 ? 2 : 1.5,
+  delay: `${(i * 0.4) % 4}s`,
+  duration: `${3 + (i % 3)}s`,
+}))
 
 const categoryIconMap: Record<string, LucideIcon> = {
   Smartphone,
@@ -30,7 +40,7 @@ const brandLogos: Record<string, JSX.Element> = {
     <img src="https://logo-teka.com/wp-content/uploads/2025/06/sony-logo.png" alt="Sony" className="h-full w-auto object-contain" style={{ filter: 'grayscale(1) opacity(0.7)' }} />
   ),
   Xbox: (
-    <img src="https://logo-teka.com/wp-content/uploads/2025/08/xbox-icon-logo.png" alt="Xbox" className="h-full w-auto object-contain" style={{ filter: 'grayscale(1) opacity(0.7)' }} />
+    <img src="https://logo-teka.com/wp-content/uploads/2025/08/xbox-icon-logo.png" alt="Xbox" className="h-full w-auto object-contain" style={{ filter: 'grayscale(1) opacity(0.7)', transform: 'scale(1.45)' }} />
   ),
   Xiaomi: (
     <img src="https://logo-teka.com/wp-content/uploads/2025/06/xiaomi-sign-logo.png" alt="Xiaomi" className="h-full w-auto object-contain" style={{ filter: 'grayscale(1) opacity(0.7)' }} />
@@ -79,6 +89,18 @@ export default function PaginaInicio(ctx: AppContext) {
 
   const featured = products.filter(p => p.status === 'active').slice(0, 4)
   const recent = products.filter(p => p.status === 'active').slice(4, 8)
+
+  const [mouse, setMouse] = useState({ x: 0, y: 0 })
+  const heroRef = useRef<HTMLElement>(null)
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    const rect = heroRef.current?.getBoundingClientRect()
+    if (!rect) return
+    setMouse({
+      x: (e.clientX - rect.left - rect.width / 2) / rect.width,
+      y: (e.clientY - rect.top - rect.height / 2) / rect.height,
+    })
+  }
 
   const stats = [
     { label: 'Productos disponibles', value: '165+', icon: PackageIcon, color: 'text-primary' },
@@ -143,99 +165,127 @@ export default function PaginaInicio(ctx: AppContext) {
     <div className="min-h-screen flex flex-col">
       <Encabezado {...ctx} />
 
-      {/* Hero */}
-      <section className="relative overflow-hidden" style={{ background: '#0B0B14' }}>
-        {/* Grid pattern overlay */}
-        <div
-          className="absolute inset-0 opacity-[0.04]"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-          }}
-        />
-        {/* Glow effects */}
-        <div className="absolute top-0 left-1/4 w-96 h-96 rounded-full opacity-20 blur-3xl pointer-events-none" style={{ background: 'radial-gradient(circle, #8B5CF6, transparent)' }} />
-        <div className="absolute bottom-0 right-1/4 w-80 h-80 rounded-full opacity-15 blur-3xl pointer-events-none" style={{ background: 'radial-gradient(circle, #06B6D4, transparent)' }} />
+      {/* Hero futurista */}
+      <section
+        ref={heroRef}
+        className="relative overflow-hidden flex items-center"
+        style={{ background: '#050816', minHeight: '100vh' }}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={() => setMouse({ x: 0, y: 0 })}
+      >
+        {/* Grid tecnológico */}
+        <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: `linear-gradient(rgba(139,92,246,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(139,92,246,0.04) 1px, transparent 1px)`, backgroundSize: '60px 60px' }} />
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <div className="inline-flex items-center gap-2 text-white/70 text-xs font-medium px-3 py-1.5 rounded-full mb-6 border border-white/15" style={{ background: 'rgba(139,92,246,0.15)' }}>
-                <span className="w-1.5 h-1.5 rounded-full bg-success animate-pulse" />
-                ✦ Tecnología al mejor precio
-              </div>
-              <h1 className="font-display font-800 text-white text-4xl sm:text-5xl lg:text-6xl leading-tight mb-5">
-                Tu próximo dispositivo{' '}
-                <span
-                  className="block"
-                  style={{
-                    background: 'linear-gradient(135deg, #8B5CF6, #06B6D4)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                  }}
-                >
-                  te espera
-                </span>
-              </h1>
-              <p className="text-white/55 text-lg leading-relaxed mb-8 max-w-xl">
-                Los mejores celulares y computadores con garantía oficial, soporte técnico y envío a todo el país.
-              </p>
+        {/* Orbes */}
+        <div className="absolute pointer-events-none" style={{ top: '-10%', left: '-5%', width: '600px', height: '600px', background: 'radial-gradient(circle, rgba(139,92,246,0.18) 0%, transparent 65%)', filter: 'blur(40px)' }} />
+        <div className="absolute pointer-events-none" style={{ top: '20%', right: '10%', width: '500px', height: '500px', background: 'radial-gradient(circle, rgba(139,92,246,0.14) 0%, transparent 65%)', filter: 'blur(50px)' }} />
+        <div className="absolute pointer-events-none" style={{ bottom: '-5%', right: '30%', width: '400px', height: '400px', background: 'radial-gradient(circle, rgba(124,58,237,0.12) 0%, transparent 65%)', filter: 'blur(40px)' }} />
 
-              <div className="flex flex-col sm:flex-row gap-3 mb-8">
-                <button
-                  onClick={() => navigate('catalog')}
-                  className="px-6 py-3.5 text-white font-semibold rounded-xl transition-all shadow-lg cursor-pointer"
-                  style={{ background: 'linear-gradient(135deg, #8B5CF6, #7C3AED)' }}
-                >
-                  Ver Celulares
-                </button>
-                <button
-                  onClick={() => navigate('catalog')}
-                  className="px-6 py-3.5 text-white/80 font-semibold rounded-xl border border-white/20 hover:bg-white/10 transition-all cursor-pointer"
-                >
-                  Ver Computadores
-                </button>
-              </div>
+        {/* Partículas */}
+        {PARTICLES.map(p => (
+          <div key={p.id} className="absolute rounded-full pointer-events-none" style={{ left: p.left, top: p.top, width: `${p.size}px`, height: `${p.size}px`, background: p.id % 2 === 0 ? '#8B5CF6' : '#06B6D4', animation: `particlePulse ${p.duration} ease-in-out infinite`, animationDelay: p.delay }} />
+        ))}
 
-              {/* Trust badges */}
-              <div className="flex flex-wrap items-center gap-4">
-                <div className="flex items-center gap-1.5 text-white/50 text-xs">
-                  <ShieldIcon size={14} className="text-success" />
-                  Garantía oficial
-                </div>
-                <div className="flex items-center gap-1.5 text-white/50 text-xs">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="text-accent"><rect x="1" y="3" width="15" height="13"/><path d="M16 8h4l3 4v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-                  Envío gratis +$200k
-                </div>
-                <div className="flex items-center gap-1.5 text-white/50 text-xs">
-                  <LockIcon size={14} className="text-violet-400" />
-                  Pago seguro
-                </div>
-              </div>
+        {/* Scan lines */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div className="absolute w-full" style={{ height: '1px', background: 'linear-gradient(90deg, transparent, rgba(139,92,246,0.3), transparent)', animation: 'scanLine 8s linear infinite', top: '30%' }} />
+          <div className="absolute w-full" style={{ height: '1px', background: 'linear-gradient(90deg, transparent, rgba(124,58,237,0.2), transparent)', animation: 'scanLine 12s linear infinite 4s', top: '65%' }} />
+        </div>
+
+        <div className="relative w-full max-w-7xl mx-auto px-8 sm:px-12 lg:px-16 py-20 lg:py-0 grid lg:grid-cols-2 gap-8 items-center">
+
+          {/* Texto */}
+          <div className="z-10">
+            <div className="inline-flex items-center gap-2 text-xs font-semibold px-4 py-1.5 rounded-full mb-8" style={{ background: 'rgba(139,92,246,0.08)', border: '1px solid rgba(139,92,246,0.25)', color: '#8B5CF6' }}>
+              <span className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6] animate-pulse" />
+              NUEVA GENERACIÓN
             </div>
-
-            {/* Floating product cards */}
-            <div className="hidden lg:flex items-center justify-center">
-              <div className="grid grid-cols-2 gap-3 w-72 rotate-2">
-                {products.slice(0, 4).map((p, i) => (
-                  <div
-                    key={p.id}
-                    className="backdrop-blur-md rounded-xl p-2.5 border cursor-pointer hover:scale-105 transition-transform"
-                    style={{
-                      background: 'rgba(255,255,255,0.07)',
-                      borderColor: 'rgba(255,255,255,0.12)',
-                      transform: `translateY(${i % 2 === 1 ? '14px' : '0'})`,
-                    }}
-                    onClick={() => navigate('product', p.id)}
-                  >
-                    <img src={p.image} alt="" className="w-full aspect-video object-cover rounded-lg mb-2 opacity-90" />
-                    <div className="text-white text-[10px] font-semibold truncate">{p.name.split(' ').slice(0, 3).join(' ')}</div>
-                    <div className="text-white/45 text-[9px]">${p.price.toLocaleString('es-CO')}</div>
-                  </div>
-                ))}
-              </div>
+            <h1 className="font-display font-900 text-white leading-tight mb-6" style={{ fontSize: 'clamp(2.6rem, 5.2vw, 4.2rem)', fontWeight: 600 }}>
+              Potencia tu{' '}
+              <span style={{ background: 'linear-gradient(135deg, #8B5CF6, #06B6D4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', filter: 'drop-shadow(0 0 20px rgba(139,92,246,0.5))' }}>
+                mundo digital
+              </span>
+            </h1>
+            <p className="text-white/50 text-lg leading-relaxed mb-10 max-w-md">
+              Los mejores celulares, laptops y accesorios con garantía oficial, soporte técnico y envío a todo el país.
+            </p>
+            <div className="flex flex-wrap gap-4 mb-12">
+              <button onClick={() => navigate('catalog')} className="relative px-8 py-4 text-sm font-bold rounded-xl text-white cursor-pointer overflow-hidden" style={{ background: 'linear-gradient(135deg, #8B5CF6, #7C3AED)', boxShadow: '0 0 30px rgba(139,92,246,0.35)', transition: 'all 0.2s' }}
+                onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 0 50px rgba(139,92,246,0.6)'; e.currentTarget.style.transform = 'translateY(-2px)' }}
+                onMouseLeave={e => { e.currentTarget.style.boxShadow = '0 0 30px rgba(139,92,246,0.35)'; e.currentTarget.style.transform = 'translateY(0)' }}
+              >
+                <span className="relative z-10">Comprar ahora</span>
+                <div className="absolute inset-0 pointer-events-none" style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.15), transparent)', animation: 'btnShine 3s ease-in-out infinite' }} />
+              </button>
+              <button onClick={() => navigate('catalog')} className="px-8 py-4 text-sm font-bold rounded-xl cursor-pointer" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(139,92,246,0.3)', color: 'rgba(255,255,255,0.8)', backdropFilter: 'blur(12px)', transition: 'all 0.2s' }}
+                onMouseEnter={e => { e.currentTarget.style.background = 'rgba(139,92,246,0.1)'; e.currentTarget.style.borderColor = 'rgba(139,92,246,0.6)' }}
+                onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; e.currentTarget.style.borderColor = 'rgba(139,92,246,0.3)' }}
+              >
+                Explorar catálogo
+              </button>
+            </div>
+            <div className="flex flex-wrap gap-8">
+              {[{ val: '165+', label: 'Productos' }, { val: '2.4K+', label: 'Clientes' }, { val: '4.9★', label: 'Calificación' }].map(s => (
+                <div key={s.val}>
+                  <div className="font-display font-900 text-2xl" style={{ color: '#8B5CF6' }}>{s.val}</div>
+                  <div className="text-white/35 text-xs mt-0.5">{s.label}</div>
+                </div>
+              ))}
             </div>
           </div>
+
+          {/* Imágenes flotantes */}
+          <div className="relative hidden lg:flex items-center justify-center" style={{ height: '600px' }}>
+
+            {/* Arco decorativo de brillo */}
+            <div className="absolute pointer-events-none" style={{ width: '480px', height: '260px', border: '1px solid rgba(6,182,212,0.18)', borderRadius: '50%', boxShadow: '0 0 25px rgba(6,182,212,0.12)', top: '200px', left: '50%', transform: 'translateX(-50%) rotate(-18deg)' }} />
+
+            {/* ── LAPTOP – pieza central ── */}
+            <div className="absolute" style={{ width: '320px', bottom: '30px', left: '50%', zIndex: 2, transform: `translateX(-50%) translate(${mouse.x * -18}px, ${mouse.y * -10}px)`, animation: 'heroFloat 6s ease-in-out infinite', transition: 'transform 0.15s ease-out', filter: 'drop-shadow(0 24px 60px rgba(139,92,246,0.45))' }}>
+              <img src="/hero-laptop.png" alt="Laptop" className="w-full object-contain" />
+              <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 rounded-full" style={{ width: '60%', height: '20px', background: 'rgba(139,92,246,0.35)', filter: 'blur(18px)' }} />
+            </div>
+
+            {/* PS5 – arriba centro-izquierda (por encima del laptop) */}
+            <div className="absolute" style={{ width: '120px', top: '20px', left: 'calc(50% - 130px)', zIndex: 3, transform: `translate(${mouse.x * -30}px, ${mouse.y * -35}px) rotate(-8deg)`, animation: 'heroFloat 4.5s ease-in-out infinite 1s', transition: 'transform 0.15s ease-out', filter: 'drop-shadow(0 12px 40px rgba(139,92,246,0.55))' }}>
+              <img src="/hero-ps5.png" alt="PS5" className="w-full object-contain" />
+              <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 rounded-full" style={{ width: '55%', height: '10px', background: 'rgba(139,92,246,0.4)', filter: 'blur(9px)' }} />
+            </div>
+
+            {/* Headphones – arriba derecha */}
+            <div className="absolute" style={{ width: '118px', top: '12px', right: '5px', zIndex: 3, transform: `translate(${mouse.x * -38}px, ${mouse.y * -28}px) rotate(8deg)`, animation: 'heroFloat 5s ease-in-out infinite 1.5s', transition: 'transform 0.15s ease-out', filter: 'drop-shadow(0 12px 40px rgba(6,182,212,0.5))' }}>
+              <img src="/hero-headphones.png" alt="Headphones" className="w-full object-contain rounded-2xl" />
+              <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 rounded-full" style={{ width: '55%', height: '10px', background: 'rgba(6,182,212,0.35)', filter: 'blur(9px)' }} />
+            </div>
+
+            {/* Earbuds – abajo izquierda, delante del laptop */}
+            <div className="absolute" style={{ width: '140px', bottom: '65px', left: '40px', zIndex: 4, transform: `translate(${mouse.x * -22}px, ${mouse.y * -18}px) rotate(-10deg)`, animation: 'heroFloat 5.5s ease-in-out infinite 0.5s', transition: 'transform 0.15s ease-out', filter: 'drop-shadow(0 14px 44px rgba(6,182,212,0.6))' }}>
+              <img src="/hero-earbuds.png" alt="TWS Earbuds" className="w-full object-contain" />
+              <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 rounded-full" style={{ width: '55%', height: '10px', background: 'rgba(6,182,212,0.4)', filter: 'blur(9px)' }} />
+            </div>
+
+            {/* Smartwatch – derecha, entre headphones y laptop */}
+            <div className="absolute" style={{ width: '118px', top: '48%', right: '210px', zIndex: 4, transform: `translate(${mouse.x * -28}px, ${mouse.y * -20}px) rotate(5deg)`, animation: 'heroFloat 6.5s ease-in-out infinite 2s', transition: 'transform 0.15s ease-out', filter: 'drop-shadow(0 12px 38px rgba(139,92,246,0.5))' }}>
+              <img src="/hero-watch.png" alt="Smartwatch" className="w-full object-contain" />
+              <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 rounded-full" style={{ width: '55%', height: '10px', background: 'rgba(139,92,246,0.35)', filter: 'blur(9px)' }} />
+            </div>
+
+            {/* Badge precio – abajo centro */}
+            <div className="absolute px-4 py-2 rounded-xl text-xs font-bold" style={{ bottom: '18px', left: 'calc(50% - 130px)', zIndex: 5, background: 'rgba(124,58,237,0.2)', border: '1px solid rgba(124,58,237,0.4)', backdropFilter: 'blur(16px)', color: 'white', transform: `translate(${mouse.x * -28}px, ${mouse.y * -15}px)`, transition: 'transform 0.15s ease-out', animation: 'heroFloat 5.5s ease-in-out infinite 1s' }}>
+              <div className="text-white/40 text-[10px] mb-0.5">DESDE</div>
+              <div className="text-base font-900" style={{ color: '#8B5CF6' }}>$ 1.299.000</div>
+            </div>
+
+            {/* Badge specs – abajo derecha */}
+            <div className="absolute px-3 py-2 rounded-xl text-xs font-semibold" style={{ bottom: '18px', right: '8px', zIndex: 5, background: 'rgba(5,8,22,0.88)', border: '1px solid rgba(139,92,246,0.28)', backdropFilter: 'blur(16px)', color: '#8B5CF6', transform: `translate(${mouse.x * -20}px, ${mouse.y * -10}px)`, transition: 'transform 0.15s ease-out', animation: 'heroFloat 7s ease-in-out infinite 2.5s' }}>
+              <div className="text-white/50 text-[10px] mb-0.5">PROCESADOR</div>
+              <div>Intel Core i9 · 32GB</div>
+            </div>
+
+          </div>
         </div>
+
+        <div className="absolute bottom-0 left-0 right-0 h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(139,92,246,0.4), rgba(124,58,237,0.4), transparent)' }} />
       </section>
 
       {/* Ticker de marcas */}

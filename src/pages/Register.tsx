@@ -65,7 +65,7 @@ export default function Registro(ctx: AppContext) {
             <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)' }}>
               <span className="text-white font-display font-900 text-sm leading-none">e</span>
             </div>
-            <span className="font-display font-900 text-xl text-white">EVOX</span>
+            <span className="font-display font-800 text-2xl text-white">EVOX</span>
           </button>
           <h2 className="font-display font-800 text-3xl leading-tight mb-3">La mejor tecnología,<br />al mejor precio.</h2>
           <p className="text-white/70 text-sm leading-relaxed max-w-xs">Únete a miles de clientes que ya disfrutan de los mejores productos tecnológicos con envío rápido y garantía oficial.</p>
@@ -79,7 +79,7 @@ export default function Registro(ctx: AppContext) {
             <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #8B5CF6, #06B6D4)' }}>
               <span className="text-white font-display font-900 text-xs leading-none">e</span>
             </div>
-            <span className="font-display font-900 text-[15px] leading-none block" style={{ background: 'linear-gradient(135deg, #8B5CF6, #06B6D4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>EVOX</span>
+            <span className="font-display font-800 text-[18px] leading-none block" style={{ background: 'linear-gradient(135deg, #8B5CF6, #06B6D4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>EVOX</span>
           </button>
         </div>
 

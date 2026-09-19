@@ -16,6 +16,7 @@ import PanelAdmin from './pages/admin/Dashboard'
 import UsuariosAdmin from './pages/admin/Users'
 import ProductosAdmin from './pages/admin/Products'
 import AccesoDenegado from './pages/AccessDenied'
+import QuienesSomos from './pages/About'
 
 export default function App() {
   const { user, role, login, register, logout } = useAuth()
@@ -156,6 +157,8 @@ export default function App() {
     case 'admin-products':
     case 'admin-product-form':
       return <ProductosAdmin {...ctx} />
+    case 'about':
+      return <QuienesSomos {...ctx} />
     case 'access-denied':
       return <AccesoDenegado {...ctx} requiredRole="ADMINISTRADOR" />
     default:

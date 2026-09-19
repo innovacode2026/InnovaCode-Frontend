@@ -43,7 +43,7 @@ export default function InicioSesion(ctx: AppContext) {
             <span className="text-white font-display font-900 text-xs leading-none">e</span>
           </div>
           <div>
-            <span className="font-display font-900 text-[15px] leading-none block" style={{ background: 'linear-gradient(135deg, #8B5CF6, #06B6D4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>EVOX</span>
+            <span className="font-display font-800 text-[18px] leading-none block" style={{ background: 'linear-gradient(135deg, #8B5CF6, #06B6D4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>EVOX</span>
           </div>
         </button>
       </div>

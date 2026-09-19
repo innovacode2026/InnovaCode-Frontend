@@ -1,6 +1,10 @@
-# InnovaCode — E-Commerce Platform
+# EVOX — E-Commerce Platform
 
-Plataforma de comercio electrónico para productos de tecnología. Frontend scaffold listo para conectar a un backend Spring Boot.
+Plataforma de comercio electrónico para productos de tecnología. Frontend conectado a un backend Spring Boot (autenticación, catálogo, carrito y pedidos reales).
+
+> 👉 **¿Eres tester y quieres montar el proyecto en local (backend + frontend)?**
+> Sigue la guía paso a paso **`MANUAL_TESTER.md`** en el repositorio del backend
+> (**Evox-Backend.innovacode → `docs/`**), incluye comandos para macOS y Windows.
 
 ## Stack
 
@@ -10,6 +14,8 @@ Plataforma de comercio electrónico para productos de tecnología. Frontend scaf
 | TypeScript | 5.7 | Tipos |
 | Tailwind CSS | v4 | Estilos |
 | Vite | 8 | Build / dev server |
+| Axios | 1.x | Cliente HTTP |
+| lucide-react | 1.x | Iconos |
 
 ## Getting Started
 
@@ -26,94 +32,107 @@ pnpm dev
 
 La app corre en `http://localhost:8443`.
 
+### Variables de entorno
+
+| Variable | Descripción | Default |
+|---|---|---|
+| `VITE_API_URL` | Base URL de la API Spring Boot | `http://localhost:8081/api/v1` |
+
+## Scripts
+
+```bash
+pnpm dev      # Dev server (puerto 8443)
+pnpm build    # Build de producción
+pnpm preview  # Previsualizar build de producción
+pnpm format   # Formatear código (oxfmt)
+```
+
 ## Estructura del Proyecto
 
 ```
 src/
-├── services/          ← Capa de acceso a datos (mocks por ahora, listos para swap a API real)
-│   ├── api.ts         ← Cliente HTTP base
-│   ├── auth.ts        ← Login, registro
-│   ├── products.ts    ← CRUD productos
-│   ├── categories.ts  ← Categorías
-│   ├── users.ts       ← Gestión de usuarios
-│   ├── comments.ts    ← Reseñas de productos
-│   └── permissions.ts ← Matriz de permisos RBAC
+├── api/              ← Capa de acceso a datos (API real + fallback mock)
+│   ├── client.ts     ← Cliente axios con interceptor de auth (JWT)
+│   ├── authService.ts     ← Login, registro
+│   ├── productoService.ts ← CRUD productos
+│   ├── categoriaService.ts← Categorías
+│   ├── carritoService.ts  ← Carrito de compras
+│   ├── pedidoService.ts   ← Creación y consulta de pedidos
+│   ├── comentarioService.ts ← Reseñas de productos
+│   └── usuarioService.ts  ← Gestión de usuarios (panel admin)
 │
-├── hooks/             ← React hooks reutilizables
-│   ├── useProducts.ts ← Fetch de productos con loading/error
-│   └── useAuth.ts     ← Estado de autenticación
+├── hooks/            ← React hooks reutilizables
+│   └── useAuth.ts    ← Estado de autenticación (sesión + JWT en localStorage)
 │
 ├── data/
-│   └── mockData.ts    ← Data mock (productos, usuarios, permisos, categorías)
+│   ├── catalogo.ts   ← Carga catálogo desde la API con fallback a mock
+│   └── mockData.ts   ← Data mock de respaldo (productos, categorías)
 │
-├── components/        ← Componentes reutilizables
-│   ├── Icons.tsx      ← Iconos SVG
-│   ├── Header.tsx     ← Navbar pública + selector de rol demo
-│   ├── Footer.tsx     ← Footer
-│   ├── AdminLayout.tsx← Layout admin/superadmin
-│   └── ProductCard.tsx← Card de producto
+├── components/       ← Componentes reutilizables
+│   ├── Icons.tsx     ← Iconos SVG
+│   ├── Header.tsx    ← Navbar pública + accesos
+│   ├── Footer.tsx    ← Footer
+│   ├── AdminLayout.tsx ← Layout del panel admin
+│   └── ProductCard.tsx ← Card de producto
 │
-├── pages/             ← Páginas de la app
+├── pages/            ← Páginas de la app
 │   ├── Landing.tsx
 │   ├── Catalog.tsx
 │   ├── ProductDetail.tsx
 │   ├── Wishlist.tsx
+│   ├── Cart.tsx
 │   ├── Login.tsx
 │   ├── Register.tsx
 │   ├── AccessDenied.tsx
-│   ├── admin/
-│   │   ├── Dashboard.tsx
-│   │   ├── Users.tsx
-│   │   └── Products.tsx
-│   └── superadmin/
+│   └── admin/
 │       ├── Dashboard.tsx
-│       └── Roles.tsx
+│       ├── Users.tsx
+│       └── Products.tsx
 │
-├── types.ts           ← Tipos compartidos (Role, Page, AppContext)
-├── App.tsx            ← Root component — routing por estado
-├── main.tsx           ← Entry point
-└── index.css          ← Theme + fonts + animaciones
+├── types/
+│   └── api.ts        ← Tipos DTO de la API (Producto, Carrito, Pedido, etc.)
+├── types.ts          ← Tipos de sesión, páginas y AppContext
+├── App.tsx           ← Root component — routing por estado + route guards
+├── main.tsx          ← Entry point
+└── index.css         ← Theme + fonts + animaciones
 ```
 
 ## Roles
 
-La app soporta 4 roles con route guards:
+La app soporta 3 roles con route guards:
 
 | Rol | Acceso |
 |---|---|
+<<<<<<< Updated upstream
 | `guest` | Landing, catálogo, login, registro |
 | `user` | + lista de deseos, calificaciones, comentarios |
 | `admin` | + panel de control, gestión de usuarios y productos |
 
+=======
+| `guest` | Landing, catálogo, detalle, login, registro |
+| `CLIENTE` | + lista de deseos, carrito, checkout, comentarios |
+| `ADMINISTRADOR` | + panel de control, gestión de usuarios y productos |
+
+## Autenticación
+
+- Login y registro contra la API real (`/auth/login`, `/auth/register`).
+- El JWT se guarda en `localStorage` y se inyecta como `Authorization: Bearer <token>` en cada request (interceptor en `src/api/client.ts`).
+- Si la API responde `401`, el token se limpia y la sesión expira automáticamente.
+>>>>>>> Stashed changes
 
 ## Integración con Backend
 
-Los servicios en `src/services/` actualmente retornan datos mock. Para conectar al backend Spring Boot:
+El frontend está conectado a la API Spring Boot. El catálogo (`src/data/catalogo.ts`) intenta cargar productos desde `/productos` y, si el backend no está disponible, cae a los datos mock para que la UI siga navegable.
 
-1. Configurar `VITE_API_URL` en `.env` apuntando a tu API
-2. Reemplazar las implementaciones mock en cada servicio por llamadas `apiFetch`
-3. Ejemplo:
-
-```ts
-// Antes (mock)
-export async function getProducts(): Promise<Product[]> {
-  return mockProducts
-}
-
-// Después (API real)
-import { apiFetch } from './api'
-export async function getProducts(): Promise<Product[]> {
-  return apiFetch<Product[]>('/products')
-}
-```
+Configurar `VITE_API_URL` en `.env` apuntando a tu API (ver variable arriba). Todos los servicios viven en `src/api/` y usan el cliente compartido.
 
 ## Roadmap
 
-- [ ] Conexión a backend Spring Boot
-- [ ] Autenticación real (Supabase Auth)
-- [ ] React Router para navegación basada en URL
-- [ ] Carrito de compras y checkout
-- [ ] Gestión de imágenes con Supabase Storage
+- [ ] React Router para navegación basada en URL (hoy en estado)
+- [ ] Gestión de imágenes y videos con Supabase Storage
+- [ ] Historial y detalle de pedidos en la cuenta del cliente
+- [ ] Reactivar/retirar productos desde la API (hoy local)
+- [ ] Estados de pedido (PENDIENTE, PAGADO, ENVIADO, ENTREGADO)
 
 ## Licencia
 

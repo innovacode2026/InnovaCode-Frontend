@@ -84,7 +84,7 @@ La app soporta 4 roles con route guards:
 | `guest` | Landing, catálogo, login, registro |
 | `user` | + lista de deseos, calificaciones, comentarios |
 | `admin` | + panel de control, gestión de usuarios y productos |
-| `superadmin` | + dashboard extendido, gestión de permisos y roles |
+
 
 ## Integración con Backend
 

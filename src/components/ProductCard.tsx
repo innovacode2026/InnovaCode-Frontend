@@ -16,6 +16,7 @@ export default function TarjetaProducto({ product, ctx }: TarjetaProductoProps) 
   const [popped, setPopped] = useState(false)
   const [added, setAdded] = useState(false)
   const [cartMsg, setCartMsg] = useState('')
+  const [videoError, setVideoError] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
   const videoTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -83,20 +84,30 @@ export default function TarjetaProducto({ product, ctx }: TarjetaProductoProps) 
     >
       {/* Imagen / Video */}
       <div className="relative bg-gray-50 aspect-4/3">
-        {product.video ? (
+        {product.video && !videoError ? (
           <video
             ref={videoRef}
             src={product.video}
+            poster={product.image}
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
             loop
             muted
             playsInline
+            preload="metadata"
+            onError={() => setVideoError(true)}
           />
         ) : (
           <img
             src={product.image}
             alt={product.name}
             className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-300"
+            onError={e => {
+              const img = e.currentTarget
+              if (!img.src.includes('photo-1496181133206')) {
+                img.src =
+                  'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600&h=400&fit=crop&auto=format'
+              }
+            }}
           />
         )}
         {product.status === 'inactive' && (

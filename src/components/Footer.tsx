@@ -8,7 +8,12 @@ export default function PieDePagina({ navigate }: Pick<AppContext, 'navigate'>) 
           {/* Marca */}
           <div className="md:col-span-1">
             <div className="flex items-center gap-2.5 mb-4">
-              <img src="/logo-evox.png" alt="EVOX" className="w-10 h-10 object-contain rounded-xl" />
+              <span
+                className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-800 text-xl"
+                style={{ background: 'linear-gradient(135deg, #8B5CF6, #06B6D4)' }}
+              >
+                E
+              </span>
               <span
                 className="font-display font-800 text-[20px] leading-none"
                 style={{

@@ -345,7 +345,7 @@ export default function PaginaInicio(ctx: AppContext) {
             return (
               <button
                 key={cat.id}
-                onClick={() => navigate('catalog')}
+                onClick={() => navigate('catalog', undefined, cat.id)}
                 className="group bg-white border border-border rounded-2xl p-4 flex flex-col items-center gap-2.5 hover:border-primary/30 hover:shadow-md transition-all cursor-pointer"
                 style={{ transition: 'all 0.2s' }}
               >

@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { AppContext } from '../types'
 import { categories } from '../data/mockData'
 import Encabezado from '../components/Header'
@@ -7,14 +7,18 @@ import TarjetaProducto from '../components/ProductCard'
 import { SearchIcon, FilterIcon, SortIcon, XIcon, ChevronDownIcon } from '../components/Icons'
 
 export default function Catalogo(ctx: AppContext) {
-  const { navigate, products } = ctx
+  const { navigate, products, catalogCategory } = ctx
   const [search, setSearch] = useState('')
-  const [selectedCategory, setSelectedCategory] = useState('')
+  const [selectedCategory, setSelectedCategory] = useState(catalogCategory)
   const [sortBy, setSortBy] = useState('name')
   const [showFilters, setShowFilters] = useState(false)
   const [minRating, setMinRating] = useState(0)
   const [loading] = useState(false)
   const [priceRange, setPriceRange] = useState([0, 15000000])
+
+  useEffect(() => {
+    setSelectedCategory(catalogCategory)
+  }, [catalogCategory])
 
   const filtered = useMemo(() => {
     let list = [...products]

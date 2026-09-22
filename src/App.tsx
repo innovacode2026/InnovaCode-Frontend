@@ -22,6 +22,7 @@ export default function App() {
   const { user, role, login, register, logout } = useAuth()
   const [page, setPage] = useState<Page>('landing')
   const [selectedProductId, setSelectedProductId] = useState<string | null>(null)
+  const [catalogCategory, setCatalogCategory] = useState('')
   const [wishlist, setWishlist] = useState<string[]>([])
   const [products, setProducts] = useState<ProductoVista[]>([])
   const [carrito, setCarrito] = useState<Carrito>({ items: [], total: 0 })
@@ -83,8 +84,9 @@ export default function App() {
     [refrescarCarrito],
   )
 
-  const navigate = (newPage: Page, productId?: string) => {
+  const navigate = (newPage: Page, productId?: string, category?: string) => {
     if (productId) setSelectedProductId(productId)
+    if (newPage === 'catalog') setCatalogCategory(category ?? '')
     setPage(newPage)
     window.scrollTo(0, 0)
   }
@@ -122,6 +124,7 @@ export default function App() {
     register,
     logout: handleLogout,
     navigate,
+    catalogCategory,
     toggleWishlist,
     addToCart,
     removeFromCart,

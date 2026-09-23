@@ -31,6 +31,7 @@ export type Page =
   | 'admin-products'
   | 'admin-product-form'
   | 'about'
+  | 'ayuda'
   | 'access-denied'
 
 export interface CartItem {
@@ -64,9 +65,10 @@ export interface AppContext {
     password: string
   ) => Promise<UsuarioRegistrado>
   logout: () => void
-  navigate: (page: Page, productId?: string, category?: string, search?: string) => void
+  navigate: (page: Page, productId?: string, category?: string, search?: string, section?: string) => void
   catalogCategory: string
   catalogSearch: string
+  helpSection: string
   toggleWishlist: (productId: string) => void
   addToCart: (productoId: string, cantidad?: number) => Promise<void>
   removeFromCart: (productoId: string) => Promise<void>

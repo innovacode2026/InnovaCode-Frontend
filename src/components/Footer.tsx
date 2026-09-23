@@ -50,13 +50,18 @@ export default function PieDePagina({ navigate }: Pick<AppContext, 'navigate'>) 
                   </button>
                 </li>
               ))}
-              {['Celulares', 'Computadores', 'Tablets', 'Accesorios'].map(label => (
-                <li key={label}>
+              {[
+                { label: 'Celulares', id: 'celulares' },
+                { label: 'Computadores', id: 'computadores' },
+                { label: 'Tablets', id: 'tablets' },
+                { label: 'Accesorios', id: 'accesorios' },
+              ].map(item => (
+                <li key={item.id}>
                   <button
-                    onClick={() => navigate('catalog')}
+                    onClick={() => navigate('catalog', undefined, item.id)}
                     className="text-sm text-white/50 hover:text-white transition-colors cursor-pointer"
                   >
-                    {label}
+                    {item.label}
                   </button>
                 </li>
               ))}
@@ -88,9 +93,21 @@ export default function PieDePagina({ navigate }: Pick<AppContext, 'navigate'>) 
           <div>
             <h4 className="font-display font-600 text-white text-sm mb-4">Ayuda</h4>
             <ul className="space-y-2.5">
-              {['Soporte técnico', 'Envíos y devoluciones', 'Garantías', 'Preguntas frecuentes', 'Términos de uso', 'Política de privacidad'].map(label => (
-                <li key={label}>
-                  <span className="text-sm text-white/50 cursor-pointer hover:text-white transition-colors">{label}</span>
+              {[
+                { label: 'Soporte técnico', id: 'soporte' },
+                { label: 'Envíos y devoluciones', id: 'envios' },
+                { label: 'Garantías', id: 'garantias' },
+                { label: 'Preguntas frecuentes', id: 'faq' },
+                { label: 'Términos de uso', id: 'terminos' },
+                { label: 'Política de privacidad', id: 'privacidad' },
+              ].map(item => (
+                <li key={item.id}>
+                  <button
+                    onClick={() => navigate('ayuda', undefined, undefined, undefined, item.id)}
+                    className="text-sm text-white/50 hover:text-white transition-colors cursor-pointer"
+                  >
+                    {item.label}
+                  </button>
                 </li>
               ))}
             </ul>

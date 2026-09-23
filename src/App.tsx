@@ -9,6 +9,7 @@ import PaginaInicio from './pages/Landing'
 import Catalogo from './pages/Catalog'
 import DetalleProducto from './pages/ProductDetail'
 import ListaDeseos from './pages/Wishlist'
+import PaginaAyuda from './pages/Ayuda'
 import PaginaCarrito from './pages/Cart'
 import InicioSesion from './pages/Login'
 import Registro from './pages/Register'
@@ -24,6 +25,7 @@ export default function App() {
   const [selectedProductId, setSelectedProductId] = useState<string | null>(null)
   const [catalogCategory, setCatalogCategory] = useState('')
   const [catalogSearch, setCatalogSearch] = useState('')
+  const [helpSection, setHelpSection] = useState('')
   const [wishlist, setWishlist] = useState<string[]>(() => {
     try {
       return JSON.parse(localStorage.getItem('evox_wishlist_guest') ?? '[]')
@@ -103,12 +105,13 @@ export default function App() {
     [refrescarCarrito],
   )
 
-  const navigate = (newPage: Page, productId?: string, category?: string, search?: string) => {
+  const navigate = (newPage: Page, productId?: string, category?: string, search?: string, section?: string) => {
     if (productId) setSelectedProductId(productId)
     if (newPage === 'catalog') {
       setCatalogCategory(category ?? '')
       setCatalogSearch(search ?? '')
     }
+    if (newPage === 'ayuda') setHelpSection(section ?? '')
     setPage(newPage)
     window.scrollTo(0, 0)
   }
@@ -154,6 +157,7 @@ export default function App() {
     navigate,
     catalogCategory,
     catalogSearch,
+    helpSection,
     toggleWishlist,
     addToCart,
     removeFromCart,
@@ -191,6 +195,8 @@ export default function App() {
       return <ProductosAdmin {...ctx} />
     case 'about':
       return <QuienesSomos {...ctx} />
+    case 'ayuda':
+      return <PaginaAyuda {...ctx} />
     case 'access-denied':
       return <AccesoDenegado {...ctx} requiredRole="ADMINISTRADOR" />
     default:

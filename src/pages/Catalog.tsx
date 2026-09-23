@@ -7,8 +7,8 @@ import TarjetaProducto from '../components/ProductCard'
 import { SearchIcon, FilterIcon, SortIcon, XIcon, ChevronDownIcon } from '../components/Icons'
 
 export default function Catalogo(ctx: AppContext) {
-  const { navigate, products, catalogCategory } = ctx
-  const [search, setSearch] = useState('')
+  const { navigate, products, catalogCategory, catalogSearch } = ctx
+  const [search, setSearch] = useState(catalogSearch)
   const [selectedCategory, setSelectedCategory] = useState(catalogCategory)
   const [sortBy, setSortBy] = useState('name')
   const [showFilters, setShowFilters] = useState(false)
@@ -18,7 +18,8 @@ export default function Catalogo(ctx: AppContext) {
 
   useEffect(() => {
     setSelectedCategory(catalogCategory)
-  }, [catalogCategory])
+    setSearch(catalogSearch)
+  }, [catalogCategory, catalogSearch])
 
   const filtered = useMemo(() => {
     let list = [...products]

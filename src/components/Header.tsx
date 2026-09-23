@@ -7,10 +7,26 @@ interface EncabezadoProps extends AppContext {
   onSearchChange?: (q: string) => void
 }
 
-export default function Encabezado({ role, page, userName, wishlist, cartCount, navigate, logout }: EncabezadoProps) {
+export default function Encabezado({ role, page, userName, wishlist, products, cartCount, navigate, logout }: EncabezadoProps) {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [roleMenuOpen, setRoleMenuOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
+  const [searchFocus, setSearchFocus] = useState(false)
+
+  const sugerencias = searchQuery.trim()
+    ? products
+        .filter(p =>
+          p.name.toLowerCase().includes(searchQuery.trim().toLowerCase()) ||
+          p.shortDescription.toLowerCase().includes(searchQuery.trim().toLowerCase()),
+        )
+        .slice(0, 6)
+    : []
+
+  const irACatalogo = (q: string) => {
+    setSearchFocus(false)
+    setMobileOpen(false)
+    navigate('catalog', undefined, undefined, q)
+  }
 
   const roleLabels: Record<string, string> = {
     guest: 'Visitante',
@@ -33,7 +49,7 @@ export default function Encabezado({ role, page, userName, wishlist, cartCount, 
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
-    if (searchQuery.trim()) navigate('catalog')
+    if (searchQuery.trim()) irACatalogo(searchQuery.trim())
   }
 
   const navLinks = [
@@ -98,8 +114,44 @@ export default function Encabezado({ role, page, userName, wishlist, cartCount, 
                 placeholder="Buscar celulares, laptops..."
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
+                onFocus={() => setSearchFocus(true)}
+                onBlur={() => setTimeout(() => setSearchFocus(false), 150)}
                 className="w-full pl-9 pr-4 py-2 text-sm bg-gray-50 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-gray-400"
               />
+              {searchFocus && sugerencias.length > 0 && (
+                <div className="absolute top-full mt-2 left-0 right-0 bg-white border border-border rounded-xl shadow-xl overflow-hidden z-50">
+                  {sugerencias.map(p => (
+                    <button
+                      key={p.id}
+                      type="button"
+                      onMouseDown={e => {
+                        e.preventDefault()
+                        setSearchFocus(false)
+                        navigate('product', p.id)
+                      }}
+                      className="w-full flex items-center gap-3 px-3 py-2 hover:bg-gray-50 text-left cursor-pointer"
+                    >
+                      <img src={p.image} alt={p.name} className="w-10 h-10 object-contain rounded-lg bg-gray-50 flex-shrink-0" />
+                      <span className="flex-1 min-w-0">
+                        <span className="block text-sm text-gray-900 truncate">{p.name}</span>
+                        <span className="block text-xs font-semibold" style={{ color: '#2563EB' }}>
+                          $ {p.price.toLocaleString('es-CO')}
+                        </span>
+                      </span>
+                    </button>
+                  ))}
+                  <button
+                    type="button"
+                    onMouseDown={e => {
+                      e.preventDefault()
+                      irACatalogo(searchQuery.trim())
+                    }}
+                    className="w-full px-3 py-2 text-xs font-semibold text-primary bg-primary-50 hover:bg-primary-100 text-center cursor-pointer"
+                  >
+                    Ver todos los resultados
+                  </button>
+                </div>
+              )}
             </div>
           </form>
 
@@ -217,14 +269,19 @@ export default function Encabezado({ role, page, userName, wishlist, cartCount, 
                 </button>
               ))}
               <div className="mt-2 pt-2 border-t border-border">
-                <div className="relative">
+                <form
+                  onSubmit={handleSearch}
+                  className="relative"
+                >
                   <SearchIcon size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                   <input
                     type="text"
                     placeholder="Buscar productos..."
+                    value={searchQuery}
+                    onChange={e => setSearchQuery(e.target.value)}
                     className="w-full pl-9 pr-4 py-2.5 text-sm bg-gray-50 border border-border rounded-lg focus:outline-none focus:border-primary"
                   />
-                </div>
+                </form>
               </div>
             </div>
           </div>

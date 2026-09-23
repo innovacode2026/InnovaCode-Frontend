@@ -64,8 +64,9 @@ export interface AppContext {
     password: string
   ) => Promise<UsuarioRegistrado>
   logout: () => void
-  navigate: (page: Page, productId?: string, category?: string) => void
+  navigate: (page: Page, productId?: string, category?: string, search?: string) => void
   catalogCategory: string
+  catalogSearch: string
   toggleWishlist: (productId: string) => void
   addToCart: (productoId: string, cantidad?: number) => Promise<void>
   removeFromCart: (productoId: string) => Promise<void>

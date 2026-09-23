@@ -23,6 +23,7 @@ export default function App() {
   const [page, setPage] = useState<Page>('landing')
   const [selectedProductId, setSelectedProductId] = useState<string | null>(null)
   const [catalogCategory, setCatalogCategory] = useState('')
+  const [catalogSearch, setCatalogSearch] = useState('')
   const [wishlist, setWishlist] = useState<string[]>(() => {
     try {
       return JSON.parse(localStorage.getItem('evox_wishlist_guest') ?? '[]')
@@ -102,9 +103,12 @@ export default function App() {
     [refrescarCarrito],
   )
 
-  const navigate = (newPage: Page, productId?: string, category?: string) => {
+  const navigate = (newPage: Page, productId?: string, category?: string, search?: string) => {
     if (productId) setSelectedProductId(productId)
-    if (newPage === 'catalog') setCatalogCategory(category ?? '')
+    if (newPage === 'catalog') {
+      setCatalogCategory(category ?? '')
+      setCatalogSearch(search ?? '')
+    }
     setPage(newPage)
     window.scrollTo(0, 0)
   }
@@ -149,6 +153,7 @@ export default function App() {
     logout: handleLogout,
     navigate,
     catalogCategory,
+    catalogSearch,
     toggleWishlist,
     addToCart,
     removeFromCart,

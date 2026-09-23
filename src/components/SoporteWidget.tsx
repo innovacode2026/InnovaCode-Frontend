@@ -164,7 +164,35 @@ export default function WidgetSoporte(ctx: AppContext) {
             ))}
           </div>
 
-          {/* Entrada */}
+          {/* Entrada o invitación a entrar */}
+          {role === 'guest' ? (
+            <div className="p-3 bg-white border-t border-border">
+              <p className="text-xs text-gray-500 text-center mb-2">
+                Inicia sesión o crea tu cuenta para chatear con soporte.
+              </p>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => {
+                    setAbierto(false)
+                    ctx.navigate('login')
+                  }}
+                  className="flex-1 py-2 text-xs font-semibold text-white rounded-full cursor-pointer"
+                  style={{ background: 'linear-gradient(135deg, #8B5CF6, #7C3AED)' }}
+                >
+                  Iniciar sesión
+                </button>
+                <button
+                  onClick={() => {
+                    setAbierto(false)
+                    ctx.navigate('register')
+                  }}
+                  className="flex-1 py-2 text-xs font-semibold text-primary border border-primary/40 rounded-full hover:bg-primary-50 cursor-pointer"
+                >
+                  Crear cuenta
+                </button>
+              </div>
+            </div>
+          ) : (
           <form
             onSubmit={e => {
               e.preventDefault()
@@ -176,7 +204,7 @@ export default function WidgetSoporte(ctx: AppContext) {
               type="text"
               value={texto}
               onChange={e => setTexto(e.target.value)}
-              placeholder={role === 'guest' ? 'Escríbenos o inicia sesión...' : 'Escribe tu duda...'}
+              placeholder="Escribe tu duda..."
               className="flex-1 min-w-0 text-sm bg-gray-50 border border-border rounded-full px-3.5 py-2 focus:outline-none focus:border-primary"
             />
             <button
@@ -191,29 +219,6 @@ export default function WidgetSoporte(ctx: AppContext) {
               </svg>
             </button>
           </form>
-
-          {role === 'guest' && (
-            <div className="px-3 pb-1 flex gap-2">
-              <button
-                onClick={() => {
-                  setAbierto(false)
-                  ctx.navigate('login')
-                }}
-                className="flex-1 py-1.5 text-xs font-semibold text-white rounded-full cursor-pointer"
-                style={{ background: 'linear-gradient(135deg, #8B5CF6, #7C3AED)' }}
-              >
-                Iniciar sesión
-              </button>
-              <button
-                onClick={() => {
-                  setAbierto(false)
-                  ctx.navigate('register')
-                }}
-                className="flex-1 py-1.5 text-xs font-semibold text-primary border border-primary/40 rounded-full hover:bg-primary-50 cursor-pointer"
-              >
-                Crear cuenta
-              </button>
-            </div>
           )}
 
           <button

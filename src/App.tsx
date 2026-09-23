@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Page, AppContext } from './types'
 import { useAuth } from './hooks/useAuth'
 import { cargarCatalogo, ProductoVista } from './data/catalogo'
@@ -32,30 +32,18 @@ export default function App() {
   })
   const [products, setProducts] = useState<ProductoVista[]>([])
   const [carrito, setCarrito] = useState<Carrito>({ items: [], total: 0 })
-  const wishlistLoadedKey = useRef<string | null>(null)
 
+  // La lista solo se escribe al pulsar Guardar/Quitar (toggleWishlist).
+  // Nunca se escribe al cargar: asi una recarga no puede borrar lo guardado.
   useEffect(() => {
     const key = `evox_wishlist_${user?.id ?? 'guest'}`
     try {
       const saved = localStorage.getItem(key)
-      // Solo se toca el estado si hay algo guardado: nunca se pisa con []
       if (saved) setWishlist(JSON.parse(saved))
     } catch {
       /* JSON corrupto: se mantiene la lista actual */
     }
-    wishlistLoadedKey.current = key
   }, [user?.id])
-
-  useEffect(() => {
-    const key = `evox_wishlist_${user?.id ?? 'guest'}`
-    // No guardar hasta haber cargado esta llave: evita pisar lo guardado con []
-    if (wishlistLoadedKey.current !== key) return
-    try {
-      localStorage.setItem(key, JSON.stringify(wishlist))
-    } catch {
-      /* almacenamiento lleno o bloqueado: se mantiene en memoria */
-    }
-  }, [wishlist, user?.id])
 
   useEffect(() => {
     let active = true

@@ -57,6 +57,30 @@ export default function WidgetSoporte(ctx: AppContext) {
   const [texto, setTexto] = useState('')
   const [escribiendo, setEscribiendo] = useState(false)
   const finRef = useRef<HTMLDivElement>(null)
+  const audioRef = useRef<AudioContext | null>(null)
+
+  const sonarAviso = () => {
+    try {
+      const Ctx = window.AudioContext ?? (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext
+      if (!Ctx) return
+      audioRef.current ??= new Ctx()
+      const ctx = audioRef.current
+      if (ctx.state === 'suspended') void ctx.resume()
+      const osc = ctx.createOscillator()
+      const gain = ctx.createGain()
+      osc.connect(gain)
+      gain.connect(ctx.destination)
+      osc.type = 'sine'
+      osc.frequency.setValueAtTime(660, ctx.currentTime)
+      osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.12)
+      gain.gain.setValueAtTime(0.12, ctx.currentTime)
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.25)
+      osc.start()
+      osc.stop(ctx.currentTime + 0.26)
+    } catch {
+      /* sin audio disponible: el chat sigue funcionando */
+    }
+  }
 
   useEffect(() => {
     finRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -81,18 +105,39 @@ export default function WidgetSoporte(ctx: AppContext) {
     setTimeout(() => {
       setMensajes(prev => [...prev, { de: 'bot', texto: responder(pregunta) }])
       setEscribiendo(false)
+      sonarAviso()
     }, 700)
   }
 
   return (
     <>
+      <style>{`
+        @keyframes evox-burbuja-entrada {
+          0% { transform: scale(0); opacity: 0; }
+          60% { transform: scale(1.12); opacity: 1; }
+          100% { transform: scale(1); opacity: 1; }
+        }
+        @keyframes evox-pulso-anillo {
+          0% { box-shadow: 0 12px 32px rgba(139,92,246,0.45), 0 0 0 0 rgba(139,92,246,0.5); }
+          70% { box-shadow: 0 12px 32px rgba(139,92,246,0.45), 0 0 0 14px rgba(139,92,246,0); }
+          100% { box-shadow: 0 12px 32px rgba(139,92,246,0.45), 0 0 0 0 rgba(139,92,246,0); }
+        }
+        @keyframes evox-panel-entrada {
+          0% { transform: translateY(24px) scale(0.96); opacity: 0; }
+          100% { transform: translateY(0) scale(1); opacity: 1; }
+        }
+        @keyframes evox-mensaje-entrada {
+          0% { transform: translateY(8px); opacity: 0; }
+          100% { transform: translateY(0); opacity: 1; }
+        }
+      `}</style>
       {/* Burbuja flotante */}
       {!abierto && (
         <button
           onClick={() => setAbierto(true)}
           title="Soporte técnico"
           className="fixed bottom-6 right-6 z-[60] w-14 h-14 rounded-full flex items-center justify-center text-white shadow-2xl cursor-pointer hover:scale-110 transition-transform"
-          style={{ background: 'linear-gradient(135deg, #8B5CF6, #06B6D4)', boxShadow: '0 12px 32px rgba(139,92,246,0.45)' }}
+          style={{ background: 'linear-gradient(135deg, #8B5CF6, #06B6D4)', animation: 'evox-burbuja-entrada 0.45s cubic-bezier(0.34,1.56,0.64,1), evox-pulso-anillo 2.4s ease-out 0.6s infinite' }}
         >
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
@@ -105,7 +150,7 @@ export default function WidgetSoporte(ctx: AppContext) {
       {abierto && (
         <div
           className="fixed bottom-6 right-6 z-[60] w-[330px] max-w-[calc(100vw-3rem)] bg-white rounded-2xl overflow-hidden flex flex-col"
-          style={{ boxShadow: '0 24px 64px rgba(11,11,20,0.3)', height: '480px', maxHeight: '70vh' }}
+          style={{ boxShadow: '0 24px 64px rgba(11,11,20,0.3)', height: '480px', maxHeight: '70vh', animation: 'evox-panel-entrada 0.28s cubic-bezier(0.34,1.3,0.64,1)' }}
         >
           {/* Encabezado */}
           <div className="px-4 py-3.5 flex items-center gap-3" style={{ background: 'linear-gradient(135deg, #8B5CF6, #06B6D4)' }}>
@@ -126,7 +171,7 @@ export default function WidgetSoporte(ctx: AppContext) {
           {/* Mensajes */}
           <div className="flex-1 overflow-y-auto px-3.5 py-3 space-y-2.5 bg-[#F6F5FB]">
             {mensajes.map((m, i) => (
-              <div key={i} className={`flex ${m.de === 'yo' ? 'justify-end' : 'justify-start'}`}>
+              <div key={i} className="flex" style={{ justifyContent: m.de === 'yo' ? 'flex-end' : 'flex-start', animation: 'evox-mensaje-entrada 0.25s ease-out' }}>
                 <div
                   className={`max-w-[85%] px-3 py-2 rounded-2xl text-[13px] leading-relaxed ${
                     m.de === 'yo'

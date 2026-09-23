@@ -23,9 +23,34 @@ export default function App() {
   const [page, setPage] = useState<Page>('landing')
   const [selectedProductId, setSelectedProductId] = useState<string | null>(null)
   const [catalogCategory, setCatalogCategory] = useState('')
-  const [wishlist, setWishlist] = useState<string[]>([])
+  const [wishlist, setWishlist] = useState<string[]>(() => {
+    try {
+      return JSON.parse(localStorage.getItem('evox_wishlist_guest') ?? '[]')
+    } catch {
+      return []
+    }
+  })
   const [products, setProducts] = useState<ProductoVista[]>([])
   const [carrito, setCarrito] = useState<Carrito>({ items: [], total: 0 })
+
+  useEffect(() => {
+    const key = `evox_wishlist_${user?.id ?? 'guest'}`
+    try {
+      const saved = localStorage.getItem(key)
+      setWishlist(saved ? JSON.parse(saved) : [])
+    } catch {
+      setWishlist([])
+    }
+  }, [user?.id])
+
+  useEffect(() => {
+    const key = `evox_wishlist_${user?.id ?? 'guest'}`
+    try {
+      localStorage.setItem(key, JSON.stringify(wishlist))
+    } catch {
+      /* almacenamiento lleno o bloqueado: se mantiene en memoria */
+    }
+  }, [wishlist, user?.id])
 
   useEffect(() => {
     let active = true

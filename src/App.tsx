@@ -10,6 +10,7 @@ import Catalogo from './pages/Catalog'
 import DetalleProducto from './pages/ProductDetail'
 import ListaDeseos from './pages/Wishlist'
 import PaginaAyuda from './pages/Ayuda'
+import WidgetSoporte from './components/SoporteWidget'
 import PaginaCarrito from './pages/Cart'
 import InicioSesion from './pages/Login'
 import Registro from './pages/Register'
@@ -170,36 +171,60 @@ export default function App() {
   const isAdminPage = page.startsWith('admin')
 
   if (isAdminPage && role !== 'ADMINISTRADOR') {
-    return <AccesoDenegado {...ctx} requiredRole="ADMINISTRADOR" />
+    return (
+      <>
+        <AccesoDenegado {...ctx} requiredRole="ADMINISTRADOR" />
+        <WidgetSoporte {...ctx} />
+      </>
+    )
   }
 
+  let contenido: React.ReactNode
   switch (page) {
     case 'catalog':
-      return <Catalogo {...ctx} />
+      contenido = <Catalogo {...ctx} />
+      break
     case 'product':
-      return <DetalleProducto {...ctx} />
+      contenido = <DetalleProducto {...ctx} />
+      break
     case 'wishlist':
-      return <ListaDeseos {...ctx} />
+      contenido = <ListaDeseos {...ctx} />
+      break
     case 'cart':
-      return <PaginaCarrito {...ctx} />
+      contenido = <PaginaCarrito {...ctx} />
+      break
     case 'login':
-      return <InicioSesion {...ctx} />
+      contenido = <InicioSesion {...ctx} />
+      break
     case 'register':
-      return <Registro {...ctx} />
+      contenido = <Registro {...ctx} />
+      break
     case 'admin-dashboard':
-      return <PanelAdmin {...ctx} />
+      contenido = <PanelAdmin {...ctx} />
+      break
     case 'admin-users':
-      return <UsuariosAdmin {...ctx} />
+      contenido = <UsuariosAdmin {...ctx} />
+      break
     case 'admin-products':
     case 'admin-product-form':
-      return <ProductosAdmin {...ctx} />
+      contenido = <ProductosAdmin {...ctx} />
+      break
     case 'about':
-      return <QuienesSomos {...ctx} />
+      contenido = <QuienesSomos {...ctx} />
+      break
     case 'ayuda':
-      return <PaginaAyuda {...ctx} />
+      contenido = <PaginaAyuda {...ctx} />
+      break
     case 'access-denied':
-      return <AccesoDenegado {...ctx} requiredRole="ADMINISTRADOR" />
+      contenido = <AccesoDenegado {...ctx} requiredRole="ADMINISTRADOR" />
+      break
     default:
-      return <PaginaInicio {...ctx} />
+      contenido = <PaginaInicio {...ctx} />
   }
+  return (
+    <>
+      {contenido}
+      <WidgetSoporte {...ctx} />
+    </>
+  )
 }

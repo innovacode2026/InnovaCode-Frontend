@@ -242,31 +242,31 @@ export default function PaginaInicio(ctx: AppContext) {
 
             {/* ── LAPTOP – pieza central ── */}
             <div className="absolute" style={{ width: '320px', bottom: '30px', left: '50%', zIndex: 2, transform: `translateX(-50%) translate(${mouse.x * -18}px, ${mouse.y * -10}px)`, animation: 'heroFloat 6s ease-in-out infinite', transition: 'transform 0.15s ease-out', filter: 'drop-shadow(0 24px 60px rgba(139,92,246,0.45))' }}>
-              <img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600&h=400&fit=crop&auto=format" alt="Laptop" className="w-full object-contain rounded-2xl" />
+              <img src="/hero-laptop.png" alt="Laptop" className="w-full object-contain transition-transform duration-300 hover:scale-110" />
               <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 rounded-full" style={{ width: '60%', height: '20px', background: 'rgba(139,92,246,0.35)', filter: 'blur(18px)' }} />
             </div>
 
             {/* PS5 – arriba centro-izquierda (por encima del laptop) */}
             <div className="absolute" style={{ width: '120px', top: '20px', left: 'calc(50% - 130px)', zIndex: 3, transform: `translate(${mouse.x * -30}px, ${mouse.y * -35}px) rotate(-8deg)`, animation: 'heroFloat 4.5s ease-in-out infinite 1s', transition: 'transform 0.15s ease-out', filter: 'drop-shadow(0 12px 40px rgba(139,92,246,0.55))' }}>
-              <img src="https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=400&h=400&fit=crop&auto=format" alt="PS5" className="w-full object-contain rounded-2xl" />
+              <img src="/hero-ps5.png" alt="PS5" className="w-full object-contain transition-transform duration-300 hover:scale-110" />
               <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 rounded-full" style={{ width: '55%', height: '10px', background: 'rgba(139,92,246,0.4)', filter: 'blur(9px)' }} />
             </div>
 
             {/* Headphones – arriba derecha */}
             <div className="absolute" style={{ width: '118px', top: '12px', right: '5px', zIndex: 3, transform: `translate(${mouse.x * -38}px, ${mouse.y * -28}px) rotate(8deg)`, animation: 'heroFloat 5s ease-in-out infinite 1.5s', transition: 'transform 0.15s ease-out', filter: 'drop-shadow(0 12px 40px rgba(6,182,212,0.5))' }}>
-              <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=400&fit=crop&auto=format" alt="Headphones" className="w-full object-contain rounded-2xl" />
+              <img src="/hero-headphones.png" alt="Headphones" className="w-full object-contain rounded-2xl transition-transform duration-300 hover:scale-110" />
               <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 rounded-full" style={{ width: '55%', height: '10px', background: 'rgba(6,182,212,0.35)', filter: 'blur(9px)' }} />
             </div>
 
             {/* Earbuds – abajo izquierda, delante del laptop */}
             <div className="absolute" style={{ width: '140px', bottom: '65px', left: '40px', zIndex: 4, transform: `translate(${mouse.x * -22}px, ${mouse.y * -18}px) rotate(-10deg)`, animation: 'heroFloat 5.5s ease-in-out infinite 0.5s', transition: 'transform 0.15s ease-out', filter: 'drop-shadow(0 14px 44px rgba(6,182,212,0.6))' }}>
-              <img src="https://images.unsplash.com/photo-1600294037681-c80b4cb5b434?w=400&h=400&fit=crop&auto=format" alt="TWS Earbuds" className="w-full object-contain rounded-2xl" />
+              <img src="/hero-earbuds.png" alt="TWS Earbuds" className="w-full object-contain transition-transform duration-300 hover:scale-110" />
               <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 rounded-full" style={{ width: '55%', height: '10px', background: 'rgba(6,182,212,0.4)', filter: 'blur(9px)' }} />
             </div>
 
             {/* Smartwatch – derecha, entre headphones y laptop */}
             <div className="absolute" style={{ width: '118px', top: '48%', right: '210px', zIndex: 4, transform: `translate(${mouse.x * -28}px, ${mouse.y * -20}px) rotate(5deg)`, animation: 'heroFloat 6.5s ease-in-out infinite 2s', transition: 'transform 0.15s ease-out', filter: 'drop-shadow(0 12px 38px rgba(139,92,246,0.5))' }}>
-              <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop&auto=format" alt="Smartwatch" className="w-full object-contain rounded-2xl" />
+              <img src="/hero-watch.png" alt="Smartwatch" className="w-full object-contain transition-transform duration-300 hover:scale-110" />
               <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 rounded-full" style={{ width: '55%', height: '10px', background: 'rgba(139,92,246,0.35)', filter: 'blur(9px)' }} />
             </div>
 

@@ -1,7 +1,7 @@
-import { useState, useEffect, useCallback, useRef } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { Page, AppContext } from './types'
 import { useAuth } from './hooks/useAuth'
-import { cargarCatalogo, ProductoVista } from './data/catalogo'
+import { cargarCatalogo, ProductoVista, esSellable } from './data/catalogo'
 import { agregarItem, actualizarItem, eliminarItem, obtenerCarrito } from './api/carritoService'
 import { crearPedido as crearPedidoApi } from './api/pedidoService'
 import type { Carrito, CrearPedidoResponse } from './types/api'
@@ -106,8 +106,24 @@ export default function App() {
 
   const addToCart = useCallback(
     async (productoId: string, cantidad = 1) => {
-      await agregarItem({ productoId, cantidad })
-      void refrescarCarrito()
+      if (esSellable(productoId)) {
+        await agregarItem({ productoId, cantidad })
+        void refrescarCarrito()
+      } else {
+        const prod = products.find(p => p.id === productoId)
+        if (!prod) return
+        setCarrito(prev => {
+          const existing = prev.items.find(i => i.productoId === productoId)
+          const items = existing
+            ? prev.items.map(i =>
+                i.productoId === productoId
+                  ? { ...i, cantidad: i.cantidad + cantidad, subtotal: (i.cantidad + cantidad) * i.precio }
+                  : i,
+              )
+            : [...prev.items, { productoId, nombre: prod.name, precio: prod.price, cantidad, subtotal: prod.price * cantidad }]
+          return { items, total: items.reduce((s, i) => s + i.subtotal, 0) }
+        })
+      }
       const nombre = products.find(p => p.id === productoId)?.name ?? 'Producto'
       mostrarAviso('Agregado al carrito', nombre)
     },
@@ -116,16 +132,34 @@ export default function App() {
 
   const removeFromCart = useCallback(
     async (productoId: string) => {
-      await eliminarItem(productoId)
-      void refrescarCarrito()
+      if (esSellable(productoId)) {
+        await eliminarItem(productoId)
+        void refrescarCarrito()
+      } else {
+        setCarrito(prev => {
+          const items = prev.items.filter(i => i.productoId !== productoId)
+          return { items, total: items.reduce((s, i) => s + i.subtotal, 0) }
+        })
+      }
     },
     [refrescarCarrito],
   )
 
   const updateCartQty = useCallback(
     async (productoId: string, cantidad: number) => {
-      await actualizarItem(productoId, { cantidad })
-      void refrescarCarrito()
+      if (esSellable(productoId)) {
+        await actualizarItem(productoId, { cantidad })
+        void refrescarCarrito()
+      } else {
+        setCarrito(prev => {
+          const items = prev.items.map(i =>
+            i.productoId === productoId
+              ? { ...i, cantidad, subtotal: cantidad * i.precio }
+              : i,
+          )
+          return { items, total: items.reduce((s, i) => s + i.subtotal, 0) }
+        })
+      }
     },
     [refrescarCarrito],
   )
@@ -257,15 +291,16 @@ export default function App() {
     default:
       contenido = <PaginaInicio {...ctx} />
   }
+
   return (
     <>
       {contenido}
       <WidgetSoporte {...ctx} />
       {aviso && (
-        <div className="fixed top-20 right-4 z-[70] flex items-center gap-2.5 pl-3 pr-4 py-3 bg-white border border-border rounded-2xl"
-          style={{ boxShadow: '0 16px 40px rgba(139,92,246,0.25)', animation: 'evox-aviso-entrada 0.3s cubic-bezier(0.34,1.4,0.64,1)', borderLeft: '4px solid #8B5CF6' }}>
+        <div className="fixed top-20 right-4 z-[70] flex items-center gap-2.5 pl-3 pr-4 py-3 rounded-2xl"
+          style={{ background: 'rgba(13,21,38,0.95)', border: '1px solid rgba(139,92,246,0.35)', borderLeft: '4px solid #8B5CF6', boxShadow: '0 16px 40px rgba(139,92,246,0.3)', animation: 'evox-aviso-entrada 0.3s cubic-bezier(0.34,1.4,0.64,1)', backdropFilter: 'blur(16px)' }}>
           <style>{`@keyframes evox-aviso-entrada { 0% { transform: translateX(24px); opacity: 0; } 100% { transform: translateX(0); opacity: 1; } }`}</style>
-          <span className="w-8 h-8 rounded-xl flex items-center justify-center text-white flex-shrink-0" style={{ background: 'linear-gradient(135deg, #8B5CF6, #06B6D4)' }}>
+          <span className="w-8 h-8 rounded-xl flex items-center justify-center text-white shrink-0" style={{ background: 'linear-gradient(135deg, #8B5CF6, #06B6D4)' }}>
             {aviso.icono === 'corazon' ? (
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
@@ -280,7 +315,7 @@ export default function App() {
           </span>
           <span className="min-w-0">
             <span className="block text-xs font-bold" style={{ background: 'linear-gradient(135deg, #8B5CF6, #06B6D4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>{aviso.titulo}</span>
-            <span className="block text-xs text-gray-600 truncate max-w-[220px]">{aviso.texto}</span>
+            <span className="block text-xs truncate max-w-[220px]" style={{ color: 'rgba(255,255,255,0.55)' }}>{aviso.texto}</span>
           </span>
         </div>
       )}

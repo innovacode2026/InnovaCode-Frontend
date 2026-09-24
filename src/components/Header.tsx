@@ -63,12 +63,7 @@ export default function Encabezado({ role, page, userName, wishlist, products, c
       onClick={() => navigate('landing')}
       className="flex items-center gap-2.5 flex-shrink-0 cursor-pointer"
     >
-      <span
-        className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-800 text-xl"
-        style={{ background: 'linear-gradient(135deg, #8B5CF6, #06B6D4)' }}
-      >
-        E
-      </span>
+      <img src="/logo-evox.png" alt="EVOX" className="w-10 h-10 object-contain rounded-xl" />
       <span
         className="font-display font-800 text-[20px] leading-none"
         style={{
@@ -158,12 +153,12 @@ export default function Encabezado({ role, page, userName, wishlist, products, c
           {/* Actions */}
           <div className="flex items-center gap-1">
             <button
-              onClick={() => role === 'CLIENTE' ? navigate('cart') : navigate('login')}
+              onClick={() => navigate('cart')}
               className="relative p-2 rounded-lg text-gray-500 hover:text-primary hover:bg-primary-50 transition-colors cursor-pointer"
               title="Carrito de compras"
             >
               <CartIcon size={20} />
-              {role === 'CLIENTE' && cartCount > 0 && (
+              {cartCount > 0 && (
                 <span className="absolute top-1 right-1 w-4 h-4 bg-primary text-white text-[9px] font-bold rounded-full flex items-center justify-center">
                   {cartCount}
                 </span>

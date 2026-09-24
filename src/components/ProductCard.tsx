@@ -12,7 +12,7 @@ interface TarjetaProductoProps {
 export default function TarjetaProducto({ product, ctx }: TarjetaProductoProps) {
   const { role, wishlist, toggleWishlist, navigate, addToCart } = ctx
   const isSaved = wishlist.includes(product.id)
-  const sellable = esSellable(product.id) && product.status === 'active'
+  const sellable = product.stock > 0 && product.status === 'active'
   const [popped, setPopped] = useState(false)
   const [added, setAdded] = useState(false)
   const [cartMsg, setCartMsg] = useState('')

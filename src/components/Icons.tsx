@@ -74,3 +74,5 @@ export const CartIcon = ({ size = 20, className = '', ...props }: IconProps) => 
   </svg>
 )
 export const MinusIcon = icon('M5 12h14')
+export const BellIcon = icon('M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0')
+export const MoreVerticalIcon = icon('M12 5h.01M12 12h.01M12 19h.01', '0 0 24 24')

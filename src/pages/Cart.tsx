@@ -11,27 +11,6 @@ export default function PaginaCarrito(ctx: AppContext) {
   const [creando, setCreando] = useState(false)
   const [mensaje, setMensaje] = useState<{ tipo: 'ok' | 'error'; texto: string } | null>(null)
 
-  if (role !== 'CLIENTE') {
-    return (
-      <div className="min-h-screen flex flex-col">
-        <Encabezado {...ctx} />
-        <div className="flex-1 flex items-center justify-center p-8">
-          <div className="text-center max-w-sm">
-            <div className="w-16 h-16 rounded-2xl bg-primary-50 flex items-center justify-center mx-auto mb-4">
-              <CartIcon size={28} className="text-primary" />
-            </div>
-            <h2 className="font-display font-700 text-gray-900 text-xl mb-2">Tu carrito</h2>
-            <p className="text-gray-500 text-sm mb-5">Inicia sesión para ver y gestionar tu carrito de compras.</p>
-            <button onClick={() => navigate('login')} className="px-5 py-2.5 bg-primary text-white text-sm font-semibold rounded-xl hover:bg-primary-hover transition-colors cursor-pointer">
-              Iniciar sesión
-            </button>
-          </div>
-        </div>
-        <PieDePagina navigate={navigate} />
-      </div>
-    )
-  }
-
   const imagenDe = (productoId: string) => products.find(p => p.id === productoId)?.image
   const stockDe = (productoId: string) => products.find(p => p.id === productoId)?.stock ?? 99
 
@@ -61,6 +40,10 @@ export default function PaginaCarrito(ctx: AppContext) {
   }
 
   const hacerPedido = async () => {
+    if (role !== 'CLIENTE') {
+      navigate('login')
+      return
+    }
     setCreando(true)
     setMensaje(null)
     try {

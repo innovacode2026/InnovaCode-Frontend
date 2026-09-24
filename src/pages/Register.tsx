@@ -53,22 +53,38 @@ export default function Registro(ctx: AppContext) {
   return (
     <div className="min-h-screen flex">
       {/* Panel izquierdo — imagen */}
-      <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden" style={{ background: '#0F172A' }}>
+      <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden" style={{ background: '#050816' }}>
+        {/* Imagen de fondo que ocupa todo el panel */}
         <img
-          src="https://6aa34afe9422e77b387b6929.imgix.net/camara.png"
-          alt="EVOX"
-          className="absolute inset-0 w-full h-full object-cover opacity-80"
+          src="/register-banner.png"
+          alt="Tecnología EVOX"
+          className="absolute inset-0 w-full h-full object-cover object-right"
         />
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(37,99,235,0.55) 0%, rgba(79,70,229,0.45) 100%)' }} />
-        <div className="relative z-10 flex flex-col justify-end p-12 text-white">
-          <button onClick={() => navigate('landing')} className="flex items-center gap-2 mb-auto cursor-pointer">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)' }}>
-              <span className="text-white font-display font-900 text-sm leading-none">e</span>
-            </div>
-            <span className="font-display font-800 text-2xl text-white">EVOX</span>
+
+        {/* Overlay degradado sobre la imagen */}
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(5,8,22,0.55) 0%, rgba(5,8,22,0.2) 45%, rgba(5,8,22,0.75) 100%)' }} />
+
+        {/* Logo arriba */}
+        <div className="relative z-10 flex flex-col justify-between h-full p-10 w-full">
+          <button onClick={() => navigate('landing')} className="flex items-center gap-2.5 cursor-pointer self-start">
+            <img src="/logo-evox.png" alt="EVOX" className="w-9 h-9 object-contain rounded-xl" />
+            <span className="font-display font-800 text-2xl" style={{ background: 'linear-gradient(135deg, #8B5CF6, #06B6D4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>EVOX</span>
           </button>
-          <h2 className="font-display font-800 text-3xl leading-tight mb-3">La mejor tecnología,<br />al mejor precio.</h2>
-          <p className="text-white/70 text-sm leading-relaxed max-w-xs">Únete a miles de clientes que ya disfrutan de los mejores productos tecnológicos con envío rápido y garantía oficial.</p>
+
+          {/* Texto inferior */}
+          <div>
+            <div className="inline-flex items-center gap-2 text-xs font-semibold px-3 py-1 rounded-full mb-4 uppercase tracking-wider" style={{ background: 'rgba(139,92,246,0.2)', color: '#C4B5FD', border: '1px solid rgba(139,92,246,0.35)', backdropFilter: 'blur(8px)' }}>
+              <span className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6] animate-pulse" />
+              Nueva cuenta
+            </div>
+            <h2 className="font-display font-800 text-white leading-tight mb-3" style={{ fontSize: 'clamp(1.6rem, 2.5vw, 2.1rem)', textShadow: '0 2px 20px rgba(0,0,0,0.5)' }}>
+              Únete a{' '}
+              <span style={{ background: 'linear-gradient(135deg, #8B5CF6, #06B6D4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>EVOX</span>
+            </h2>
+            <p className="text-white/70 text-sm leading-relaxed max-w-xs" style={{ textShadow: '0 1px 8px rgba(0,0,0,0.6)' }}>
+              Disfruta de una experiencia de compra más fácil y personalizada.
+            </p>
+          </div>
         </div>
       </div>
 

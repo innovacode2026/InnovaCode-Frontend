@@ -61,7 +61,7 @@ export default function QuienesSomos(ctx: AppContext) {
           </div>
           <h1 className="font-display font-700 text-white leading-tight mb-5" style={{ fontSize: 'clamp(2.2rem, 5vw, 3.8rem)' }}>
             Tecnología que{' '}
-            <span style={{ background: 'linear-gradient(135deg, #8B5CF6, #06B6D4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+            <span style={{ background: 'linear-gradient(135deg, #8B5CF6, #4F7FFF)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
               impulsa tu mundo
             </span>
           </h1>
@@ -81,25 +81,25 @@ export default function QuienesSomos(ctx: AppContext) {
       </section>
 
       {/* Quiénes somos */}
-      <section className="bg-white py-20">
+      <section className="py-20" style={{ background: '#080E20', borderTop: '1px solid rgba(99,102,241,0.15)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
               <span className="text-xs font-semibold text-primary uppercase tracking-widest mb-3 block">Nuestra historia</span>
-              <h2 className="font-display font-700 text-gray-900 text-3xl sm:text-4xl leading-tight mb-6">
+              <h2 className="font-display font-700 text-white text-3xl sm:text-4xl leading-tight mb-6">
                 Una tienda creada para acercarte a la tecnología
               </h2>
-              <p className="text-gray-500 leading-relaxed mb-5">
-                <strong className="text-gray-800">EVOX</strong> es una tienda especializada en tecnología y electrónica, creada para acercarte a los productos que forman parte de tu día a día. Nuestro catálogo reúne celulares, laptops, audífonos, smartwatches y accesorios, seleccionados pensando en calidad, funcionalidad y diseño.
+              <p className="leading-relaxed mb-5" style={{ color: 'rgba(255,255,255,0.5)' }}>
+                <strong className="text-white/80">EVOX</strong> es una tienda especializada en tecnología y electrónica, creada para acercarte a los productos que forman parte de tu día a día. Nuestro catálogo reúne celulares, laptops, audífonos, smartwatches y accesorios, seleccionados pensando en calidad, funcionalidad y diseño.
               </p>
-              <p className="text-gray-500 leading-relaxed mb-8">
+              <p className="leading-relaxed mb-8" style={{ color: 'rgba(255,255,255,0.5)' }}>
                 Nos enfocamos en ofrecer una experiencia de compra sencilla, atención cercana y productos con garantía, para que puedas adquirir tecnología con total confianza y sin complicaciones.
               </p>
               <div className="flex flex-wrap gap-6">
                 {[{ val: '165+', label: 'Productos' }, { val: '2.4K+', label: 'Clientes' }, { val: '6', label: 'Categorías' }].map(s => (
                   <div key={s.val}>
                     <div className="font-display font-800 text-2xl text-primary">{s.val}</div>
-                    <div className="text-gray-400 text-xs mt-0.5">{s.label}</div>
+                    <div className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.35)' }}>{s.label}</div>
                   </div>
                 ))}
               </div>
@@ -107,12 +107,12 @@ export default function QuienesSomos(ctx: AppContext) {
 
             {/* Visual card */}
             <div className="relative">
-              <div className="rounded-3xl overflow-hidden p-8" style={{ background: 'linear-gradient(135deg, #0B0B14 0%, #1a0533 100%)' }}>
+              <div className="rounded-3xl overflow-hidden p-8" style={{ background: 'linear-gradient(135deg, #0B0B14 0%, #1a0533 100%)', border: '1px solid rgba(139,92,246,0.2)' }}>
                 <div className="absolute inset-0 pointer-events-none rounded-3xl" style={{ background: 'radial-gradient(ellipse at 70% 30%, rgba(139,92,246,0.2) 0%, transparent 60%)' }} />
                 <div className="relative space-y-4">
                   {['Celulares & Smartphones', 'Laptops & Computadores', 'Audífonos & Audio', 'Smartwatches', 'Consolas & Gaming', 'Accesorios Tech'].map((cat, i) => (
-                    <div key={cat} className="flex items-center gap-3 p-3 rounded-xl" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(139,92,246,0.15)', animationDelay: `${i * 0.1}s` }}>
-                      <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: i % 2 === 0 ? '#8B5CF6' : '#06B6D4' }} />
+                    <div key={cat} className="flex items-center gap-3 p-3 rounded-xl" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(139,92,246,0.15)' }}>
+                      <div className="w-2 h-2 rounded-full shrink-0" style={{ background: i % 2 === 0 ? '#8B5CF6' : '#4F7FFF' }} />
                       <span className="text-white/70 text-sm font-medium">{cat}</span>
                     </div>
                   ))}
@@ -124,20 +124,23 @@ export default function QuienesSomos(ctx: AppContext) {
       </section>
 
       {/* Lo que nos diferencia */}
-      <section className="py-20" style={{ background: '#F8F7FF' }}>
+      <section className="py-20" style={{ background: '#050816' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <span className="text-xs font-semibold text-primary uppercase tracking-widest mb-3 block">Por qué elegirnos</span>
-            <h2 className="font-display font-700 text-gray-900 text-3xl sm:text-4xl">Lo que nos diferencia</h2>
+            <h2 className="font-display font-700 text-white text-3xl sm:text-4xl">Lo que nos diferencia</h2>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {diferenciadores.map(({ icon: Icon, title, desc, color, bg, border }) => (
-              <div key={title} className="bg-white rounded-2xl p-6 border border-border hover:shadow-lg transition-all">
+              <div key={title} className="rounded-2xl p-6 transition-all" style={{ background: 'rgba(13,21,38,0.7)', border: '1px solid rgba(99,102,241,0.2)' }}
+                onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(139,92,246,0.45)' }}
+                onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(99,102,241,0.2)' }}
+              >
                 <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style={{ background: bg, border: `1px solid ${border}` }}>
                   <Icon size={22} className={color} />
                 </div>
-                <h3 className="font-display font-700 text-gray-900 text-base mb-2">{title}</h3>
-                <p className="text-gray-500 text-sm leading-relaxed">{desc}</p>
+                <h3 className="font-display font-700 text-white text-base mb-2">{title}</h3>
+                <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.5)' }}>{desc}</p>
               </div>
             ))}
           </div>
@@ -145,7 +148,7 @@ export default function QuienesSomos(ctx: AppContext) {
       </section>
 
       {/* Misión y Visión */}
-      <section className="bg-white py-20">
+      <section className="py-20" style={{ background: '#080E20', borderTop: '1px solid rgba(99,102,241,0.15)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-8">
             {/* Misión */}
@@ -155,7 +158,7 @@ export default function QuienesSomos(ctx: AppContext) {
               </div>
               <h3 className="font-display font-700 text-white text-2xl mb-4 leading-tight">
                 Hacer que la tecnología sea{' '}
-                <span style={{ background: 'linear-gradient(135deg, #8B5CF6, #06B6D4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                <span style={{ background: 'linear-gradient(135deg, #8B5CF6, #4F7FFF)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
                   más accesible
                 </span>
               </h3>
@@ -171,7 +174,7 @@ export default function QuienesSomos(ctx: AppContext) {
               </div>
               <h3 className="font-display font-700 text-white text-2xl mb-4 leading-tight">
                 Ser la tienda tecnológica{' '}
-                <span style={{ background: 'linear-gradient(135deg, #06B6D4, #8B5CF6)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                <span style={{ background: 'linear-gradient(135deg, #4F7FFF, #8B5CF6)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
                   referente del país
                 </span>
               </h3>
@@ -184,29 +187,33 @@ export default function QuienesSomos(ctx: AppContext) {
       </section>
 
       {/* CTA */}
-      <section className="bg-primary-50 border-y border-primary-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 text-center">
-          <h2 className="font-display font-700 text-gray-900 text-2xl sm:text-3xl mb-3">
+      <section className="relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #060D1F 0%, #0d1a40 50%, #1a0c35 100%)' }}>
+        <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 50% 50%, rgba(139,92,246,0.2) 0%, transparent 70%)' }} />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 text-center">
+          <h2 className="font-display font-700 text-white text-2xl sm:text-3xl mb-3">
             ¿Listo para explorar{' '}
-            <span style={{ background: 'linear-gradient(135deg, #8B5CF6, #06B6D4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+            <span style={{ background: 'linear-gradient(135deg, #8B5CF6, #4F7FFF)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
               EVOX
             </span>
             ?
           </h2>
-          <p className="text-gray-500 text-base mb-7 max-w-md mx-auto">
+          <p className="text-base mb-7 max-w-md mx-auto" style={{ color: 'rgba(255,255,255,0.5)' }}>
             Descubre nuestro catálogo completo y encuentra la tecnología que necesitas.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <button
               onClick={() => navigate('catalog')}
-              className="px-6 py-3 text-white font-semibold rounded-xl cursor-pointer shadow-sm"
-              style={{ background: 'linear-gradient(135deg, #8B5CF6, #7C3AED)' }}
+              className="px-6 py-3 text-white font-semibold rounded-xl cursor-pointer"
+              style={{ background: 'linear-gradient(135deg, #8B5CF6, #4F7FFF)', boxShadow: '0 0 30px rgba(139,92,246,0.35)' }}
             >
               Ver catálogo
             </button>
             <button
               onClick={() => navigate('register')}
-              className="px-6 py-3 bg-white text-gray-700 font-semibold rounded-xl border border-border hover:bg-gray-50 transition-colors cursor-pointer"
+              className="px-6 py-3 font-semibold rounded-xl cursor-pointer transition-colors"
+              style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(79,127,255,0.35)', color: 'rgba(255,255,255,0.8)' }}
+              onMouseEnter={e => { e.currentTarget.style.background = 'rgba(79,127,255,0.1)' }}
+              onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.05)' }}
             >
               Crear cuenta gratis
             </button>

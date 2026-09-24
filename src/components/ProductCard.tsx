@@ -59,15 +59,18 @@ export default function TarjetaProducto({ product, ctx }: TarjetaProductoProps) 
 
   return (
     <div
-      className="group bg-white rounded-2xl overflow-hidden cursor-pointer"
+      className="group rounded-2xl overflow-hidden cursor-pointer"
       style={{
-        boxShadow: '0 2px 16px rgba(0,0,0,0.07)',
-        transition: 'box-shadow 0.3s ease, transform 0.3s cubic-bezier(0.34,1.56,0.64,1)',
+        background: '#0D1526',
+        border: '1px solid rgba(99,102,241,0.2)',
+        boxShadow: '0 2px 16px rgba(0,0,0,0.3)',
+        transition: 'box-shadow 0.3s ease, transform 0.3s cubic-bezier(0.34,1.56,0.64,1), border-color 0.2s',
         willChange: 'transform',
       }}
       onMouseEnter={e => {
-        e.currentTarget.style.boxShadow = '0 24px 48px rgba(139,92,246,0.22), 0 8px 20px rgba(0,0,0,0.12)'
+        e.currentTarget.style.boxShadow = '0 24px 48px rgba(139,92,246,0.3), 0 8px 20px rgba(0,0,0,0.4)'
         e.currentTarget.style.transform = 'translateY(-8px)'
+        e.currentTarget.style.borderColor = 'rgba(139,92,246,0.5)'
         if (corazonTimerRef.current) clearTimeout(corazonTimerRef.current)
         corazonTimerRef.current = setTimeout(() => setCorazonVisible(true), 5000)
         if (videoRef.current) {
@@ -79,8 +82,9 @@ export default function TarjetaProducto({ product, ctx }: TarjetaProductoProps) 
         }
       }}
       onMouseLeave={e => {
-        e.currentTarget.style.boxShadow = '0 2px 16px rgba(0,0,0,0.07)'
+        e.currentTarget.style.boxShadow = '0 2px 16px rgba(0,0,0,0.3)'
         e.currentTarget.style.transform = 'translateY(0)'
+        e.currentTarget.style.borderColor = 'rgba(99,102,241,0.2)'
         if (videoTimerRef.current) clearTimeout(videoTimerRef.current)
         if (corazonTimerRef.current) clearTimeout(corazonTimerRef.current)
         setCorazonVisible(false)
@@ -89,7 +93,7 @@ export default function TarjetaProducto({ product, ctx }: TarjetaProductoProps) 
       onClick={() => navigate('product', product.id)}
     >
       {/* Imagen / Video */}
-      <div className="relative bg-gray-50 aspect-4/3">
+      <div className="relative aspect-4/3" style={{ background: 'rgba(5,8,22,0.5)' }}>
         {product.video && !videoError ? (
           <video
             ref={videoRef}
@@ -117,8 +121,8 @@ export default function TarjetaProducto({ product, ctx }: TarjetaProductoProps) 
           />
         )}
         {product.status === 'inactive' && (
-          <div className="absolute inset-0 bg-white/70 flex items-center justify-center">
-            <span className="bg-gray-800 text-white text-xs font-semibold px-3 py-1 rounded-full">No disponible</span>
+          <div className="absolute inset-0 flex items-center justify-center" style={{ background: 'rgba(5,8,22,0.7)' }}>
+            <span className="text-white/60 text-xs font-semibold px-3 py-1 rounded-full" style={{ background: 'rgba(13,21,38,0.9)', border: '1px solid rgba(99,102,241,0.3)' }}>No disponible</span>
           </div>
         )}
 
@@ -130,13 +134,22 @@ export default function TarjetaProducto({ product, ctx }: TarjetaProductoProps) 
           {badge.label}
         </span>
 
+        {/* Heart */}
+        <button
+          onClick={handleWishlist}
+          className={`absolute top-3 right-3 transition-all cursor-pointer ${popped ? 'heart-pop' : ''} ${isSaved ? 'text-red-500' : 'hover:text-red-400'}`}
+          style={{ color: isSaved ? undefined : 'rgba(255,255,255,0.3)' }}
+        >
+          <HeartIcon size={18} filled={isSaved} />
+        </button>
+
         {/* Corazón grande al centro tras 5s sobre el producto */}
         {corazonVisible && (
           <button
             onClick={handleWishlist}
             title={isSaved ? 'Quitar de deseos' : 'Guardar en deseos'}
-            className={`absolute inset-0 m-auto w-16 h-16 rounded-full bg-white/95 shadow-xl flex items-center justify-center transition-all cursor-pointer ${popped ? 'heart-pop' : ''} ${isSaved ? 'text-red-500' : 'text-gray-400 hover:text-red-400'}`}
-            style={{ animation: 'evox-corazon-entrada 0.35s cubic-bezier(0.34,1.56,0.64,1)' }}
+            className={`absolute inset-0 m-auto w-16 h-16 rounded-full shadow-xl flex items-center justify-center transition-all cursor-pointer ${popped ? 'heart-pop' : ''} ${isSaved ? 'text-red-500' : 'hover:text-red-400'}`}
+            style={{ background: 'rgba(13,21,38,0.92)', border: '1px solid rgba(139,92,246,0.4)', color: isSaved ? undefined : 'rgba(255,255,255,0.4)', animation: 'evox-corazon-entrada 0.35s cubic-bezier(0.34,1.56,0.64,1)' }}
           >
             <style>{`@keyframes evox-corazon-entrada { 0% { transform: scale(0.4); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }`}</style>
             <HeartIcon size={32} filled={isSaved} />
@@ -146,7 +159,7 @@ export default function TarjetaProducto({ product, ctx }: TarjetaProductoProps) 
 
       {/* Contenido */}
       <div className="p-4">
-        <h3 className="font-display font-700 text-gray-900 text-sm leading-snug line-clamp-2 mb-2">
+        <h3 className="font-display font-700 text-sm leading-snug line-clamp-2 mb-2" style={{ color: 'rgba(255,255,255,0.85)' }}>
           {product.name}
         </h3>
 
@@ -157,10 +170,11 @@ export default function TarjetaProducto({ product, ctx }: TarjetaProductoProps) 
               key={i}
               size={13}
               filled={i < Math.floor(product.rating)}
-              className={i < Math.floor(product.rating) ? 'text-amber-400' : 'text-gray-200'}
+              className={i < Math.floor(product.rating) ? 'text-amber-400' : ''}
+              style={i < Math.floor(product.rating) ? {} : { color: 'rgba(255,255,255,0.15)' }}
             />
           ))}
-          <span className="text-xs text-gray-500 ml-1">
+          <span className="text-xs ml-1" style={{ color: 'rgba(255,255,255,0.4)' }}>
             {product.rating} ({product.reviewCount})
           </span>
         </div>
@@ -169,11 +183,11 @@ export default function TarjetaProducto({ product, ctx }: TarjetaProductoProps) 
         <div className="flex items-end justify-between gap-2">
           <div>
             {showDiscount && (
-              <p className="text-xs text-gray-400 line-through leading-none mb-0.5">
+              <p className="text-xs line-through leading-none mb-0.5" style={{ color: 'rgba(255,255,255,0.3)' }}>
                 $ {originalPrice.toLocaleString('es-CO')}
               </p>
             )}
-            <p className="font-display font-800 text-xl leading-none" style={{ color: '#2563EB' }}>
+            <p className="font-display font-800 text-xl leading-none" style={{ background: 'linear-gradient(135deg, #8B5CF6, #4F7FFF)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
               $ {product.price.toLocaleString('es-CO')}
             </p>
           </div>
@@ -182,10 +196,8 @@ export default function TarjetaProducto({ product, ctx }: TarjetaProductoProps) 
               onClick={handleCart}
               title={!sellable ? 'Sin inventario disponible' : 'Agregar al carrito'}
               disabled={!sellable}
-              className="w-10 h-10 rounded-xl flex items-center justify-center text-white flex-shrink-0 cursor-pointer transition-opacity hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed"
-              style={{ background: '#2563EB' }}
-              onMouseEnter={e => (e.currentTarget.style.background = '#1D4ED8')}
-              onMouseLeave={e => (e.currentTarget.style.background = '#2563EB')}
+              className="w-10 h-10 rounded-xl flex items-center justify-center text-white shrink-0 cursor-pointer transition-all hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed"
+              style={{ background: 'linear-gradient(135deg, #8B5CF6, #4F7FFF)', boxShadow: '0 0 16px rgba(139,92,246,0.3)' }}
             >
               {added ? <CheckIcon size={18} /> : <CartIcon size={18} />}
             </button>

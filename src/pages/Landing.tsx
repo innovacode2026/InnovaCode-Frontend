@@ -178,31 +178,31 @@ export default function PaginaInicio(ctx: AppContext) {
 
         {/* Orbes */}
         <div className="absolute pointer-events-none" style={{ top: '-10%', left: '-5%', width: '600px', height: '600px', background: 'radial-gradient(circle, rgba(139,92,246,0.18) 0%, transparent 65%)', filter: 'blur(40px)' }} />
-        <div className="absolute pointer-events-none" style={{ top: '20%', right: '10%', width: '500px', height: '500px', background: 'radial-gradient(circle, rgba(139,92,246,0.14) 0%, transparent 65%)', filter: 'blur(50px)' }} />
+        <div className="absolute pointer-events-none" style={{ top: '20%', right: '10%', width: '500px', height: '500px', background: 'radial-gradient(circle, rgba(79,127,255,0.18) 0%, transparent 65%)', filter: 'blur(50px)' }} />
         <div className="absolute pointer-events-none" style={{ bottom: '-5%', right: '30%', width: '400px', height: '400px', background: 'radial-gradient(circle, rgba(124,58,237,0.12) 0%, transparent 65%)', filter: 'blur(40px)' }} />
 
         {/* Partículas */}
         {PARTICLES.map(p => (
-          <div key={p.id} className="absolute rounded-full pointer-events-none" style={{ left: p.left, top: p.top, width: `${p.size}px`, height: `${p.size}px`, background: p.id % 2 === 0 ? '#8B5CF6' : '#06B6D4', animation: `particlePulse ${p.duration} ease-in-out infinite`, animationDelay: p.delay }} />
+          <div key={p.id} className="absolute rounded-full pointer-events-none" style={{ left: p.left, top: p.top, width: `${p.size}px`, height: `${p.size}px`, background: p.id % 2 === 0 ? '#8B5CF6' : '#4F7FFF', animation: `particlePulse ${p.duration} ease-in-out infinite`, animationDelay: p.delay }} />
         ))}
 
         {/* Scan lines */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div className="absolute w-full" style={{ height: '1px', background: 'linear-gradient(90deg, transparent, rgba(139,92,246,0.3), transparent)', animation: 'scanLine 8s linear infinite', top: '30%' }} />
-          <div className="absolute w-full" style={{ height: '1px', background: 'linear-gradient(90deg, transparent, rgba(124,58,237,0.2), transparent)', animation: 'scanLine 12s linear infinite 4s', top: '65%' }} />
+          <div className="absolute w-full" style={{ height: '1px', background: 'linear-gradient(90deg, transparent, rgba(79,127,255,0.3), transparent)', animation: 'scanLine 12s linear infinite 4s', top: '65%' }} />
         </div>
 
         <div className="relative w-full max-w-7xl mx-auto px-8 sm:px-12 lg:px-16 py-20 lg:py-0 grid lg:grid-cols-2 gap-8 items-center">
 
           {/* Texto */}
           <div className="z-10">
-            <div className="inline-flex items-center gap-2 text-xs font-semibold px-4 py-1.5 rounded-full mb-8" style={{ background: 'rgba(139,92,246,0.08)', border: '1px solid rgba(139,92,246,0.25)', color: '#8B5CF6' }}>
-              <span className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6] animate-pulse" />
+            <div className="inline-flex items-center gap-2 text-xs font-semibold px-4 py-1.5 rounded-full mb-8" style={{ background: 'linear-gradient(135deg, rgba(139,92,246,0.08), rgba(79,127,255,0.08))', border: '1px solid rgba(79,127,255,0.3)', color: '#7FA3FF' }}>
+              <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: 'linear-gradient(135deg, #8B5CF6, #4F7FFF)' }} />
               NUEVA GENERACIÓN
             </div>
             <h1 className="font-display font-900 text-white leading-tight mb-6" style={{ fontSize: 'clamp(2.6rem, 5.2vw, 4.2rem)', fontWeight: 600 }}>
               Potencia tu{' '}
-              <span style={{ background: 'linear-gradient(135deg, #8B5CF6, #06B6D4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', filter: 'drop-shadow(0 0 20px rgba(139,92,246,0.5))' }}>
+              <span style={{ background: 'linear-gradient(135deg, #8B5CF6, #4F7FFF)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', filter: 'drop-shadow(0 0 20px rgba(139,92,246,0.5))' }}>
                 mundo digital
               </span>
             </h1>
@@ -210,16 +210,16 @@ export default function PaginaInicio(ctx: AppContext) {
               Los mejores celulares, laptops y accesorios con garantía oficial, soporte técnico y envío a todo el país.
             </p>
             <div className="flex flex-wrap gap-4 mb-12">
-              <button onClick={() => navigate('catalog')} className="relative px-8 py-4 text-sm font-bold rounded-xl text-white cursor-pointer overflow-hidden" style={{ background: 'linear-gradient(135deg, #8B5CF6, #7C3AED)', boxShadow: '0 0 30px rgba(139,92,246,0.35)', transition: 'all 0.2s' }}
-                onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 0 50px rgba(139,92,246,0.6)'; e.currentTarget.style.transform = 'translateY(-2px)' }}
-                onMouseLeave={e => { e.currentTarget.style.boxShadow = '0 0 30px rgba(139,92,246,0.35)'; e.currentTarget.style.transform = 'translateY(0)' }}
+              <button onClick={() => navigate('catalog')} className="relative px-8 py-4 text-sm font-bold rounded-xl text-white cursor-pointer overflow-hidden" style={{ background: 'linear-gradient(135deg, #8B5CF6, #4F7FFF)', boxShadow: '0 0 30px rgba(79,127,255,0.4)', transition: 'all 0.2s' }}
+                onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 0 55px rgba(79,127,255,0.65)'; e.currentTarget.style.transform = 'translateY(-2px)' }}
+                onMouseLeave={e => { e.currentTarget.style.boxShadow = '0 0 30px rgba(79,127,255,0.4)'; e.currentTarget.style.transform = 'translateY(0)' }}
               >
                 <span className="relative z-10">Comprar ahora</span>
                 <div className="absolute inset-0 pointer-events-none" style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.15), transparent)', animation: 'btnShine 3s ease-in-out infinite' }} />
               </button>
-              <button onClick={() => navigate('catalog')} className="px-8 py-4 text-sm font-bold rounded-xl cursor-pointer" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(139,92,246,0.3)', color: 'rgba(255,255,255,0.8)', backdropFilter: 'blur(12px)', transition: 'all 0.2s' }}
-                onMouseEnter={e => { e.currentTarget.style.background = 'rgba(139,92,246,0.1)'; e.currentTarget.style.borderColor = 'rgba(139,92,246,0.6)' }}
-                onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; e.currentTarget.style.borderColor = 'rgba(139,92,246,0.3)' }}
+              <button onClick={() => navigate('catalog')} className="px-8 py-4 text-sm font-bold rounded-xl cursor-pointer" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(79,127,255,0.35)', color: 'rgba(255,255,255,0.85)', backdropFilter: 'blur(12px)', transition: 'all 0.2s' }}
+                onMouseEnter={e => { e.currentTarget.style.background = 'rgba(79,127,255,0.12)'; e.currentTarget.style.borderColor = 'rgba(79,127,255,0.65)' }}
+                onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; e.currentTarget.style.borderColor = 'rgba(79,127,255,0.35)' }}
               >
                 Explorar catálogo
               </button>
@@ -227,7 +227,7 @@ export default function PaginaInicio(ctx: AppContext) {
             <div className="flex flex-wrap gap-8">
               {[{ val: '165+', label: 'Productos' }, { val: '2.4K+', label: 'Clientes' }, { val: '4.9★', label: 'Calificación' }].map(s => (
                 <div key={s.val}>
-                  <div className="font-display font-900 text-2xl" style={{ color: '#8B5CF6' }}>{s.val}</div>
+                  <div className="font-display font-900 text-2xl" style={{ background: 'linear-gradient(135deg, #8B5CF6, #4F7FFF)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>{s.val}</div>
                   <div className="text-white/35 text-xs mt-0.5">{s.label}</div>
                 </div>
               ))}
@@ -238,7 +238,7 @@ export default function PaginaInicio(ctx: AppContext) {
           <div className="relative hidden lg:flex items-center justify-center" style={{ height: '600px' }}>
 
             {/* Arco decorativo de brillo */}
-            <div className="absolute pointer-events-none" style={{ width: '480px', height: '260px', border: '1px solid rgba(6,182,212,0.18)', borderRadius: '50%', boxShadow: '0 0 25px rgba(6,182,212,0.12)', top: '200px', left: '50%', transform: 'translateX(-50%) rotate(-18deg)' }} />
+            <div className="absolute pointer-events-none" style={{ width: '480px', height: '260px', border: '1px solid rgba(79,127,255,0.18)', borderRadius: '50%', boxShadow: '0 0 25px rgba(79,127,255,0.12)', top: '200px', left: '50%', transform: 'translateX(-50%) rotate(-18deg)' }} />
 
             {/* ── LAPTOP – pieza central ── */}
             <div className="absolute" style={{ width: '320px', bottom: '30px', left: '50%', zIndex: 2, transform: `translateX(-50%) translate(${mouse.x * -18}px, ${mouse.y * -10}px)`, animation: 'heroFloat 6s ease-in-out infinite', transition: 'transform 0.15s ease-out', filter: 'drop-shadow(0 24px 60px rgba(139,92,246,0.45))' }}>
@@ -253,15 +253,15 @@ export default function PaginaInicio(ctx: AppContext) {
             </div>
 
             {/* Headphones – arriba derecha */}
-            <div className="absolute" style={{ width: '118px', top: '12px', right: '5px', zIndex: 3, transform: `translate(${mouse.x * -38}px, ${mouse.y * -28}px) rotate(8deg)`, animation: 'heroFloat 5s ease-in-out infinite 1.5s', transition: 'transform 0.15s ease-out', filter: 'drop-shadow(0 12px 40px rgba(6,182,212,0.5))' }}>
+            <div className="absolute" style={{ width: '118px', top: '12px', right: '5px', zIndex: 3, transform: `translate(${mouse.x * -38}px, ${mouse.y * -28}px) rotate(8deg)`, animation: 'heroFloat 5s ease-in-out infinite 1.5s', transition: 'transform 0.15s ease-out', filter: 'drop-shadow(0 12px 40px rgba(79,127,255,0.5))' }}>
               <img src="/hero-headphones.png" alt="Headphones" className="w-full object-contain rounded-2xl transition-transform duration-300 hover:scale-110" />
-              <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 rounded-full" style={{ width: '55%', height: '10px', background: 'rgba(6,182,212,0.35)', filter: 'blur(9px)' }} />
+              <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 rounded-full" style={{ width: '55%', height: '10px', background: 'rgba(79,127,255,0.35)', filter: 'blur(9px)' }} />
             </div>
 
             {/* Earbuds – abajo izquierda, delante del laptop */}
-            <div className="absolute" style={{ width: '140px', bottom: '65px', left: '40px', zIndex: 4, transform: `translate(${mouse.x * -22}px, ${mouse.y * -18}px) rotate(-10deg)`, animation: 'heroFloat 5.5s ease-in-out infinite 0.5s', transition: 'transform 0.15s ease-out', filter: 'drop-shadow(0 14px 44px rgba(6,182,212,0.6))' }}>
+            <div className="absolute" style={{ width: '140px', bottom: '65px', left: '40px', zIndex: 4, transform: `translate(${mouse.x * -22}px, ${mouse.y * -18}px) rotate(-10deg)`, animation: 'heroFloat 5.5s ease-in-out infinite 0.5s', transition: 'transform 0.15s ease-out', filter: 'drop-shadow(0 14px 44px rgba(79,127,255,0.6))' }}>
               <img src="/hero-earbuds.png" alt="TWS Earbuds" className="w-full object-contain transition-transform duration-300 hover:scale-110" />
-              <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 rounded-full" style={{ width: '55%', height: '10px', background: 'rgba(6,182,212,0.4)', filter: 'blur(9px)' }} />
+              <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 rounded-full" style={{ width: '55%', height: '10px', background: 'rgba(79,127,255,0.4)', filter: 'blur(9px)' }} />
             </div>
 
             {/* Smartwatch – derecha, entre headphones y laptop */}
@@ -271,13 +271,13 @@ export default function PaginaInicio(ctx: AppContext) {
             </div>
 
             {/* Badge precio – abajo centro */}
-            <div className="absolute px-4 py-2 rounded-xl text-xs font-bold" style={{ bottom: '18px', left: 'calc(50% - 130px)', zIndex: 5, background: 'rgba(124,58,237,0.2)', border: '1px solid rgba(124,58,237,0.4)', backdropFilter: 'blur(16px)', color: 'white', transform: `translate(${mouse.x * -28}px, ${mouse.y * -15}px)`, transition: 'transform 0.15s ease-out', animation: 'heroFloat 5.5s ease-in-out infinite 1s' }}>
+            <div className="absolute px-4 py-2 rounded-xl text-xs font-bold" style={{ bottom: '18px', left: 'calc(50% - 130px)', zIndex: 5, background: 'rgba(15,25,60,0.75)', border: '1px solid rgba(79,127,255,0.4)', backdropFilter: 'blur(16px)', color: 'white', transform: `translate(${mouse.x * -28}px, ${mouse.y * -15}px)`, transition: 'transform 0.15s ease-out', animation: 'heroFloat 5.5s ease-in-out infinite 1s' }}>
               <div className="text-white/40 text-[10px] mb-0.5">DESDE</div>
-              <div className="text-base font-900" style={{ color: '#8B5CF6' }}>$ 1.299.000</div>
+              <div className="text-base font-900" style={{ background: 'linear-gradient(135deg, #8B5CF6, #4F7FFF)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>$ 1.299.000</div>
             </div>
 
             {/* Badge specs – abajo derecha */}
-            <div className="absolute px-3 py-2 rounded-xl text-xs font-semibold" style={{ bottom: '18px', right: '8px', zIndex: 5, background: 'rgba(5,8,22,0.88)', border: '1px solid rgba(139,92,246,0.28)', backdropFilter: 'blur(16px)', color: '#8B5CF6', transform: `translate(${mouse.x * -20}px, ${mouse.y * -10}px)`, transition: 'transform 0.15s ease-out', animation: 'heroFloat 7s ease-in-out infinite 2.5s' }}>
+            <div className="absolute px-3 py-2 rounded-xl text-xs font-semibold" style={{ bottom: '18px', right: '8px', zIndex: 5, background: 'rgba(5,8,22,0.88)', border: '1px solid rgba(79,127,255,0.3)', backdropFilter: 'blur(16px)', color: '#7FA3FF', transform: `translate(${mouse.x * -20}px, ${mouse.y * -10}px)`, transition: 'transform 0.15s ease-out', animation: 'heroFloat 7s ease-in-out infinite 2.5s' }}>
               <div className="text-white/50 text-[10px] mb-0.5">PROCESADOR</div>
               <div>Intel Core i9 · 32GB</div>
             </div>
@@ -285,17 +285,17 @@ export default function PaginaInicio(ctx: AppContext) {
           </div>
         </div>
 
-        <div className="absolute bottom-0 left-0 right-0 h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(139,92,246,0.4), rgba(124,58,237,0.4), transparent)' }} />
+        <div className="absolute bottom-0 left-0 right-0 h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(139,92,246,0.5), rgba(79,127,255,0.5), transparent)' }} />
       </section>
 
       {/* Ticker de marcas */}
-      <div className="bg-white border-b border-border overflow-hidden relative py-5">
-        <div className="absolute inset-y-0 left-0 w-20 z-10 pointer-events-none" style={{ background: 'linear-gradient(to right, white, transparent)' }} />
-        <div className="absolute inset-y-0 right-0 w-20 z-10 pointer-events-none" style={{ background: 'linear-gradient(to left, white, transparent)' }} />
+      <div className="overflow-hidden relative py-5" style={{ background: '#080E20', borderBottom: '1px solid rgba(99,102,241,0.2)' }}>
+        <div className="absolute inset-y-0 left-0 w-20 z-10 pointer-events-none" style={{ background: 'linear-gradient(to right, #080E20, transparent)' }} />
+        <div className="absolute inset-y-0 right-0 w-20 z-10 pointer-events-none" style={{ background: 'linear-gradient(to left, #080E20, transparent)' }} />
         <div className="marquee-track flex items-center">
           {[...tickerBrands, ...tickerBrands].map((brand, i) => (
-            <span key={i} className="flex items-center gap-4 px-8 text-gray-400 whitespace-nowrap flex-shrink-0">
-              <span className="w-1.5 h-1.5 rounded-full bg-gray-300 flex-shrink-0" />
+            <span key={i} className="flex items-center gap-4 px-8 whitespace-nowrap flex-shrink-0" style={{ color: 'rgba(255,255,255,0.35)' }}>
+              <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: 'rgba(139,92,246,0.5)' }} />
               <span className="inline-flex items-center justify-center h-7 w-20 flex-shrink-0">
                 {brandLogos[brand] ?? (
                   <span className="text-xs font-display font-700 uppercase tracking-widest">{brand}</span>
@@ -307,17 +307,17 @@ export default function PaginaInicio(ctx: AppContext) {
       </div>
 
       {/* Stats strip */}
-      <section className="bg-white border-b border-border">
+      <section style={{ background: '#080E20', borderBottom: '1px solid rgba(99,102,241,0.2)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
             {stats.map(({ label, value, icon: Icon, color }) => (
               <div key={label} className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center flex-shrink-0">
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ background: 'rgba(139,92,246,0.1)', border: '1px solid rgba(139,92,246,0.2)' }}>
                   <Icon size={20} className={color} />
                 </div>
                 <div>
                   <div className={`font-display font-800 text-xl ${color}`}>{value}</div>
-                  <div className="text-xs text-gray-500 leading-tight">{label}</div>
+                  <div className="text-xs leading-tight" style={{ color: 'rgba(255,255,255,0.45)' }}>{label}</div>
                 </div>
               </div>
             ))}
@@ -329,8 +329,8 @@ export default function PaginaInicio(ctx: AppContext) {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
         <div className="flex items-center justify-between mb-7">
           <div>
-            <h2 className="font-display font-700 text-gray-900 text-2xl">Explora por categoría</h2>
-            <p className="text-gray-500 text-sm mt-1">Encuentra lo que buscas en nuestras 6 categorías</p>
+            <h2 className="font-display font-700 text-white text-2xl">Explora por categoría</h2>
+            <p className="text-sm mt-1" style={{ color: 'rgba(255,255,255,0.45)' }}>Encuentra lo que buscas en nuestras 6 categorías</p>
           </div>
           <button
             onClick={() => navigate('catalog')}
@@ -346,18 +346,20 @@ export default function PaginaInicio(ctx: AppContext) {
               <button
                 key={cat.id}
                 onClick={() => navigate('catalog', undefined, cat.id)}
-                className="group bg-white border border-border rounded-2xl p-4 flex flex-col items-center gap-2.5 hover:border-primary/30 hover:shadow-md transition-all cursor-pointer"
-                style={{ transition: 'all 0.2s' }}
+                className="group rounded-2xl p-4 flex flex-col items-center gap-2.5 transition-all cursor-pointer"
+                style={{ background: 'rgba(13,21,38,0.7)', border: '1px solid rgba(99,102,241,0.2)', transition: 'all 0.2s' }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(139,92,246,0.5)'; e.currentTarget.style.background = 'rgba(13,21,38,0.95)' }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(99,102,241,0.2)'; e.currentTarget.style.background = 'rgba(13,21,38,0.7)' }}
               >
                 <div
                   className="w-12 h-12 rounded-xl flex items-center justify-center"
-                  style={{ background: 'linear-gradient(135deg, rgba(139,92,246,0.1), rgba(6,182,212,0.1))' }}
+                  style={{ background: 'linear-gradient(135deg, rgba(139,92,246,0.15), rgba(79,127,255,0.15))' }}
                 >
                   {CatIcon && <CatIcon size={26} strokeWidth={1.7} className="text-primary" />}
                 </div>
                 <div className="text-center">
-                  <div className="font-display font-600 text-gray-800 text-sm group-hover:text-primary transition-colors">{cat.name}</div>
-                  <div className="text-xs text-gray-400 mt-0.5">{products.filter(p => p.category === cat.id).length} productos</div>
+                  <div className="font-display font-600 text-sm group-hover:text-primary transition-colors" style={{ color: 'rgba(255,255,255,0.8)' }}>{cat.name}</div>
+                  <div className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.35)' }}>{products.filter(p => p.category === cat.id).length} productos</div>
                 </div>
               </button>
             )
@@ -369,7 +371,7 @@ export default function PaginaInicio(ctx: AppContext) {
       <section className="mx-4 sm:mx-6 lg:mx-8 xl:mx-auto xl:max-w-7xl rounded-3xl overflow-hidden mb-14">
         <div
           className="relative px-8 py-10"
-          style={{ background: 'linear-gradient(135deg, #0B0B14 0%, #1a0533 50%, #0B0B14 100%)' }}
+          style={{ background: 'linear-gradient(135deg, #060D1F 0%, #0d1a40 40%, #1a0c35 80%, #060D1F 100%)' }}
         >
           {/* glow fondo */}
           <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 50% 60%, rgba(139,92,246,0.25) 0%, transparent 70%)' }} />
@@ -386,7 +388,7 @@ export default function PaginaInicio(ctx: AppContext) {
               </div>
               <h2 className="font-display font-800 text-white text-3xl sm:text-4xl mb-3 leading-tight">
                 Las mejores marcas,{' '}
-                <span style={{ background: 'linear-gradient(135deg, #8B5CF6, #06B6D4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                <span style={{ background: 'linear-gradient(135deg, #8B5CF6, #4F7FFF)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
                   los mejores precios
                 </span>
               </h2>
@@ -396,7 +398,7 @@ export default function PaginaInicio(ctx: AppContext) {
               <button
                 onClick={() => navigate('catalog')}
                 className="px-6 py-3 text-white text-sm font-semibold rounded-xl cursor-pointer"
-                style={{ background: 'linear-gradient(135deg, #8B5CF6, #06B6D4)' }}
+                style={{ background: 'linear-gradient(135deg, #8B5CF6, #4F7FFF)' }}
               >
                 Ver ofertas
               </button>
@@ -446,13 +448,13 @@ export default function PaginaInicio(ctx: AppContext) {
                 <p className="text-white/40 text-xs font-semibold uppercase tracking-widest mb-1">Hasta</p>
                 <p
                   className="font-display font-900 text-5xl leading-none"
-                  style={{ background: 'linear-gradient(135deg, #8B5CF6, #06B6D4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
+                  style={{ background: 'linear-gradient(135deg, #8B5CF6, #4F7FFF)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
                 >
                   30%
                 </p>
                 <p
                   className="font-display font-800 text-2xl leading-none mb-2"
-                  style={{ background: 'linear-gradient(135deg, #8B5CF6, #06B6D4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
+                  style={{ background: 'linear-gradient(135deg, #8B5CF6, #4F7FFF)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
                 >
                   OFF
                 </p>
@@ -465,12 +467,12 @@ export default function PaginaInicio(ctx: AppContext) {
       </section>
 
       {/* Productos destacados */}
-      <section className="bg-white py-14">
+      <section className="py-14" style={{ background: '#080E20', borderTop: '1px solid rgba(99,102,241,0.15)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-7">
             <div>
-              <h2 className="font-display font-700 text-gray-900 text-2xl">Productos destacados</h2>
-              <p className="text-gray-500 text-sm mt-1">Los más valorados por nuestra comunidad</p>
+              <h2 className="font-display font-700 text-white text-2xl">Productos destacados</h2>
+              <p className="text-sm mt-1" style={{ color: 'rgba(255,255,255,0.45)' }}>Los más valorados por nuestra comunidad</p>
             </div>
             <button
               onClick={() => navigate('catalog')}
@@ -491,8 +493,8 @@ export default function PaginaInicio(ctx: AppContext) {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
         <div className="flex items-center justify-between mb-7">
           <div>
-            <h2 className="font-display font-700 text-gray-900 text-2xl">Recién llegados</h2>
-            <p className="text-gray-500 text-sm mt-1">Novedades en nuestro catálogo</p>
+            <h2 className="font-display font-700 text-white text-2xl">Recién llegados</h2>
+            <p className="text-sm mt-1" style={{ color: 'rgba(255,255,255,0.45)' }}>Novedades en nuestro catálogo</p>
           </div>
           <button
             onClick={() => navigate('catalog')}
@@ -509,29 +511,37 @@ export default function PaginaInicio(ctx: AppContext) {
       </section>
 
       {/* CTA */}
-      <section className="bg-primary-50 border-y border-primary-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 text-center">
-          <h2 className="font-display font-700 text-gray-900 text-2xl sm:text-3xl mb-3">
+      <section className="relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #060D1F 0%, #0d1a40 50%, #1a0c35 100%)' }}>
+        <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 50% 50%, rgba(139,92,246,0.2) 0%, transparent 70%)' }} />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 text-center">
+          <div className="inline-flex items-center gap-2 text-xs font-semibold px-4 py-1.5 rounded-full mb-6" style={{ background: 'rgba(139,92,246,0.1)', border: '1px solid rgba(139,92,246,0.25)', color: '#C4B5FD' }}>
+            <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: '#8B5CF6' }} />
+            Únete gratis hoy
+          </div>
+          <h2 className="font-display font-700 text-white text-2xl sm:text-3xl mb-3">
             Únete a{' '}
-            <span style={{ background: 'linear-gradient(135deg, #8B5CF6, #06B6D4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+            <span style={{ background: 'linear-gradient(135deg, #8B5CF6, #4F7FFF)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
               EVOX
             </span>{' '}
             hoy
           </h2>
-          <p className="text-gray-500 text-base mb-7 max-w-md mx-auto">
+          <p className="text-base mb-7 max-w-md mx-auto" style={{ color: 'rgba(255,255,255,0.5)' }}>
             Crea tu cuenta gratuita, guarda tus productos favoritos y recibe ofertas exclusivas.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <button
               onClick={() => navigate('register')}
-              className="px-6 py-3 text-white font-semibold rounded-xl cursor-pointer shadow-sm"
-              style={{ background: 'linear-gradient(135deg, #8B5CF6, #7C3AED)' }}
+              className="px-6 py-3 text-white font-semibold rounded-xl cursor-pointer"
+              style={{ background: 'linear-gradient(135deg, #8B5CF6, #4F7FFF)', boxShadow: '0 0 30px rgba(79,127,255,0.35)' }}
             >
               Crear cuenta gratuita
             </button>
             <button
               onClick={() => navigate('catalog')}
-              className="px-6 py-3 bg-white text-gray-700 font-semibold rounded-xl border border-border hover:bg-gray-50 transition-colors cursor-pointer"
+              className="px-6 py-3 font-semibold rounded-xl cursor-pointer transition-colors"
+              style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(79,127,255,0.35)', color: 'rgba(255,255,255,0.8)' }}
+              onMouseEnter={e => { e.currentTarget.style.background = 'rgba(79,127,255,0.1)' }}
+              onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.05)' }}
             >
               Explorar catálogo
             </button>

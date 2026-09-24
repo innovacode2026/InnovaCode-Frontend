@@ -67,7 +67,7 @@ export default function Encabezado({ role, page, userName, wishlist, products, c
       <span
         className="font-display font-800 text-[20px] leading-none"
         style={{
-          background: 'linear-gradient(135deg, #8B5CF6, #06B6D4)',
+          background: 'linear-gradient(135deg, #8B5CF6, #4F7FFF)',
           WebkitBackgroundClip: 'text',
           WebkitTextFillColor: 'transparent',
         }}
@@ -78,7 +78,7 @@ export default function Encabezado({ role, page, userName, wishlist, products, c
   )
 
   return (
-    <header className="bg-white/95 backdrop-blur-md border-b border-border sticky top-0 z-50">
+    <header className="backdrop-blur-md border-b sticky top-0 z-50" style={{ background: 'rgba(5,8,22,0.95)', borderColor: 'rgba(99,102,241,0.2)' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 gap-4">
           <LogoEVOX />
@@ -91,9 +91,10 @@ export default function Encabezado({ role, page, userName, wishlist, products, c
                 onClick={() => navigate(link.page)}
                 className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer ${
                   page === link.page
-                    ? 'bg-primary-50 text-primary'
-                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                    ? 'text-primary'
+                    : 'text-white/60 hover:text-white hover:bg-white/5'
                 }`}
+                style={page === link.page ? { background: 'rgba(139,92,246,0.12)' } : {}}
               >
                 {link.label}
               </button>
@@ -103,7 +104,7 @@ export default function Encabezado({ role, page, userName, wishlist, products, c
           {/* Search */}
           <form onSubmit={handleSearch} className="hidden lg:flex flex-1 max-w-md">
             <div className="relative w-full">
-              <SearchIcon size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+              <SearchIcon size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30" />
               <input
                 type="text"
                 placeholder="Buscar celulares, laptops..."
@@ -111,10 +112,13 @@ export default function Encabezado({ role, page, userName, wishlist, products, c
                 onChange={e => setSearchQuery(e.target.value)}
                 onFocus={() => setSearchFocus(true)}
                 onBlur={() => setTimeout(() => setSearchFocus(false), 150)}
-                className="w-full pl-9 pr-4 py-2 text-sm bg-gray-50 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-gray-400"
+                className="w-full pl-9 pr-4 py-2 text-sm rounded-lg focus:outline-none transition-all text-white placeholder:text-white/30"
+                style={{ background: 'rgba(13,21,38,0.8)', border: '1px solid rgba(99,102,241,0.25)', boxShadow: 'none' }}
+                onFocus={e => { setSearchFocus(true); e.currentTarget.style.borderColor = 'rgba(139,92,246,0.6)' }}
+                onBlur={e => { setTimeout(() => setSearchFocus(false), 150); e.currentTarget.style.borderColor = 'rgba(99,102,241,0.25)' }}
               />
               {searchFocus && sugerencias.length > 0 && (
-                <div className="absolute top-full mt-2 left-0 right-0 bg-white border border-border rounded-xl shadow-xl overflow-hidden z-50">
+                <div className="absolute top-full mt-2 left-0 right-0 rounded-xl overflow-hidden z-50" style={{ background: '#0D1526', border: '1px solid rgba(99,102,241,0.25)', boxShadow: '0 20px 60px rgba(0,0,0,0.6)' }}>
                   {sugerencias.map(p => (
                     <button
                       key={p.id}
@@ -124,12 +128,12 @@ export default function Encabezado({ role, page, userName, wishlist, products, c
                         setSearchFocus(false)
                         navigate('product', p.id)
                       }}
-                      className="w-full flex items-center gap-3 px-3 py-2 hover:bg-gray-50 text-left cursor-pointer"
+                      className="w-full flex items-center gap-3 px-3 py-2 hover:bg-white/5 text-left cursor-pointer"
                     >
-                      <img src={p.image} alt={p.name} className="w-10 h-10 object-contain rounded-lg bg-gray-50 flex-shrink-0" />
+                      <img src={p.image} alt={p.name} className="w-10 h-10 object-contain rounded-lg flex-shrink-0" style={{ background: 'rgba(13,21,38,0.6)' }} />
                       <span className="flex-1 min-w-0">
-                        <span className="block text-sm text-gray-900 truncate">{p.name}</span>
-                        <span className="block text-xs font-semibold" style={{ color: '#2563EB' }}>
+                        <span className="block text-sm text-white/80 truncate">{p.name}</span>
+                        <span className="block text-xs font-semibold" style={{ background: 'linear-gradient(135deg, #8B5CF6, #4F7FFF)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
                           $ {p.price.toLocaleString('es-CO')}
                         </span>
                       </span>
@@ -141,7 +145,8 @@ export default function Encabezado({ role, page, userName, wishlist, products, c
                       e.preventDefault()
                       irACatalogo(searchQuery.trim())
                     }}
-                    className="w-full px-3 py-2 text-xs font-semibold text-primary bg-primary-50 hover:bg-primary-100 text-center cursor-pointer"
+                    className="w-full px-3 py-2 text-xs font-semibold text-primary text-center cursor-pointer hover:bg-white/5"
+                    style={{ borderTop: '1px solid rgba(99,102,241,0.2)' }}
                   >
                     Ver todos los resultados
                   </button>
@@ -154,7 +159,7 @@ export default function Encabezado({ role, page, userName, wishlist, products, c
           <div className="flex items-center gap-1">
             <button
               onClick={() => navigate('cart')}
-              className="relative p-2 rounded-lg text-gray-500 hover:text-primary hover:bg-primary-50 transition-colors cursor-pointer"
+              className="relative p-2 rounded-lg text-white/50 hover:text-primary hover:bg-white/5 transition-colors cursor-pointer"
               title="Carrito de compras"
             >
               <CartIcon size={20} />
@@ -167,7 +172,7 @@ export default function Encabezado({ role, page, userName, wishlist, products, c
             {(role === 'CLIENTE' || role === 'guest') && (
               <button
                 onClick={() => role === 'CLIENTE' ? navigate('wishlist') : navigate('login')}
-                className="relative p-2 rounded-lg text-gray-500 hover:text-primary hover:bg-primary-50 transition-colors cursor-pointer"
+                className="relative p-2 rounded-lg text-white/50 hover:text-primary hover:bg-white/5 transition-colors cursor-pointer"
                 title="Lista de deseos"
               >
                 <HeartIcon size={20} />
@@ -183,14 +188,14 @@ export default function Encabezado({ role, page, userName, wishlist, products, c
               <div className="flex items-center gap-2 ml-1">
                 <button
                   onClick={() => navigate('login')}
-                  className="text-sm text-gray-600 hover:text-gray-900 font-medium px-3 py-1.5 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
+                  className="text-sm text-white/60 hover:text-white font-medium px-3 py-1.5 rounded-lg hover:bg-white/5 transition-colors cursor-pointer"
                 >
                   Iniciar sesión
                 </button>
                 <button
                   onClick={() => navigate('register')}
                   className="text-sm text-white font-medium px-3 py-1.5 rounded-lg transition-colors cursor-pointer"
-                  style={{ background: 'linear-gradient(135deg, #8B5CF6, #7C3AED)' }}
+                  style={{ background: 'linear-gradient(135deg, #8B5CF6, #4F7FFF)', boxShadow: '0 0 20px rgba(139,92,246,0.3)' }}
                 >
                   Registrarse
                 </button>
@@ -199,37 +204,37 @@ export default function Encabezado({ role, page, userName, wishlist, products, c
               <div className="relative ml-1">
                 <button
                   onClick={() => setRoleMenuOpen(!roleMenuOpen)}
-                  className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
+                  className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg hover:bg-white/5 transition-colors cursor-pointer"
                 >
                   <div
                     className="w-7 h-7 rounded-full flex items-center justify-center"
-                    style={{ background: 'linear-gradient(135deg, #8B5CF6, #06B6D4)' }}
+                    style={{ background: 'linear-gradient(135deg, #8B5CF6, #4F7FFF)' }}
                   >
                     <UserIcon size={14} className="text-white" />
                   </div>
                   <div className="hidden sm:block text-left">
-                    <div className="text-xs font-semibold text-gray-800 leading-none">
+                    <div className="text-xs font-semibold text-white/80 leading-none">
                       {userName || 'Usuario'}
                     </div>
-                    <div className={`text-[10px] font-medium mt-0.5 ${roleColors[role]} rounded px-1`}>
+                    <div className="text-[10px] font-medium mt-0.5 text-primary rounded px-1">
                       {roleLabels[role]}
                     </div>
                   </div>
-                  <ChevronDownIcon size={14} className="text-gray-400 hidden sm:block" />
+                  <ChevronDownIcon size={14} className="text-white/30 hidden sm:block" />
                 </button>
                 {roleMenuOpen && (
-                  <div className="absolute right-0 top-full mt-1 w-48 bg-white rounded-xl shadow-lg border border-border py-1 z-50 animate-fade-in">
+                  <div className="absolute right-0 top-full mt-1 w-48 rounded-xl py-1 z-50 animate-fade-in" style={{ background: '#0D1526', border: '1px solid rgba(99,102,241,0.2)', boxShadow: '0 20px 60px rgba(0,0,0,0.6)' }}>
                     {role === 'ADMINISTRADOR' && (
                       <button
                         onClick={() => { navigate('admin-dashboard'); setRoleMenuOpen(false) }}
-                        className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 cursor-pointer"
+                        className="w-full text-left px-3 py-2 text-sm text-white/70 hover:bg-white/5 cursor-pointer"
                       >
                         Panel de control
                       </button>
                     )}
                     <button
                       onClick={() => { logout(); navigate('landing'); setRoleMenuOpen(false) }}
-                      className="w-full text-left px-3 py-2 text-sm text-danger hover:bg-danger-50 cursor-pointer"
+                      className="w-full text-left px-3 py-2 text-sm text-danger hover:bg-danger-50/10 cursor-pointer"
                     >
                       Cerrar sesión
                     </button>
@@ -241,7 +246,7 @@ export default function Encabezado({ role, page, userName, wishlist, products, c
             {/* Mobile menu toggle */}
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
-              className="md:hidden p-2 rounded-lg text-gray-500 hover:bg-gray-50 transition-colors ml-1 cursor-pointer"
+              className="md:hidden p-2 rounded-lg text-white/50 hover:bg-white/5 transition-colors ml-1 cursor-pointer"
             >
               {mobileOpen ? <XIcon size={20} /> : <MenuIcon size={20} />}
             </button>
@@ -250,31 +255,30 @@ export default function Encabezado({ role, page, userName, wishlist, products, c
 
         {/* Mobile menu */}
         {mobileOpen && (
-          <div className="md:hidden border-t border-border py-3 animate-fade-in">
+          <div className="md:hidden py-3 animate-fade-in" style={{ borderTop: '1px solid rgba(99,102,241,0.2)' }}>
             <div className="flex flex-col gap-1">
               {navLinks.map(link => (
                 <button
                   key={link.page}
                   onClick={() => { navigate(link.page); setMobileOpen(false) }}
                   className={`w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-colors cursor-pointer ${
-                    page === link.page ? 'bg-primary-50 text-primary' : 'text-gray-700 hover:bg-gray-50'
+                    page === link.page ? 'text-primary' : 'text-white/60 hover:text-white hover:bg-white/5'
                   }`}
+                  style={page === link.page ? { background: 'rgba(139,92,246,0.12)' } : {}}
                 >
                   {link.label}
                 </button>
               ))}
-              <div className="mt-2 pt-2 border-t border-border">
-                <form
-                  onSubmit={handleSearch}
-                  className="relative"
-                >
-                  <SearchIcon size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+              <div className="mt-2 pt-2" style={{ borderTop: '1px solid rgba(99,102,241,0.15)' }}>
+                <form onSubmit={handleSearch} className="relative">
+                  <SearchIcon size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30" />
                   <input
                     type="text"
                     placeholder="Buscar productos..."
                     value={searchQuery}
                     onChange={e => setSearchQuery(e.target.value)}
-                    className="w-full pl-9 pr-4 py-2.5 text-sm bg-gray-50 border border-border rounded-lg focus:outline-none focus:border-primary"
+                    className="w-full pl-9 pr-4 py-2.5 text-sm rounded-lg focus:outline-none text-white placeholder:text-white/30"
+                    style={{ background: 'rgba(13,21,38,0.8)', border: '1px solid rgba(99,102,241,0.25)' }}
                   />
                 </form>
               </div>

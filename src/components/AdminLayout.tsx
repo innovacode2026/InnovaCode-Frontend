@@ -64,14 +64,14 @@ export default function LayoutAdmin({
         >
           <div
             className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
-            style={{ background: 'linear-gradient(135deg, #4F7FFF, #06B6D4)' }}
+            style={{ background: 'linear-gradient(135deg, #4F7FFF, #4F7FFF)' }}
           >
             <span className="text-white font-bold text-[13px] leading-none tracking-tight">EX</span>
           </div>
           <div>
             <div
               className="font-bold text-[18px] leading-none tracking-tight"
-              style={{ background: 'linear-gradient(135deg, #4F7FFF, #06B6D4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
+              style={{ background: 'linear-gradient(135deg, #4F7FFF, #4F7FFF)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
             >
               EVOX
             </div>
@@ -87,7 +87,7 @@ export default function LayoutAdmin({
         <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-white/5 hover:bg-white/8 transition-colors">
           <div
             className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 text-white text-sm font-bold"
-            style={{ background: 'linear-gradient(135deg, #4F7FFF, #06B6D4)' }}
+            style={{ background: 'linear-gradient(135deg, #4F7FFF, #4F7FFF)' }}
           >
             {initials}
           </div>
@@ -215,7 +215,7 @@ export default function LayoutAdmin({
               <BellIcon size={18} className="text-gray-500" />
               <span
                 className="absolute top-1 right-1 w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-bold text-white leading-none"
-                style={{ background: 'linear-gradient(135deg, #4F7FFF, #06B6D4)' }}
+                style={{ background: 'linear-gradient(135deg, #4F7FFF, #4F7FFF)' }}
               >
                 3
               </span>
@@ -225,7 +225,7 @@ export default function LayoutAdmin({
             <button className="flex items-center gap-2.5 pl-2 pr-3 py-1.5 rounded-xl hover:bg-gray-100 transition-colors cursor-pointer">
               <div
                 className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0"
-                style={{ background: 'linear-gradient(135deg, #4F7FFF, #06B6D4)' }}
+                style={{ background: 'linear-gradient(135deg, #4F7FFF, #4F7FFF)' }}
               >
                 {initials}
               </div>

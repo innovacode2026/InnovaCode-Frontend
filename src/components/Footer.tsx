@@ -36,67 +36,71 @@ export default function PieDePagina({ navigate }: Pick<AppContext, 'navigate'>) 
   return (
     <>
       {/* Newsletter banner */}
-      <section style={{ background: 'linear-gradient(135deg, #EEF2FF 0%, #E0F2FE 50%, #EDE9FE 100%)' }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <section className="relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #060D1F 0%, #0d1533 50%, #1a0c35 100%)', borderTop: '1px solid rgba(99,102,241,0.2)' }}>
+        <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 60% 50%, rgba(139,92,246,0.15) 0%, transparent 65%)' }} />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
           <div className="flex flex-col lg:flex-row items-center gap-8">
             {/* Products decoration */}
-            <div className="hidden lg:flex items-end gap-2 flex-shrink-0 -mb-10">
-              <div className="w-28 h-20 bg-white/60 rounded-2xl flex items-center justify-center text-4xl shadow-sm rotate-[-4deg]">💻</div>
-              <div className="w-20 h-24 bg-white/60 rounded-2xl flex items-center justify-center text-3xl shadow-sm">🎧</div>
-              <div className="w-16 h-28 bg-white/60 rounded-2xl flex items-center justify-center text-2xl shadow-sm rotate-[3deg]">📱</div>
-              <div className="w-14 h-16 bg-white/60 rounded-2xl flex items-center justify-center text-2xl shadow-sm rotate-[-2deg]">🎧</div>
+            <div className="hidden lg:flex items-end gap-2 shrink-0 -mb-10">
+              <div className="w-28 h-20 rounded-2xl flex items-center justify-center text-4xl rotate-[-4deg]" style={{ background: 'rgba(139,92,246,0.12)', border: '1px solid rgba(139,92,246,0.25)' }}>💻</div>
+              <div className="w-20 h-24 rounded-2xl flex items-center justify-center text-3xl" style={{ background: 'rgba(79,127,255,0.12)', border: '1px solid rgba(79,127,255,0.25)' }}>🎧</div>
+              <div className="w-16 h-28 rounded-2xl flex items-center justify-center text-2xl rotate-[3deg]" style={{ background: 'rgba(139,92,246,0.12)', border: '1px solid rgba(139,92,246,0.25)' }}>📱</div>
+              <div className="w-14 h-16 rounded-2xl flex items-center justify-center text-2xl rotate-[-2deg]" style={{ background: 'rgba(79,127,255,0.1)', border: '1px solid rgba(79,127,255,0.2)' }}>🎧</div>
             </div>
 
             {/* Text */}
             <div className="flex-1 text-center lg:text-left">
               <div className="flex items-center gap-2 justify-center lg:justify-start mb-2">
-                <div className="w-7 h-7 rounded-lg bg-blue-100 flex items-center justify-center">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="#3B82F6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="14" height="14"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'rgba(139,92,246,0.15)', border: '1px solid rgba(139,92,246,0.3)' }}>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="14" height="14"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
                 </div>
-                <span className="text-xs font-bold text-blue-500 uppercase tracking-widest">Suscríbete a nuestra tienda</span>
+                <span className="text-xs font-bold uppercase tracking-widest" style={{ color: '#C4B5FD' }}>Suscríbete a nuestra tienda</span>
               </div>
-              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 leading-tight mb-2">
+              <h2 className="text-2xl sm:text-3xl font-bold text-white leading-tight mb-2">
                 Mantente al día con las<br />
-                <span className="text-blue-500">mejores ofertas y novedades</span>
+                <span style={{ background: 'linear-gradient(135deg, #8B5CF6, #4F7FFF)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>mejores ofertas y novedades</span>
               </h2>
-              <p className="text-sm text-gray-500 max-w-sm mx-auto lg:mx-0">
+              <p className="text-sm max-w-sm mx-auto lg:mx-0" style={{ color: 'rgba(255,255,255,0.45)' }}>
                 Recibe promociones exclusivas, nuevos lanzamientos y más directo en tu correo.
               </p>
             </div>
 
             {/* Form */}
-            <div className="w-full lg:w-auto lg:min-w-[380px] flex-shrink-0">
+            <div className="w-full lg:w-auto lg:min-w-[380px] shrink-0">
               {subscribed ? (
-                <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-200 rounded-2xl px-5 py-4">
+                <div className="flex items-center gap-2 rounded-2xl px-5 py-4" style={{ background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.3)' }}>
                   <svg viewBox="0 0 24 24" fill="none" stroke="#10B981" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" width="18" height="18"><polyline points="20 6 9 17 4 12"/></svg>
-                  <span className="text-sm font-semibold text-emerald-700">¡Te has suscrito exitosamente!</span>
+                  <span className="text-sm font-semibold text-success">¡Te has suscrito exitosamente!</span>
                 </div>
               ) : (
                 <form onSubmit={handleSubscribe}>
                   <div className="flex gap-2 mb-2">
                     <div className="flex-1 relative">
-                      <svg className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" width="16" height="16"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                      <svg className="absolute left-3.5 top-1/2 -translate-y-1/2" style={{ color: 'rgba(255,255,255,0.3)' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" width="16" height="16"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
                       <input
                         type="email"
                         placeholder="Tu correo electrónico"
                         value={email}
                         onChange={e => setEmail(e.target.value)}
                         required
-                        className="w-full h-11 pl-10 pr-4 bg-white border border-gray-200 rounded-xl text-sm text-gray-700 placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-400 transition-all shadow-sm"
+                        className="w-full h-11 pl-10 pr-4 rounded-xl text-sm text-white outline-none transition-all"
+                        style={{ background: 'rgba(5,8,22,0.6)', border: '1px solid rgba(99,102,241,0.3)', color: 'white' }}
+                        onFocus={e => { e.currentTarget.style.borderColor = 'rgba(139,92,246,0.6)' }}
+                        onBlur={e => { e.currentTarget.style.borderColor = 'rgba(99,102,241,0.3)' }}
                       />
                     </div>
                     <button
                       type="submit"
-                      className="flex items-center gap-1.5 px-5 h-11 text-white text-sm font-semibold rounded-xl transition-all hover:opacity-90 active:scale-95 shadow-sm flex-shrink-0 cursor-pointer"
-                      style={{ background: 'linear-gradient(135deg, #3B82F6, #2563EB)' }}
+                      className="flex items-center gap-1.5 px-5 h-11 text-white text-sm font-semibold rounded-xl transition-all hover:opacity-90 active:scale-95 shrink-0 cursor-pointer"
+                      style={{ background: 'linear-gradient(135deg, #8B5CF6, #4F7FFF)', boxShadow: '0 0 20px rgba(139,92,246,0.35)' }}
                     >
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="14" height="14"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
                       Suscribirme
                     </button>
                   </div>
                   <div className="flex items-center gap-1.5">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="#94A3B8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="13" height="13"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                    <span className="text-xs text-gray-400">Tus datos están seguros con nosotros.</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="rgba(139,92,246,0.5)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="13" height="13"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    <span className="text-xs" style={{ color: 'rgba(255,255,255,0.35)' }}>Tus datos están seguros con nosotros.</span>
                   </div>
                 </form>
               )}
@@ -115,7 +119,7 @@ export default function PieDePagina({ navigate }: Pick<AppContext, 'navigate'>) 
               <div className="flex items-center gap-3 mb-4">
                 <div
                   className="w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0"
-                  style={{ background: 'linear-gradient(135deg, #3B82F6, #06B6D4)' }}
+                  style={{ background: 'linear-gradient(135deg, #3B82F6, #4F7FFF)' }}
                 >
                   <span className="text-white font-bold text-sm tracking-tight">EX</span>
                 </div>

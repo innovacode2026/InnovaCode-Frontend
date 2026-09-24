@@ -17,8 +17,10 @@ export default function TarjetaProducto({ product, ctx }: TarjetaProductoProps) 
   const [added, setAdded] = useState(false)
   const [cartMsg, setCartMsg] = useState('')
   const [videoError, setVideoError] = useState(false)
+  const [corazonVisible, setCorazonVisible] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
   const videoTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const corazonTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const showDiscount = product.status === 'active' && product.rating >= 4.7
   const discountPct = showDiscount ? (product.rating >= 4.9 ? 15 : 10) : 0
@@ -66,6 +68,8 @@ export default function TarjetaProducto({ product, ctx }: TarjetaProductoProps) 
       onMouseEnter={e => {
         e.currentTarget.style.boxShadow = '0 24px 48px rgba(139,92,246,0.22), 0 8px 20px rgba(0,0,0,0.12)'
         e.currentTarget.style.transform = 'translateY(-8px)'
+        if (corazonTimerRef.current) clearTimeout(corazonTimerRef.current)
+        corazonTimerRef.current = setTimeout(() => setCorazonVisible(true), 5000)
         if (videoRef.current) {
           videoRef.current.currentTime = product.videoStartTime ?? 0
           videoRef.current.play()
@@ -78,6 +82,8 @@ export default function TarjetaProducto({ product, ctx }: TarjetaProductoProps) 
         e.currentTarget.style.boxShadow = '0 2px 16px rgba(0,0,0,0.07)'
         e.currentTarget.style.transform = 'translateY(0)'
         if (videoTimerRef.current) clearTimeout(videoTimerRef.current)
+        if (corazonTimerRef.current) clearTimeout(corazonTimerRef.current)
+        setCorazonVisible(false)
         if (videoRef.current) { videoRef.current.pause(); videoRef.current.currentTime = product.videoStartTime ?? 0 }
       }}
       onClick={() => navigate('product', product.id)}
@@ -124,13 +130,18 @@ export default function TarjetaProducto({ product, ctx }: TarjetaProductoProps) 
           {badge.label}
         </span>
 
-        {/* Heart */}
-        <button
-          onClick={handleWishlist}
-          className={`absolute top-3 right-3 transition-all cursor-pointer ${popped ? 'heart-pop' : ''} ${isSaved ? 'text-red-500' : 'text-gray-300 hover:text-red-400'}`}
-        >
-          <HeartIcon size={18} filled={isSaved} />
-        </button>
+        {/* Corazón grande al centro tras 5s sobre el producto */}
+        {corazonVisible && (
+          <button
+            onClick={handleWishlist}
+            title={isSaved ? 'Quitar de deseos' : 'Guardar en deseos'}
+            className={`absolute inset-0 m-auto w-16 h-16 rounded-full bg-white/95 shadow-xl flex items-center justify-center transition-all cursor-pointer ${popped ? 'heart-pop' : ''} ${isSaved ? 'text-red-500' : 'text-gray-400 hover:text-red-400'}`}
+            style={{ animation: 'evox-corazon-entrada 0.35s cubic-bezier(0.34,1.56,0.64,1)' }}
+          >
+            <style>{`@keyframes evox-corazon-entrada { 0% { transform: scale(0.4); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }`}</style>
+            <HeartIcon size={32} filled={isSaved} />
+          </button>
+        )}
       </div>
 
       {/* Contenido */}

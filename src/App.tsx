@@ -36,8 +36,15 @@ export default function App() {
   })
   const [products, setProducts] = useState<ProductoVista[]>([])
   const [carrito, setCarrito] = useState<Carrito>({ items: [], total: 0 })
-  const [aviso, setAviso] = useState<string | null>(null)
+  const [aviso, setAviso] = useState<{ titulo: string; texto: string; icono: 'carrito' | 'corazon' } | null>(null)
   const avisoTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const mostrarAviso = (titulo: string, texto: string, icono: 'carrito' | 'corazon' = 'carrito', conSonido = true) => {
+    setAviso({ titulo, texto, icono })
+    if (conSonido) sonarCarrito()
+    if (avisoTimer.current) clearTimeout(avisoTimer.current)
+    avisoTimer.current = setTimeout(() => setAviso(null), 2500)
+  }
 
   const sonarCarrito = () => {
     try {
@@ -102,10 +109,7 @@ export default function App() {
       await agregarItem({ productoId, cantidad })
       void refrescarCarrito()
       const nombre = products.find(p => p.id === productoId)?.name ?? 'Producto'
-      setAviso(nombre)
-      sonarCarrito()
-      if (avisoTimer.current) clearTimeout(avisoTimer.current)
-      avisoTimer.current = setTimeout(() => setAviso(null), 2500)
+      mostrarAviso('Agregado al carrito', nombre)
     },
     [refrescarCarrito, products],
   )
@@ -147,7 +151,8 @@ export default function App() {
   }
 
   const toggleWishlist = (productId: string) => {
-    const next = wishlist.includes(productId)
+    const quitando = wishlist.includes(productId)
+    const next = quitando
       ? wishlist.filter(id => id !== productId)
       : [...wishlist, productId]
     setWishlist(next)
@@ -156,6 +161,8 @@ export default function App() {
     } catch {
       /* almacenamiento lleno o bloqueado: se mantiene en memoria */
     }
+    const nombre = products.find(p => p.id === productId)?.name ?? 'Producto'
+    mostrarAviso(quitando ? 'Quitado de deseos' : 'Guardado en deseos', nombre, 'corazon')
   }
 
   const handleLogin = async (correo: string, password: string) => {
@@ -259,15 +266,21 @@ export default function App() {
           style={{ boxShadow: '0 16px 40px rgba(139,92,246,0.25)', animation: 'evox-aviso-entrada 0.3s cubic-bezier(0.34,1.4,0.64,1)', borderLeft: '4px solid #8B5CF6' }}>
           <style>{`@keyframes evox-aviso-entrada { 0% { transform: translateX(24px); opacity: 0; } 100% { transform: translateX(0); opacity: 1; } }`}</style>
           <span className="w-8 h-8 rounded-xl flex items-center justify-center text-white flex-shrink-0" style={{ background: 'linear-gradient(135deg, #8B5CF6, #06B6D4)' }}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="9" cy="21" r="1" />
-              <circle cx="20" cy="21" r="1" />
-              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
-            </svg>
+            {aviso.icono === 'corazon' ? (
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+              </svg>
+            ) : (
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="9" cy="21" r="1" />
+                <circle cx="20" cy="21" r="1" />
+                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+              </svg>
+            )}
           </span>
           <span className="min-w-0">
-            <span className="block text-xs font-bold" style={{ background: 'linear-gradient(135deg, #8B5CF6, #06B6D4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Agregado al carrito</span>
-            <span className="block text-xs text-gray-600 truncate max-w-[220px]">{aviso}</span>
+            <span className="block text-xs font-bold" style={{ background: 'linear-gradient(135deg, #8B5CF6, #06B6D4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>{aviso.titulo}</span>
+            <span className="block text-xs text-gray-600 truncate max-w-[220px]">{aviso.texto}</span>
           </span>
         </div>
       )}

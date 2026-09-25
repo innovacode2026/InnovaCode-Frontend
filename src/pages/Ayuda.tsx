@@ -56,8 +56,8 @@ export default function PaginaAyuda(ctx: AppContext) {
       <Encabezado {...ctx} />
       <div className="flex-1 bg-background">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-          <h1 className="font-display font-700 text-3xl text-gray-900">Centro de ayuda</h1>
-          <p className="text-gray-500 text-sm mt-1 mb-8">
+          <h1 className="font-display font-700 text-3xl text-white">Centro de ayuda</h1>
+          <p className="text-gray-400 text-sm mt-1 mb-8">
             Soporte, envíos, garantías y políticas de EVOX.
           </p>
           <div className="space-y-4">
@@ -65,10 +65,10 @@ export default function PaginaAyuda(ctx: AppContext) {
               <section
                 key={s.id}
                 id={`ayuda-${s.id}`}
-                className="bg-white border border-border rounded-2xl p-6 scroll-mt-24"
+                className="bg-surface border border-border rounded-2xl p-6 scroll-mt-24"
               >
-                <h2 className="font-display font-700 text-lg text-gray-900 mb-2">{s.titulo}</h2>
-                <p className="text-sm text-gray-600 leading-relaxed">{s.texto}</p>
+                <h2 className="font-display font-700 text-lg text-white mb-2">{s.titulo}</h2>
+                <p className="text-sm text-gray-400 leading-relaxed">{s.texto}</p>
               </section>
             ))}
           </div>

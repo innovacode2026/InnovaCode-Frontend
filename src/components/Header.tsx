@@ -232,6 +232,22 @@ export default function Encabezado({ role, page, userName, wishlist, products, c
                         Panel de control
                       </button>
                     )}
+                    {role === 'CLIENTE' && (
+                      <>
+                        <button
+                          onClick={() => { navigate('orders'); setRoleMenuOpen(false) }}
+                          className="w-full text-left px-3 py-2 text-sm text-white/70 hover:bg-white/5 cursor-pointer"
+                        >
+                          Mis pedidos
+                        </button>
+                        <button
+                          onClick={() => { navigate('profile'); setRoleMenuOpen(false) }}
+                          className="w-full text-left px-3 py-2 text-sm text-white/70 hover:bg-white/5 cursor-pointer"
+                        >
+                          Mi perfil
+                        </button>
+                      </>
+                    )}
                     <button
                       onClick={() => { logout(); navigate('landing'); setRoleMenuOpen(false) }}
                       className="w-full text-left px-3 py-2 text-sm text-danger hover:bg-danger-50/10 cursor-pointer"

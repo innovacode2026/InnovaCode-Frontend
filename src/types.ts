@@ -33,6 +33,7 @@ export type Page =
   | 'about'
   | 'ayuda'
   | 'access-denied'
+  | 'profile'
 
 export interface CartItem {
   productoId: string

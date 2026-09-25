@@ -19,6 +19,8 @@ import UsuariosAdmin from './pages/admin/Users'
 import ProductosAdmin from './pages/admin/Products'
 import AccesoDenegado from './pages/AccessDenied'
 import QuienesSomos from './pages/About'
+import PaginaPerfil from './pages/Profile'
+import PaginaPedidos from './pages/Orders'
 
 export default function App() {
   const { user, role, login, register, logout } = useAuth()
@@ -284,6 +286,12 @@ export default function App() {
       break
     case 'ayuda':
       contenido = <PaginaAyuda {...ctx} />
+      break
+    case 'profile':
+      contenido = <PaginaPerfil {...ctx} />
+      break
+    case 'orders':
+      contenido = <PaginaPedidos {...ctx} />
       break
     case 'access-denied':
       contenido = <AccesoDenegado {...ctx} requiredRole="ADMINISTRADOR" />

@@ -38,13 +38,9 @@ export default function InicioSesion(ctx: AppContext) {
     <div className="min-h-screen flex flex-col" style={{ background: '#050816' }}>
       {/* Header minimal */}
       <div className="px-6 py-4" style={{ background: 'rgba(13,21,38,0.9)', borderBottom: '1px solid rgba(99,102,241,0.2)' }}>
-        <button onClick={() => navigate('landing')} className="flex items-center gap-2 cursor-pointer">
-          <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #8B5CF6, #4F7FFF)' }}>
-            <span className="text-white font-display font-900 text-xs leading-none">e</span>
-          </div>
-          <div>
-            <span className="font-display font-800 text-[18px] leading-none block" style={{ background: 'linear-gradient(135deg, #8B5CF6, #4F7FFF)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>EVOX</span>
-          </div>
+        <button onClick={() => navigate('landing')} className="flex items-center gap-2.5 cursor-pointer">
+          <img src="/logo-evox.png" alt="EVOX" className="w-8 h-8 object-contain rounded-xl" />
+          <span className="font-display font-800 text-[18px] leading-none" style={{ background: 'linear-gradient(135deg, #8B5CF6, #4F7FFF)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>EVOX</span>
         </button>
       </div>
 

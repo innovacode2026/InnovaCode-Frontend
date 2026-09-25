@@ -47,7 +47,7 @@ export default function Catalogo(ctx: AppContext) {
   const hasFilters = search || selectedCategory || minRating > 0 || sortBy !== 'name'
 
   const SkeletonCard = () => (
-    <div className="bg-white rounded-2xl border border-border overflow-hidden">
+    <div className="bg-surface rounded-2xl border border-border overflow-hidden">
       <div className="skeleton aspect-[4/3]" />
       <div className="p-4 space-y-2">
         <div className="skeleton h-4 w-3/4 rounded" />
@@ -63,12 +63,12 @@ export default function Catalogo(ctx: AppContext) {
 
       <div className="flex-1">
         {/* Page header */}
-        <div className="bg-white border-b border-border">
+        <div className="bg-background border-b border-border">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
             <div className="flex flex-col sm:flex-row sm:items-center gap-4">
               <div className="flex-1">
-                <h1 className="font-display font-700 text-2xl text-gray-900">Catálogo de productos</h1>
-                <p className="text-gray-500 text-sm mt-0.5">
+                <h1 className="font-display font-700 text-2xl text-white">Catálogo de productos</h1>
+                <p className="text-slate-400 text-sm mt-0.5">
                   {filtered.length} {filtered.length === 1 ? 'producto encontrado' : 'productos encontrados'}
                 </p>
               </div>
@@ -78,7 +78,7 @@ export default function Catalogo(ctx: AppContext) {
                   <select
                     value={sortBy}
                     onChange={e => setSortBy(e.target.value)}
-                    className="appearance-none pl-8 pr-8 py-2 text-sm border border-border rounded-lg bg-white focus:outline-none focus:border-primary text-gray-700 cursor-pointer"
+                    className="appearance-none pl-8 pr-8 py-2 text-sm border border-border rounded-lg bg-navy focus:outline-none focus:border-primary text-slate-200 cursor-pointer"
                   >
                     <option value="name">Nombre A-Z</option>
                     <option value="price-asc">Precio: menor a mayor</option>
@@ -86,13 +86,13 @@ export default function Catalogo(ctx: AppContext) {
                     <option value="rating">Mejor calificación</option>
                     <option value="reviews">Más reseñas</option>
                   </select>
-                  <SortIcon size={14} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
-                  <ChevronDownIcon size={14} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                  <SortIcon size={14} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+                  <ChevronDownIcon size={14} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
                 </div>
                 {/* Mobile filter toggle */}
                 <button
                   onClick={() => setShowFilters(!showFilters)}
-                  className="lg:hidden flex items-center gap-2 px-3 py-2 text-sm border border-border rounded-lg bg-white text-gray-700 hover:border-primary transition-colors cursor-pointer"
+                  className="lg:hidden flex items-center gap-2 px-3 py-2 text-sm border border-border rounded-lg bg-navy text-slate-200 hover:border-primary transition-colors cursor-pointer"
                 >
                   <FilterIcon size={14} />
                   Filtros
@@ -103,18 +103,18 @@ export default function Catalogo(ctx: AppContext) {
 
             {/* Search bar */}
             <div className="relative mt-4">
-              <SearchIcon size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
+              <SearchIcon size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
               <input
                 type="text"
                 value={search}
                 onChange={e => setSearch(e.target.value)}
                 placeholder="Buscar en el catálogo..."
-                className="w-full pl-10 pr-10 py-2.5 text-sm border border-border rounded-xl bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white transition-all placeholder:text-gray-400"
+                className="w-full pl-10 pr-10 py-2.5 text-sm border border-border rounded-xl bg-navy text-slate-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-slate-500"
               />
               {search && (
                 <button
                   onClick={() => setSearch('')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 cursor-pointer"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 cursor-pointer"
                 >
                   <XIcon size={14} />
                 </button>
@@ -124,15 +124,15 @@ export default function Catalogo(ctx: AppContext) {
             {/* Active filters */}
             {hasFilters && (
               <div className="flex flex-wrap items-center gap-2 mt-3">
-                <span className="text-xs text-gray-400">Filtros activos:</span>
+                <span className="text-xs text-slate-400">Filtros activos:</span>
                 {selectedCategory && (
-                  <span className="flex items-center gap-1 text-xs bg-primary-50 text-primary px-2 py-0.5 rounded-full border border-primary-100">
+                  <span className="flex items-center gap-1 text-xs bg-primary/20 text-primary px-2 py-0.5 rounded-full border border-primary/30">
                     {categories.find(c => c.id === selectedCategory)?.name}
                     <button onClick={() => setSelectedCategory('')} className="cursor-pointer"><XIcon size={10} /></button>
                   </span>
                 )}
                 {minRating > 0 && (
-                  <span className="flex items-center gap-1 text-xs bg-amber-50 text-amber-600 px-2 py-0.5 rounded-full border border-amber-100">
+                  <span className="flex items-center gap-1 text-xs bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded-full border border-amber-500/30">
                     {minRating}+ estrellas
                     <button onClick={() => setMinRating(0)} className="cursor-pointer"><XIcon size={10} /></button>
                   </span>
@@ -149,9 +149,9 @@ export default function Catalogo(ctx: AppContext) {
           <div className="flex gap-6">
             {/* Sidebar filters */}
             <aside className={`lg:block flex-shrink-0 w-56 ${showFilters ? 'block' : 'hidden'}`}>
-              <div className="bg-white rounded-2xl border border-border p-4 sticky top-20">
+              <div className="bg-surface rounded-2xl border border-border p-4 sticky top-20">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-display font-600 text-sm text-gray-900">Filtros</h3>
+                  <h3 className="font-display font-600 text-sm text-white">Filtros</h3>
                   {hasFilters && (
                     <button onClick={clearFilters} className="text-xs text-danger hover:underline cursor-pointer">
                       Limpiar
@@ -161,30 +161,30 @@ export default function Catalogo(ctx: AppContext) {
 
                 {/* Categories */}
                 <div className="mb-5">
-                  <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2.5">Categoría</h4>
+                  <h4 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2.5">Categoría</h4>
                   <div className="space-y-1">
                     <button
                       onClick={() => setSelectedCategory('')}
                       className={`w-full text-left flex items-center justify-between px-2.5 py-1.5 rounded-lg text-sm transition-colors cursor-pointer ${
-                        !selectedCategory ? 'bg-primary-50 text-primary font-medium' : 'text-gray-600 hover:bg-gray-50'
+                        !selectedCategory ? 'bg-primary/20 text-primary font-medium' : 'text-slate-300 hover:bg-white/5'
                       }`}
                     >
                       <span>Todas</span>
-                      <span className="text-xs text-gray-400">{products.length}</span>
+                      <span className="text-xs text-slate-500">{products.length}</span>
                     </button>
                     {categories.map(cat => (
                       <button
                         key={cat.id}
                         onClick={() => setSelectedCategory(cat.id === selectedCategory ? '' : cat.id)}
                         className={`w-full text-left flex items-center justify-between px-2.5 py-1.5 rounded-lg text-sm transition-colors cursor-pointer ${
-                          selectedCategory === cat.id ? 'bg-primary-50 text-primary font-medium' : 'text-gray-600 hover:bg-gray-50'
+                          selectedCategory === cat.id ? 'bg-primary/20 text-primary font-medium' : 'text-slate-300 hover:bg-white/5'
                         }`}
                       >
                         <span className="flex items-center gap-2">
                           <span>{cat.icon}</span>
                           {cat.name}
                         </span>
-                        <span className="text-xs text-gray-400">{products.filter(p => p.category === cat.id).length}</span>
+                        <span className="text-xs text-slate-500">{products.filter(p => p.category === cat.id).length}</span>
                       </button>
                     ))}
                   </div>
@@ -192,14 +192,14 @@ export default function Catalogo(ctx: AppContext) {
 
                 {/* Rating filter */}
                 <div className="mb-5">
-                  <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2.5">Calificación mínima</h4>
+                  <h4 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2.5">Calificación mínima</h4>
                   <div className="space-y-1">
                     {[0, 3, 4, 4.5].map(r => (
                       <button
                         key={r}
                         onClick={() => setMinRating(r)}
                         className={`w-full text-left px-2.5 py-1.5 rounded-lg text-sm transition-colors cursor-pointer ${
-                          minRating === r ? 'bg-primary-50 text-primary font-medium' : 'text-gray-600 hover:bg-gray-50'
+                          minRating === r ? 'bg-primary/20 text-primary font-medium' : 'text-slate-300 hover:bg-white/5'
                         }`}
                       >
                         {r === 0 ? 'Todas' : `${r}+ ⭐`}
@@ -210,7 +210,7 @@ export default function Catalogo(ctx: AppContext) {
 
                 {/* Price range */}
                 <div>
-                  <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2.5">Precio máximo</h4>
+                  <h4 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2.5">Precio máximo</h4>
                   <input
                     type="range"
                     min={0}
@@ -220,9 +220,9 @@ export default function Catalogo(ctx: AppContext) {
                     onChange={e => setPriceRange([0, Number(e.target.value)])}
                     className="w-full accent-primary cursor-pointer"
                   />
-                  <div className="flex justify-between text-xs text-gray-400 mt-1">
+                  <div className="flex justify-between text-xs text-slate-500 mt-1">
                     <span>$0</span>
-                    <span className="font-medium text-gray-700">${priceRange[1].toLocaleString('es-CO')}</span>
+                    <span className="font-medium text-slate-200">${priceRange[1].toLocaleString('es-CO')}</span>
                   </div>
                 </div>
               </div>
@@ -237,8 +237,8 @@ export default function Catalogo(ctx: AppContext) {
               ) : filtered.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-20 text-center">
                   <div className="text-5xl mb-4">🔍</div>
-                  <h3 className="font-display font-600 text-gray-900 text-xl mb-2">Sin resultados</h3>
-                  <p className="text-gray-500 text-sm max-w-sm">
+                  <h3 className="font-display font-600 text-white text-xl mb-2">Sin resultados</h3>
+                  <p className="text-slate-400 text-sm max-w-sm">
                     No encontramos productos que coincidan con tu búsqueda. Intenta con otros términos o elimina algunos filtros.
                   </p>
                   <button

@@ -28,25 +28,25 @@ const categoryIconMap: Record<string, LucideIcon> = {
 
 const brandLogos: Record<string, JSX.Element> = {
   Samsung: (
-    <img src="https://logo-teka.com/wp-content/uploads/2025/06/samsung-logo.png" alt="Samsung" className="h-full w-auto object-contain" style={{ filter: 'grayscale(1) opacity(0.7)' }} />
+    <img src="https://logo-teka.com/wp-content/uploads/2025/06/samsung-logo.png" alt="Samsung" className="h-full w-auto object-contain" style={{ filter: 'brightness(0) invert(1) opacity(0.75)' }} />
   ),
   Dell: (
-    <img src="https://logo-teka.com/wp-content/uploads/2025/07/dell-vertical-logo.png" alt="Dell" className="h-full w-auto object-contain" style={{ filter: 'grayscale(1) opacity(0.7)' }} />
+    <img src="https://logo-teka.com/wp-content/uploads/2025/07/dell-vertical-logo.png" alt="Dell" className="h-full w-auto object-contain" style={{ filter: 'brightness(0) invert(1) opacity(0.75)' }} />
   ),
   LG: (
-    <img src="https://logo-teka.com/wp-content/uploads/2025/07/lg-electronics-logo.png" alt="LG" className="h-full w-auto object-contain" style={{ filter: 'grayscale(1) opacity(0.7)' }} />
+    <img src="https://logo-teka.com/wp-content/uploads/2025/07/lg-electronics-logo.png" alt="LG" className="h-full w-auto object-contain" style={{ filter: 'brightness(0) invert(1) opacity(0.75)' }} />
   ),
   Sony: (
-    <img src="https://logo-teka.com/wp-content/uploads/2025/06/sony-logo.png" alt="Sony" className="h-full w-auto object-contain" style={{ filter: 'grayscale(1) opacity(0.7)' }} />
+    <img src="https://logo-teka.com/wp-content/uploads/2025/06/sony-logo.png" alt="Sony" className="h-full w-auto object-contain" style={{ filter: 'brightness(0) invert(1) opacity(0.75)' }} />
   ),
   Xbox: (
-    <img src="https://logo-teka.com/wp-content/uploads/2025/08/xbox-icon-logo.png" alt="Xbox" className="h-full w-auto object-contain" style={{ filter: 'grayscale(1) opacity(0.7)', transform: 'scale(1.45)' }} />
+    <img src="https://logo-teka.com/wp-content/uploads/2025/08/xbox-icon-logo.png" alt="Xbox" className="h-full w-auto object-contain" style={{ filter: 'brightness(0) invert(1) opacity(0.75)', transform: 'scale(1.45)' }} />
   ),
   Xiaomi: (
-    <img src="https://logo-teka.com/wp-content/uploads/2025/06/xiaomi-sign-logo.png" alt="Xiaomi" className="h-full w-auto object-contain" style={{ filter: 'grayscale(1) opacity(0.7)' }} />
+    <img src="https://logo-teka.com/wp-content/uploads/2025/06/xiaomi-sign-logo.png" alt="Xiaomi" className="h-full w-auto object-contain" style={{ filter: 'brightness(0) invert(1) opacity(0.75)' }} />
   ),
   Apple: (
-    <img src="https://logo-teka.com/wp-content/uploads/2025/06/apple-logo.png" alt="Apple" className="h-full w-auto object-contain" style={{ filter: 'grayscale(1) opacity(0.7)' }} />
+    <img src="https://logo-teka.com/wp-content/uploads/2025/06/apple-logo.png" alt="Apple" className="h-full w-auto object-contain" style={{ filter: 'brightness(0) invert(1) opacity(0.75)' }} />
   ),
   macOS: (
     <svg role="img" viewBox="0 0 24 24" fill="currentColor" className="h-6 w-auto" xmlns="http://www.w3.org/2000/svg" aria-label="macOS">
@@ -54,33 +54,33 @@ const brandLogos: Record<string, JSX.Element> = {
     </svg>
   ),
   HP: (
-    <img src="https://logo-teka.com/wp-content/uploads/2025/07/hp-logo.png" alt="HP" className="h-full w-auto object-contain" style={{ filter: 'grayscale(1) opacity(0.7)' }} />
+    <img src="https://logo-teka.com/wp-content/uploads/2025/07/hp-logo.png" alt="HP" className="h-full w-auto object-contain" style={{ filter: 'brightness(0) invert(1) opacity(0.75)' }} />
   ),
   Huawei: (
-    <img src="https://logo-teka.com/wp-content/uploads/2025/06/huawei-logo.png" alt="Huawei" className="h-full w-auto object-contain" style={{ filter: 'grayscale(1) opacity(0.7)' }} />
+    <img src="https://logo-teka.com/wp-content/uploads/2025/06/huawei-logo.png" alt="Huawei" className="h-full w-auto object-contain" style={{ filter: 'brightness(0) invert(1) opacity(0.75)' }} />
   ),
   ASUS: (
-    <svg role="img" viewBox="0 9.3 24 5.5" xmlns="http://www.w3.org/2000/svg" className="h-7 w-auto" fill="currentColor" style={{ opacity: 0.7, color: '#555' }}>
+    <svg role="img" viewBox="0 9.3 24 5.5" xmlns="http://www.w3.org/2000/svg" className="h-7 w-auto" fill="currentColor" style={{ opacity: 0.75, color: 'white' }}>
       <path d="M23.904 10.788V9.522h-4.656c-.972 0-1.41.6-1.482 1.182v.018-1.2h-1.368v1.266h1.362zm-6.144.456l-1.368-.078v1.458c0 .456-.228.594-1.02.594H14.28c-.654 0-.93-.186-.93-.594v-1.596l-1.386-.102v1.812h-.03c-.078-.528-.276-1.14-1.596-1.23L6 11.22c0 .666.474 1.062 1.218 1.14l3.024.306c.24.018.414.09.414.288 0 .216-.18.24-.456.24H5.946V11.22l-1.386-.09v3.348h5.646c1.26 0 1.662-.654 1.722-1.2h.03c.156.864.912 1.2 2.19 1.2h1.41c1.494 0 2.202-.456 2.202-1.524zm4.398.258l-4.338-.258c0 .666.438 1.11 1.182 1.17l3.09.24c.24.018.384.078.384.276 0 .186-.168.258-.516.258h-4.212v1.29h4.302c1.356 0 1.95-.474 1.95-1.554 0-.972-.534-1.338-1.842-1.422zm-10.194-1.98h1.386v1.266h-1.386zM3.798 11.07l-1.506-.15L0 14.478h1.686zm7.914-1.548h-4.23c-.984 0-1.416.612-1.518 1.2v-1.2H3.618c-.33 0-.486.102-.642.33l-.648.936h9.384Z" />
     </svg>
   ),
   Canon: (
-    <img src="https://logo-teka.com/wp-content/uploads/2025/10/canon-logo.png" alt="Canon" className="h-full w-auto object-contain" style={{ filter: 'grayscale(1) opacity(0.7)' }} />
+    <img src="https://logo-teka.com/wp-content/uploads/2025/10/canon-logo.png" alt="Canon" className="h-full w-auto object-contain" style={{ filter: 'brightness(0) invert(1) opacity(0.75)' }} />
   ),
   Lenovo: (
-    <img src="https://logo-teka.com/wp-content/uploads/2025/07/lenovo-logo.png" alt="Lenovo" className="h-full w-auto object-contain" style={{ filter: 'grayscale(1) opacity(0.7)' }} />
+    <img src="https://logo-teka.com/wp-content/uploads/2025/07/lenovo-logo.png" alt="Lenovo" className="h-full w-auto object-contain" style={{ filter: 'brightness(0) invert(1) opacity(0.75)' }} />
   ),
   Google: (
-    <img src="https://logo-teka.com/wp-content/uploads/2025/06/google-logo.png" alt="Google" className="h-full w-auto object-contain" style={{ filter: 'grayscale(1) opacity(0.7)' }} />
+    <img src="https://logo-teka.com/wp-content/uploads/2025/06/google-logo.png" alt="Google" className="h-full w-auto object-contain" style={{ filter: 'brightness(0) invert(1) opacity(0.75)' }} />
   ),
   Oppo: (
-    <img src="https://logo-teka.com/wp-content/uploads/2025/07/oppo-logo.png" alt="OPPO" className="h-full w-auto object-contain" style={{ filter: 'grayscale(1) opacity(0.7)' }} />
+    <img src="https://logo-teka.com/wp-content/uploads/2025/07/oppo-logo.png" alt="OPPO" className="h-full w-auto object-contain" style={{ filter: 'brightness(0) invert(1) opacity(0.75)' }} />
   ),
   Microsoft: (
-    <img src="https://logo-teka.com/wp-content/uploads/2025/06/microsoft-logo.png" alt="Microsoft" className="h-full w-auto object-contain" style={{ filter: 'grayscale(1) opacity(0.7)' }} />
+    <img src="https://logo-teka.com/wp-content/uploads/2025/06/microsoft-logo.png" alt="Microsoft" className="h-full w-auto object-contain" style={{ filter: 'brightness(0) invert(1) opacity(0.75)' }} />
   ),
   Motorola: (
-    <img src="https://logo-teka.com/wp-content/uploads/2025/07/motorola-sign-logo.png" alt="Motorola" className="h-full w-auto object-contain" style={{ filter: 'grayscale(1) opacity(0.7)' }} />
+    <img src="https://logo-teka.com/wp-content/uploads/2025/07/motorola-sign-logo.png" alt="Motorola" className="h-full w-auto object-contain" style={{ filter: 'brightness(0) invert(1) opacity(0.75)' }} />
   ),
 }
 
